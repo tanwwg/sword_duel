@@ -20,6 +20,7 @@ public class EnemyAi : MonoBehaviour
 
     public MoveEnum moveState = MoveEnum.DoNothing;
     
+    public Rigidbody rb;
     public CharacterController controller;
     public float moveSpeed = 5f;
     
@@ -27,6 +28,9 @@ public class EnemyAi : MonoBehaviour
     
     public Vector3 velocity = Vector3.zero;
     public float gravity = -9.81f;
+
+    public float stunTime = 0.0f;
+    public AnimationClip hitClip;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -34,9 +38,31 @@ public class EnemyAi : MonoBehaviour
         
     }
 
+    public void HitStun(Vector3 forceDir, float time)
+    {
+        stunTime += time;
+        controller.enabled = false;
+        rb.isKinematic = false;
+        rb.AddForce(forceDir, ForceMode.Impulse);
+        animator.SetFloat("OnHitSpeed", hitClip.length / stunTime);
+        animator.Play("onhit", 0, 0f);
+    }
+
     // Update is called once per frame
     void Update()
     {
+        if (stunTime > 0)
+        {
+            stunTime -= Time.deltaTime;
+            if (stunTime <= 0)
+            {
+                rb.isKinematic = true;
+                controller.enabled = true;
+                animator.Play("Movement");
+            }
+            return;
+        } 
+        
         ApplyGravity();
 
         if (Time.time - lastEval > evalEvery)
@@ -57,7 +83,7 @@ public class EnemyAi : MonoBehaviour
         Vector3 move = moveInput.x * transform.right + moveInput.y * transform.forward;
         
         animator.SetFloat("Forward", moveInput.y, moveBlendTreeDamp, Time.deltaTime);
-        animator.SetFloat("Strafe", moveInput.x, moveBlendTreeDamp, Time.deltaTime);        
+        animator.SetFloat("Strafe", moveInput.x, moveBlendTreeDamp, Time.deltaTime);
 
         // bool isMoving = move.sqrMagnitude > 0.01f;
 

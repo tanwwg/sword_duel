@@ -39,6 +39,8 @@ public class AttackComboItem
     public string animBool;
     public string animTrigger;
 
+    public WeaponData weaponData;
+
     public void StartAnimation(Animator animator)
     {
         if (!string.IsNullOrWhiteSpace(animBool))
@@ -112,6 +114,7 @@ public class ComboSystem : MonoBehaviour
         // animator.Update(0);
         
         weapon.ResetHit();
+        weapon.weaponData = ci.weaponData;
     }
     
     /// <summary>
