@@ -23,7 +23,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
-        // ApplyGravity();
+        ApplyGravity();
     }
 
     void Move()

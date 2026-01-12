@@ -75,6 +75,8 @@ public class ComboSystem : MonoBehaviour
 
     public float lastComboTime = -1;
     public int comboIndex = -1;
+
+    public Weapon weapon;
     // public float comboFrame;
 
     [Header("Debug")]
@@ -108,6 +110,8 @@ public class ComboSystem : MonoBehaviour
         //animator.Play(comboItems[comboIndex].stateHash, 0, ci.startTime);
         animator.CrossFade(comboItems[comboIndex].stateHash, ci.crossFadeTime, 0, ci.startTime);
         // animator.Update(0);
+        
+        weapon.ResetHit();
     }
     
     /// <summary>
