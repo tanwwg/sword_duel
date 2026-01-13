@@ -425,7 +425,7 @@ MonoBehaviour:
     DefaultMode: 2
   DefaultBlend:
     Style: 1
-    Time: 2
+    Time: 0.7
     CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -578,7 +578,7 @@ GameObject:
   - component: {fileID: 571942007}
   - component: {fileID: 571942008}
   m_Layer: 0
-  m_Name: Third Person Aim Camera
+  m_Name: Third Person Aim Camera - RIght
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1340,6 +1340,7 @@ MonoBehaviour:
     hitForce: 100
     stunTime: 5
     hitAngle: 0
+    hitPrefab: {fileID: 0}
 --- !u!1 &1148090331
 GameObject:
   m_ObjectHideFlags: 0
@@ -1545,6 +1546,122 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 007af4d2f5f334221b0426c0964e8260, type: 3}
   m_PrefabInstance: {fileID: 1163795601}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1207743790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1207743794}
+  - component: {fileID: 1207743793}
+  - component: {fileID: 1207743792}
+  - component: {fileID: 1207743791}
+  m_Layer: 0
+  m_Name: Third Person Aim Camera - Left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1207743791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207743790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8b78ac948f05a46a6d8339a503172b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LookAtOffset: {x: 0, y: 0, z: 0}
+--- !u!114 &1207743792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207743790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 625c14eee3ad46c99df7c7c891ef668a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0, y: 0, z: 0}
+  ShoulderOffset: {x: 0.73, y: -0.29, z: 0}
+  VerticalArmLength: 0
+  CameraSide: 0
+  CameraDistance: 0.84
+  AvoidObstacles:
+    Enabled: 0
+    CollisionFilter:
+      serializedVersion: 2
+      m_Bits: 1
+    IgnoreTag: 
+    CameraRadius: 0.2
+    DampingIntoCollision: 0
+    DampingFromCollision: 0.5
+--- !u!114 &1207743793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207743790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Priority:
+    Enabled: 1
+    m_Value: 2
+  OutputChannel: 1
+  StandbyUpdate: 2
+  m_StreamingVersion: 20241001
+  m_LegacyPriority: 0
+  Target:
+    TrackingTarget: {fileID: 141275502}
+    LookAtTarget: {fileID: 393202464}
+    CustomLookAtTarget: 1
+  Lens:
+    FieldOfView: 74.4
+    OrthographicSize: 5
+    NearClipPlane: 0.3
+    FarClipPlane: 1000
+    Dutch: 0
+    ModeOverride: 0
+    PhysicalProperties:
+      GateFit: 2
+      SensorSize: {x: 21.946, y: 16.002}
+      LensShift: {x: 0, y: 0}
+      FocusDistance: 10
+      Iso: 200
+      ShutterSpeed: 0.005
+      Aperture: 16
+      BladeCount: 5
+      Curvature: {x: 2, y: 11}
+      BarrelClipping: 0.25
+      Anamorphism: 0
+  BlendHint: 0
+--- !u!4 &1207743794
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207743790}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.021302382, y: -0.067218125, z: -0.0014354807, w: 0.99750984}
+  m_LocalPosition: {x: 0.73, y: 1.19, z: -3.04}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1303296721 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 007af4d2f5f334221b0426c0964e8260, type: 3}
@@ -1603,7 +1720,7 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!114 &1303296725
 MonoBehaviour:
@@ -1879,6 +1996,10 @@ MonoBehaviour:
       hitForce: 50
       stunTime: 1
       hitAngle: -45
+      hitPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+    onComboStart:
+      m_PersistentCalls:
+        m_Calls: []
   - stateName: slash2
     stateHash: 0
     clip: {fileID: -203655887218126122, guid: 69dd31463680041598a016d0235c987a, type: 3}
@@ -1894,9 +2015,25 @@ MonoBehaviour:
     animBool: Slash2
     animTrigger: 
     weaponData:
-      hitForce: 150
+      hitForce: 100
       stunTime: 1
       hitAngle: 90
+      hitPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
+    onComboStart:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1207743790}
+          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
   - stateName: SpinAttack
     stateHash: 0
     clip: {fileID: -203655887218126122, guid: a35a599d42c58498b909d57e7c4cae80, type: 3}
@@ -1912,12 +2049,31 @@ MonoBehaviour:
     animBool: SpinAttack
     animTrigger: 
     weaponData:
-      hitForce: 250
+      hitForce: 150
       stunTime: 1
       hitAngle: -90
+      hitPrefab: {fileID: 2955623459812423943, guid: f5507a8c6a22c404ab324980c4e8a11b, type: 3}
+    onComboStart:
+      m_PersistentCalls:
+        m_Calls: []
   lastComboTime: -1
   comboIndex: -1
   weapon: {fileID: 1136541380}
+  onComboEnd:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1207743790}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   bar: {fileID: 862624464}
   debugText: {fileID: 622026770}
   showHitBox: {fileID: 1136541375}
@@ -1933,6 +2089,7 @@ SceneRoots:
   - {fileID: 1970438631}
   - {fileID: 227095417}
   - {fileID: 571941998}
+  - {fileID: 1207743794}
   - {fileID: 1148090335}
   - {fileID: 574908165}
   - {fileID: 616247022}

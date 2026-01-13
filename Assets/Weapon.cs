@@ -8,6 +8,7 @@ public class WeaponData
     public float hitForce = 100f;
     public float stunTime = 5f;
     public float hitAngle = -45f;
+    public GameObject hitPrefab;
 }
 
 public class Weapon : MonoBehaviour
@@ -30,6 +31,8 @@ public class Weapon : MonoBehaviour
             var forceDir = other.transform.position - hitPoint;
             forceDir.y = 0;
             forceDir = Quaternion.AngleAxis(weaponData.hitAngle, Vector3.up) * forceDir;
+            
+            Instantiate(weaponData.hitPrefab, hitPoint, Quaternion.Euler(forceDir));
             
             enemy.HitStun(forceDir.normalized * weaponData.hitForce, weaponData.stunTime);
         }

@@ -1,6 +1,7 @@
 using TMPro;
 using Unity.Mathematics.Geometry;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -40,6 +41,8 @@ public class AttackComboItem
     public string animTrigger;
 
     public WeaponData weaponData;
+
+    public UnityEvent onComboStart;
 
     public void StartAnimation(Animator animator)
     {
@@ -81,6 +84,8 @@ public class ComboSystem : MonoBehaviour
     public Weapon weapon;
     // public float comboFrame;
 
+    public UnityEvent onComboEnd;
+
     [Header("Debug")]
     public Image bar;
 
@@ -112,6 +117,8 @@ public class ComboSystem : MonoBehaviour
         //animator.Play(comboItems[comboIndex].stateHash, 0, ci.startTime);
         animator.CrossFade(comboItems[comboIndex].stateHash, ci.crossFadeTime, 0, ci.startTime);
         // animator.Update(0);
+        
+        ci.onComboStart.Invoke();
         
         weapon.ResetHit();
         weapon.weaponData = ci.weaponData;
@@ -164,6 +171,7 @@ public class ComboSystem : MonoBehaviour
             }
 
             bar.fillAmount = 0;
+            onComboEnd.Invoke();
             return;
         }
 
