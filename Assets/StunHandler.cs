@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class StunHandler: MonoBehaviour
@@ -13,6 +14,8 @@ public class StunHandler: MonoBehaviour
     public int maxHealth = 100;
 
     public Image healthBar;
+
+    public UnityEvent onDeath;
 
     [Header("Runtime vars")] 
     public int health;
@@ -34,6 +37,12 @@ public class StunHandler: MonoBehaviour
         stunTime += weapon.stunTime;
         health = Math.Max(0, health - weapon.damage);
         RefreshHealthBar();
+
+        if (health <= 0)
+        {
+            onDeath.Invoke();
+            return;
+        }
         
         controller.enabled = false;
         rb.isKinematic = false;
