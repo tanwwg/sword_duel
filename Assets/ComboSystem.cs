@@ -132,7 +132,7 @@ public class ComboSystem : MonoBehaviour
         isComboClick = true;
     }
 
-    private void Update()
+    public void RunUpdate()
     {
         var isClickThisFrame = isComboClick;
         isComboClick = false;

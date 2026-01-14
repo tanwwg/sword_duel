@@ -53,12 +53,14 @@ public class PlayerController : MonoBehaviour
         {
             attackVelocity = moveInput.x * transform.right + moveInput.y * transform.forward;
             comboSystem.ComboClick();
+            comboSystem.RunUpdate();
             return;
         }
         
         if (comboSystem.IsPlaying)
         {
             controller.Move(attackVelocity * Time.deltaTime);
+            comboSystem.RunUpdate();
             return;
         }
         
