@@ -42,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void HandleGravity()
     {
-        if (!controller.isGrounded)
+        if (!controller.isGrounded && controller.enabled)
         {
             controller.Move(Vector3.up * gravity * Time.deltaTime);
         }

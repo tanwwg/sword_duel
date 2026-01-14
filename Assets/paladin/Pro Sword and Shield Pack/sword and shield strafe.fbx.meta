@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: 42aa35d95234b49ef8e36fc3cc383c4d
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -45,7 +45,7 @@ ModelImporter:
       loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
       keepOriginalPositionY: 1
@@ -85,6 +85,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

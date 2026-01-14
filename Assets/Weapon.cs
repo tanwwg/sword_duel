@@ -5,6 +5,8 @@ using UnityEngine;
 [Serializable]
 public class WeaponData
 {
+    public int damage;
+
     public float hitForce = 100f;
     public float stunTime = 5f;
     public float hitAngle = -45f;
@@ -33,7 +35,7 @@ public class Weapon : MonoBehaviour
             
             Instantiate(weaponData.hitPrefab, hitPoint, Quaternion.Euler(forceDir));
             
-            hittable.HitStun(forceDir.normalized * weaponData.hitForce, weaponData.stunTime);
+            hittable.HitStun(forceDir.normalized * weaponData.hitForce, weaponData);
         }
     }
 
