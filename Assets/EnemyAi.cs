@@ -58,7 +58,7 @@ public class EnemyAi : MonoBehaviour
             {
                 rb.isKinematic = true;
                 controller.enabled = true;
-                animator.Play("Movement");
+                animator.CrossFade("Movement", 0.2f, 0);
             }
             return;
         } 

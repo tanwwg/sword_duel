@@ -13,19 +13,18 @@ public class WeaponData
 
 public class Weapon : MonoBehaviour
 {
-    private List<Hittable> hitCache = new();
+    private List<StunHandler> hitCache = new();
 
     public WeaponData weaponData;
     
     private void OnTriggerEnter(Collider other)
     {
-        var hittable = other.gameObject.GetComponent<Hittable>();
+        var hittable = other.gameObject.GetComponent<StunHandler>();
         if (hittable && !hitCache.Contains(hittable))
         {
             Debug.Log("HIT! " + other.gameObject.name);
             hitCache.Add(hittable);
             
-            var enemy = other.gameObject.GetComponent<EnemyAi>();
             var hitPoint = other.ClosestPoint(this.transform.position);
 
             var forceDir = other.transform.position - hitPoint;
@@ -34,7 +33,7 @@ public class Weapon : MonoBehaviour
             
             Instantiate(weaponData.hitPrefab, hitPoint, Quaternion.Euler(forceDir));
             
-            enemy.HitStun(forceDir.normalized * weaponData.hitForce, weaponData.stunTime);
+            hittable.HitStun(forceDir.normalized * weaponData.hitForce, weaponData.stunTime);
         }
     }
 

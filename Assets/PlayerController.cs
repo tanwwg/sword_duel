@@ -7,27 +7,61 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 5f;
     public float rotationSpeed = 10f;
     public float gravity = -9.81f;
+
+    public float moveBlendTreeDamp = 0.12f;
     
+    [Tooltip("How much to damp attack velocity")]
+    public float attackInteria = 1.0f;
+
     public Transform lockTarget;
 
     [Header("References")]
     public Animator animator;
 
+    public StunHandler stunHandler;
+
     public CharacterController controller;
-    public Vector2 moveInput;
-    public Vector3 velocity;
-    public float moveBlendTreeDamp = 0.12f;
 
     public ComboSystem comboSystem;
+    
+    [Header("Inputs")]
+    public Vector2 moveInput;
+    public bool isAttack;
+
+    [Header("Runtime vars")]
+    public Vector3 attackVelocity = Vector3.zero;
 
     void Update()
     {
         Move();
-        ApplyGravity();
     }
 
     void Move()
     {
+        if (stunHandler.UpdateStun())
+        {
+            return;
+        }
+        
+        var isAttackThisFrame = isAttack;
+        isAttack = false;
+
+        // damp any attack velocity
+        attackVelocity = Vector3.MoveTowards(attackVelocity, Vector3.zero, attackInteria * Time.deltaTime);
+
+        if (isAttackThisFrame)
+        {
+            attackVelocity = moveInput.x * transform.right + moveInput.y * transform.forward;
+            comboSystem.ComboClick();
+            return;
+        }
+        
+        if (comboSystem.IsPlaying)
+        {
+            controller.Move(attackVelocity * Time.deltaTime);
+            return;
+        }
+        
         Vector3 move = moveInput.x * transform.right + moveInput.y * transform.forward;
         
         animator.SetFloat("Forward", moveInput.y, moveBlendTreeDamp, Time.deltaTime);
@@ -44,31 +78,8 @@ public class PlayerController : MonoBehaviour
             rotationSpeed * Time.deltaTime
         );
 
-        if (comboSystem.IsPlaying) return;
-        
         controller.Move(move * moveSpeed * Time.deltaTime);
     }
-
-    void ApplyGravity()
-    {
-        if (controller.isGrounded && velocity.y < 0)
-            velocity.y = -2f;
-
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-    }
-
-    // NEW INPUT SYSTEM CALLBACK
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-    }
     
-    public void OnLightAttack(InputAction.CallbackContext context)
-    {
-        if (context.started)
-        {
-            comboSystem.ComboClick();
-        }
-    }
+    
 }
