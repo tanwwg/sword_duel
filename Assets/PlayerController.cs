@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +24,8 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
 
     public ComboSystem comboSystem;
+
+    public Rigidbody rb;
     
     [Header("Inputs")]
     public Vector2 moveInput;
@@ -33,7 +36,16 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        HandleGravity();
         Move();
+    }
+
+    void HandleGravity()
+    {
+        if (!controller.isGrounded)
+        {
+            controller.Move(Vector3.up * gravity * Time.deltaTime);
+        }
     }
 
     void Move()
@@ -82,6 +94,9 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(move * moveSpeed * Time.deltaTime);
     }
-    
-    
+
+    public void FixedUpdate()
+    {
+        animator.SetFloat("HitRotation", rb.angularVelocity.magnitude);
+    }
 }

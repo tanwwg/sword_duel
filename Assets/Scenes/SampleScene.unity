@@ -901,7 +901,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2636593644432062830, guid: afe06cfa5721b824792de9e11596626b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3
+      value: -2.95
       objectReference: {fileID: 0}
     - target: {fileID: 2636593644432062830, guid: afe06cfa5721b824792de9e11596626b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1244,6 +1244,10 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 7d1cecdb72a864b489f4fbb30e71aec2, type: 2}
+    - target: {fileID: 2745992324737785379, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
+      propertyPath: m_Center.y
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: 3216293692674935773, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: lockTarget
       value: 
@@ -1267,11 +1271,11 @@ PrefabInstance:
     - target: {fileID: 8111960975918460478, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: bar
       value: 
-      objectReference: {fileID: 862624464}
+      objectReference: {fileID: 0}
     - target: {fileID: 8111960975918460478, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: debugText
       value: 
-      objectReference: {fileID: 622026770}
+      objectReference: {fileID: 0}
     - target: {fileID: 8111960975918460478, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: onComboEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

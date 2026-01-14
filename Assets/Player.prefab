@@ -301,7 +301,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3667930903577965869}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -445,6 +445,7 @@ MonoBehaviour:
   stunHandler: {fileID: 1660054581456907132}
   controller: {fileID: 2745992324737785379}
   comboSystem: {fileID: 8111960975918460478}
+  rb: {fileID: 2332714855715764166}
   moveInput: {x: 0, y: 0}
   isAttack: 0
   attackVelocity: {x: 0, y: 0, z: 0}

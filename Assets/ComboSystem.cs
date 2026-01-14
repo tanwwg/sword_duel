@@ -140,7 +140,7 @@ public class ComboSystem : MonoBehaviour
         
         if (comboIndex < 0)
         {
-            bar.fillAmount = 0;
+            if (bar) bar.fillAmount = 0;
 
             if (isClickThisFrame)
             {
@@ -170,14 +170,14 @@ public class ComboSystem : MonoBehaviour
                 c.Reset(animator);
             }
 
-            bar.fillAmount = 0;
+            if (bar) bar.fillAmount = 0;
             onComboEnd.Invoke();
             return;
         }
 
         if (isClickThisFrame)
         {
-            Debug.Log($"{ci.stateName} + comboClick {comboPct*100:F2}");
+            // Debug.Log($"{ci.stateName} + comboClick {comboPct*100:F2}");
             if (canCombo)
             {
                 StartCombo(comboIndex + 1);

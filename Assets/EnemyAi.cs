@@ -14,6 +14,13 @@ public class EnemyAi : MonoBehaviour
     public EnemyAiState[] states;
 
     public EnemyAiState currentState;
+
+    void PickState()
+    {
+        var weights = states.Select(w => w.GetWeight()).ToArray();
+        var index = PickIndexByWeight(weights);
+        currentState = states[index];
+    }
     
     // Update is called once per frame
     void Update()
@@ -21,12 +28,13 @@ public class EnemyAi : MonoBehaviour
         if (Time.time - lastEval > evalEvery)
         {
             lastEval = Time.time;
-
-            var weights = states.Select(w => w.GetWeight()).ToArray();
-            var index = PickIndexByWeight(weights);
-            currentState = states[index];
+            PickState();
         }
-        currentState.RunUpdate();
+
+        if (currentState)
+        {
+            currentState.RunUpdate();
+        }
     }
     
     static int PickIndexByWeight(float[] weights)
