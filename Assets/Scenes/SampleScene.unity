@@ -164,6 +164,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAiAttackState
   defaultWeight: 3
+  distanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.9718999
+      outSlope: -0.9718999
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0166626
+      value: 0.01190567
+      inSlope: -0.9718999
+      outSlope: -0.9718999
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxDistance: 5
+  weightMultiplier: 8
+  lastWeight: 0
   target: {fileID: 667355096}
 --- !u!1 &90302183
 GameObject:
@@ -323,7 +350,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ed8b3dfe5249ba84e2e1dff47b4f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAiMoveState
-  defaultWeight: 3
+  defaultWeight: 1
+  distanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxDistance: 5
+  weightMultiplier: 1
+  lastWeight: 0
   moveInput: {x: 0, y: 0}
   target: {fileID: 667355096}
 --- !u!1 &330585543
@@ -556,6 +610,9 @@ MonoBehaviour:
   - {fileID: 1841436141}
   - {fileID: 1834757850}
   currentState: {fileID: 0}
+  myTransform: {fileID: 667355097}
+  playerTransform: {fileID: 1970438631}
+  distance: 0
 --- !u!1 &402788955
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,6 +658,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAiMoveState
   defaultWeight: 1
+  distanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxDistance: 5
+  weightMultiplier: 1
+  lastWeight: 0
   moveInput: {x: 1, y: 0}
   target: {fileID: 667355096}
 --- !u!1 &410087039
@@ -775,6 +859,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAiMoveState
   defaultWeight: 1
+  distanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxDistance: 5
+  weightMultiplier: 1
+  lastWeight: 0
   moveInput: {x: -1, y: 0}
   target: {fileID: 667355096}
 --- !u!1 &571941994
@@ -2369,6 +2480,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAiMoveState
   defaultWeight: 1
+  distanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.0016403198
+      value: 0.99523926
+      inSlope: -1.0211238
+      outSlope: -1.0211238
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9753418
+      value: -0.002380371
+      inSlope: -1.0211238
+      outSlope: -1.0211238
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxDistance: 5
+  weightMultiplier: 3
+  lastWeight: 0
   moveInput: {x: 0, y: -0.5}
   target: {fileID: 667355096}
 --- !u!1 &1841436139
@@ -2416,6 +2554,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAiMoveState
   defaultWeight: 1
+  distanceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxDistance: 5
+  weightMultiplier: 12
+  lastWeight: 0
   moveInput: {x: 0, y: 1}
   target: {fileID: 667355096}
 --- !u!4 &1875679143 stripped

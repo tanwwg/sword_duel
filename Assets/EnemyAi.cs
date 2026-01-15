@@ -15,9 +15,13 @@ public class EnemyAi : MonoBehaviour
 
     public EnemyAiState currentState;
 
+    public Transform myTransform;
+    public Transform playerTransform;
+    public float distance;
+
     void PickState()
     {
-        var weights = states.Select(w => w.GetWeight()).ToArray();
+        var weights = states.Select(w => w.GetWeight(distance)).ToArray();
         var index = PickIndexByWeight(weights);
         currentState = states[index];
         currentState.StartState();
@@ -26,6 +30,8 @@ public class EnemyAi : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        distance = Vector3.Distance(myTransform.position, playerTransform.position);
+        
         if (Time.time - lastEval > evalEvery)
         {
             lastEval = Time.time;
