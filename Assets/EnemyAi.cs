@@ -20,6 +20,7 @@ public class EnemyAi : MonoBehaviour
         var weights = states.Select(w => w.GetWeight()).ToArray();
         var index = PickIndexByWeight(weights);
         currentState = states[index];
+        currentState.StartState();
     }
     
     // Update is called once per frame

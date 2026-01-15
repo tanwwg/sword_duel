@@ -95,6 +95,7 @@ public class ComboSystem : MonoBehaviour
 
     public Color barColor = Color.white;
     public Color comboColor = Color.yellow;
+    public Color comboFailColor = Color.red;
 
     private void Start()
     {
@@ -107,11 +108,14 @@ public class ComboSystem : MonoBehaviour
 
     public bool IsPlaying => comboIndex >= 0;
 
+    public bool isComboFailed = false;
+
     private void StartCombo(int idx)
     {
         // Debug.Log("Combo Start " + idx);
         comboIndex = idx;
         lastComboTime = Time.time;
+        isComboFailed = false;
         // comboItems[comboIndex].StartAnimation(animator);
         var ci = comboItems[comboIndex];
         //animator.Play(comboItems[comboIndex].stateHash, 0, ci.startTime);
@@ -175,12 +179,16 @@ public class ComboSystem : MonoBehaviour
             return;
         }
 
-        if (isClickThisFrame)
+        if (isClickThisFrame && !isComboFailed)
         {
             // Debug.Log($"{ci.stateName} + comboClick {comboPct*100:F2}");
             if (canCombo)
             {
                 StartCombo(comboIndex + 1);
+            }
+            else
+            {
+                isComboFailed = true;
             }
         }
         
@@ -188,7 +196,17 @@ public class ComboSystem : MonoBehaviour
         {
             bar.fillAmount = comboPct;
             debugText.text = (comboPct * 100.0f).ToString("F0");
-            bar.color = canCombo ? comboColor : barColor;
+            if (isComboFailed)
+            {
+                bar.color = comboFailColor;
+            } else if (canCombo)
+            {
+                bar.color = comboColor;
+            }
+            else
+            {
+                bar.color = barColor;
+            }
         }
     }
 

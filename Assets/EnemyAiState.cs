@@ -8,6 +8,11 @@ public class EnemyAiState: MonoBehaviour
     {
         return defaultWeight;
     }
+
+    public virtual void StartState()
+    {
+        
+    }
     
     public virtual void RunUpdate()
     {

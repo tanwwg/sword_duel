@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2679b04420640979262e29d3218b18c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAiAttackState
-  defaultWeight: 2
+  defaultWeight: 3
   target: {fileID: 667355096}
 --- !u!1 &90302183
 GameObject:
@@ -323,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ed8b3dfe5249ba84e2e1dff47b4f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAiMoveState
-  defaultWeight: 1
+  defaultWeight: 3
   moveInput: {x: 0, y: 0}
   target: {fileID: 667355096}
 --- !u!1 &330585543
@@ -528,6 +528,8 @@ Transform:
   m_Children:
   - {fileID: 411084740}
   - {fileID: 402788956}
+  - {fileID: 1841436140}
+  - {fileID: 1834757849}
   - {fileID: 244864287}
   - {fileID: 32193567}
   m_Father: {fileID: 0}
@@ -551,6 +553,8 @@ MonoBehaviour:
   - {fileID: 402788957}
   - {fileID: 244864288}
   - {fileID: 32193568}
+  - {fileID: 1841436141}
+  - {fileID: 1834757850}
   currentState: {fileID: 0}
 --- !u!1 &402788955
 GameObject:
@@ -2320,6 +2324,100 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1460992473}
   m_CullTransparentMesh: 1
+--- !u!1 &1834757848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1834757849}
+  - component: {fileID: 1834757850}
+  m_Layer: 0
+  m_Name: Backwards
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1834757849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834757848}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 400414329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1834757850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834757848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ed8b3dfe5249ba84e2e1dff47b4f25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAiMoveState
+  defaultWeight: 1
+  moveInput: {x: 0, y: -0.5}
+  target: {fileID: 667355096}
+--- !u!1 &1841436139
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1841436140}
+  - component: {fileID: 1841436141}
+  m_Layer: 0
+  m_Name: StrafeForward
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1841436140
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841436139}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 400414329}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1841436141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841436139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ed8b3dfe5249ba84e2e1dff47b4f25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAiMoveState
+  defaultWeight: 1
+  moveInput: {x: 0, y: 1}
+  target: {fileID: 667355096}
 --- !u!4 &1875679143 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 988437405413340983, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
