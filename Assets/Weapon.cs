@@ -38,12 +38,13 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter");
+        Debug.Log("OnTriggerEnter " + other.gameObject.name);
         if (hitInfo.isHit) return; // just track the first hit
         
         var hittable = other.gameObject.GetComponent<Hittable>();
         if (!hittable) return;
 
+        Debug.Log("MARK HIT " + other.gameObject.name);
         this.hitInfo = new WeaponHitInfo()
         {
             isHit = true,

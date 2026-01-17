@@ -27,6 +27,7 @@ public class PlayerAnimator: MonoBehaviour
     public PlayerAnimationEvents playerEvents;
 
     public UnityEvent onSlash2;
+    public UnityEvent onSlash3;
     public UnityEvent onExitAttack;
 
     public UnityEvent onDie;
@@ -96,7 +97,9 @@ public class PlayerAnimator: MonoBehaviour
             else if (nowState == PlayerState.Attack3)
             {
                 animator.SetBool("SpinAttack", true);
-            } else if (nowState == PlayerState.Stun)
+                onSlash3.Invoke();
+            } 
+            else if (nowState == PlayerState.Stun)
             {
                 animator.SetTrigger("OnHit");
             } 

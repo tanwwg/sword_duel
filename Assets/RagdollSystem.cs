@@ -20,6 +20,10 @@ public class RagdollSystem : MonoBehaviour
         foreach (var rb in rbarr) rb.isKinematic = !isEnabled;
         
         var collarr = t.GetComponentsInChildren<Collider>();
-        foreach (var coll in collarr) coll.isTrigger = !isEnabled;
+        foreach (var coll in collarr)
+        {
+            coll.isTrigger = !isEnabled;
+            coll.enabled = isEnabled;
+        }
     }
 }

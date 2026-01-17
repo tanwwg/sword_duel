@@ -7,6 +7,7 @@ public class KnightInfo
     public PlayerController controller;
     public PlayerAnimator animator;
     public Weapon weapon;
+    public UnityEvent onDie;
 }
 
 public class GameController : MonoBehaviour
@@ -38,6 +39,13 @@ public class GameController : MonoBehaviour
 
     void Tick(KnightInfo pc, PlayerControllerInput inputs)
     {
+        if (pc.controller.playerState == PlayerState.Death)
+        {
+            pc.onDie.Invoke();
+            this.enabled = false;
+            return;
+        }
+        
         var animState = pc.animator.GetAnimState();
         pc.controller.Tick(inputs, animState);
         pc.animator.Tick();
@@ -52,11 +60,5 @@ public class GameController : MonoBehaviour
         
         Tick(human, inputHandler.ReadInputs());
         Tick(enemy, enemyAi.Tick());
-
-        if (human.controller.playerState == PlayerState.Death)
-        {
-            onPlayerDie.Invoke();
-            this.enabled = false;
-        }
     }
 }
