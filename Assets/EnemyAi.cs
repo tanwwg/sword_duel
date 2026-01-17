@@ -28,7 +28,7 @@ public class EnemyAi : MonoBehaviour
     }
     
     // Update is called once per frame
-    void Update()
+    public PlayerControllerInput Tick()
     {
         distance = Vector3.Distance(myTransform.position, playerTransform.position);
         
@@ -40,8 +40,10 @@ public class EnemyAi : MonoBehaviour
 
         if (currentState)
         {
-            currentState.RunUpdate();
+            return currentState.Tick();
         }
+        
+        return PlayerControllerInput.zero;
     }
     
     static int PickIndexByWeight(float[] weights)

@@ -21,8 +21,8 @@ public class EnemyAiState: MonoBehaviour
         
     }
     
-    public virtual void RunUpdate()
+    public virtual PlayerControllerInput Tick()
     {
-        
+        return PlayerControllerInput.zero;
     }
 }

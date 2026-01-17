@@ -162,7 +162,7 @@ MonoBehaviour:
   weapon: {fileID: 63788274691430944}
   comboData:
   - damage: 15
-    hitForce: 100
+    hitForce: 1
     stunTime: 1
     hitAngle: -90
     hitPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
@@ -534,6 +534,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDie:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &2455769292382258639
 MonoBehaviour:
   m_ObjectHideFlags: 0

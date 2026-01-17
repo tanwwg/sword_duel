@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class EnemyAiMoveState: EnemyAiState
 {
+    [Header("Movement")]
     public Vector2 moveInput;
-    public PlayerController target;
     
-    public override void RunUpdate()
+    public override PlayerControllerInput Tick()
     {
+        return new PlayerControllerInput()
+        {
+            moveInput = moveInput
+        };
     }
 }

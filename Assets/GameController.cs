@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class KnightInfo
@@ -11,8 +12,12 @@ public class KnightInfo
 public class GameController : MonoBehaviour
 {
     public InputHandler inputHandler;
+    public EnemyAi enemyAi;
+    
     public KnightInfo human;
     public KnightInfo enemy;
+
+    public UnityEvent onPlayerDie;
 
     private void HandleHits(KnightInfo pc)
     {
@@ -46,8 +51,12 @@ public class GameController : MonoBehaviour
         HandleHits(enemy);
         
         Tick(human, inputHandler.ReadInputs());
-        Tick(enemy, PlayerControllerInput.zero);
+        Tick(enemy, enemyAi.Tick());
 
-        
+        if (human.controller.playerState == PlayerState.Death)
+        {
+            onPlayerDie.Invoke();
+            this.enabled = false;
+        }
     }
 }

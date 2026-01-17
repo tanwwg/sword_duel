@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
 
     PlayerState ComputePlayerState()
     {
+        if (health <= 0) return PlayerState.Death;
         if (stunTime > 0) return PlayerState.Stun;
         
         if (comboSystem.comboIndex == 0) return PlayerState.Attack1;

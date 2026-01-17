@@ -29,6 +29,8 @@ public class PlayerAnimator: MonoBehaviour
     public UnityEvent onSlash2;
     public UnityEvent onExitAttack;
 
+    public UnityEvent onDie;
+
     private PlayerState lastPlayerState;
     private Vector3 lastPosition;
     private AnimatorStateInfo lastAnim;
@@ -97,6 +99,10 @@ public class PlayerAnimator: MonoBehaviour
             } else if (nowState == PlayerState.Stun)
             {
                 animator.SetTrigger("OnHit");
+            } 
+            else if (nowState == PlayerState.Death)
+            {
+                onDie.Invoke();
             }
         }
         
