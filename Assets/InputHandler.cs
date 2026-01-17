@@ -3,19 +3,15 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : MonoBehaviour
 {
-    public PlayerController controller;
+    public PlayerControllerInput inputs = PlayerControllerInput.zero;
     
-    // NEW INPUT SYSTEM CALLBACK
     public void OnMove(InputAction.CallbackContext context)
     {
-        controller.moveInput = context.ReadValue<Vector2>();
+        inputs.moveInput = context.ReadValue<Vector2>();
     }
     
     public void OnLightAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            controller.isAttack = true;
-        }
+        inputs.isAttack = context.ReadValueAsButton();
     }
 }

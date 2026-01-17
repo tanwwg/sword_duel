@@ -2,23 +2,37 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public struct PlayerControllerInput
+{
+    public Vector2 moveInput;
+    public bool isAttack;
+    public bool isBlock;
+
+    public static PlayerControllerInput zero = new PlayerControllerInput()
+    {
+        moveInput = Vector2.zero,
+        isAttack = false,
+        isBlock = false
+    };
+
+}
+
+public enum PlayerState
+{
+    Move, Attack1, Attack2, Attack3, Stun, Death
+}
+
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float rotationSpeed = 10f;
     public float gravity = -9.81f;
-
-    public float moveBlendTreeDamp = 0.12f;
     
     [Tooltip("How much to damp attack velocity")]
     public float attackInteria = 1.0f;
-
-    public Transform lockTarget;
-
+    
     [Header("References")]
-    public Animator animator;
-
     public StunHandler stunHandler;
 
     public CharacterController controller;
@@ -26,20 +40,13 @@ public class PlayerController : MonoBehaviour
     public ComboSystem comboSystem;
 
     public Rigidbody rb;
-    
-    [Header("Inputs")]
-    public Vector2 moveInput;
-    public bool isAttack;
+
+    public Transform lockTarget;
 
     [Header("Runtime vars")]
-    public Vector3 attackVelocity = Vector3.zero;
-
-    void Update()
-    {
-        HandleGravity();
-        Move();
-    }
-
+    public Vector3 velocity = Vector3.zero;
+    public PlayerState playerState = PlayerState.Move;
+    
     void HandleGravity()
     {
         if (!controller.isGrounded && controller.enabled)
@@ -48,55 +55,44 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Move()
+    PlayerState ComputePlayerState()
     {
-        if (stunHandler.UpdateStun())
+        return PlayerState.Move;
+    }
+
+    public void Tick(PlayerControllerInput frameInput)
+    {
+        this.playerState = ComputePlayerState();
+
+        RotateToTarget();
+
+        Vector3 move = frameInput.moveInput.x * transform.right + frameInput.moveInput.y * transform.forward;
+
+        if (playerState == PlayerState.Move)
         {
-            return;
+            velocity = move;
+        }
+        else
+        {
+            // damp any residual velocity
+            velocity = Vector3.MoveTowards(velocity, Vector3.zero, attackInteria * Time.deltaTime);
         }
         
-        var isAttackThisFrame = isAttack;
-        isAttack = false;
+        controller.Move(move * (moveSpeed * Time.deltaTime));
+    }
 
-        // damp any attack velocity
-        attackVelocity = Vector3.MoveTowards(attackVelocity, Vector3.zero, attackInteria * Time.deltaTime);
-
-        if (isAttackThisFrame)
-        {
-            attackVelocity = moveInput.x * transform.right + moveInput.y * transform.forward;
-            comboSystem.ComboClick();
-            comboSystem.RunUpdate();
-            return;
-        }
-        
-        if (comboSystem.IsPlaying)
-        {
-            controller.Move(attackVelocity * Time.deltaTime);
-            comboSystem.RunUpdate();
-            return;
-        }
-        
-        Vector3 move = moveInput.x * transform.right + moveInput.y * transform.forward;
-        
-        animator.SetFloat("Forward", moveInput.y, moveBlendTreeDamp, Time.deltaTime);
-        animator.SetFloat("Strafe", moveInput.x, moveBlendTreeDamp, Time.deltaTime);        
-
-        bool isMoving = move.sqrMagnitude > 0.01f;
+    void RotateToTarget()
+    {
+        if (!lockTarget) return;
 
         Vector3 dir = lockTarget.position - transform.position;
         dir.y = 0;
-
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
             Quaternion.LookRotation(dir),
             rotationSpeed * Time.deltaTime
         );
-
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        
     }
 
-    public void FixedUpdate()
-    {
-        animator.SetFloat("HitRotation", rb.angularVelocity.magnitude);
-    }
 }

@@ -7,6 +7,5 @@ public class EnemyAiMoveState: EnemyAiState
     
     public override void RunUpdate()
     {
-        target.moveInput = moveInput;
     }
 }

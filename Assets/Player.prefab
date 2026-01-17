@@ -265,6 +265,8 @@ MonoBehaviour:
   showHitBox: {fileID: 3667930903577965869}
   barColor: {r: 1, g: 1, b: 1, a: 1}
   comboColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  comboFailColor: {r: 1, g: 0, b: 0, a: 1}
+  isComboFailed: 0
 --- !u!1 &3291922173813665190
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,8 +442,6 @@ GameObject:
   - component: {fileID: 184689384444985432}
   - component: {fileID: 3216293692674935773}
   - component: {fileID: 2745992324737785379}
-  - component: {fileID: 6339911370917047308}
-  - component: {fileID: 5319810342483795085}
   - component: {fileID: 2332714855715764166}
   - component: {fileID: 5417348699904945639}
   m_Layer: 9
@@ -487,14 +487,11 @@ MonoBehaviour:
   gravity: -9.81
   moveBlendTreeDamp: 0.05
   attackInteria: 1
-  lockTarget: {fileID: 0}
-  animator: {fileID: 953387317453012942}
   stunHandler: {fileID: 1660054581456907132}
   controller: {fileID: 2745992324737785379}
   comboSystem: {fileID: 8111960975918460478}
   rb: {fileID: 2332714855715764166}
-  moveInput: {x: 0, y: 0}
-  isAttack: 0
+  lockTarget: {fileID: 0}
   attackVelocity: {x: 0, y: 0, z: 0}
 --- !u!143 &2745992324737785379
 CharacterController:
@@ -521,81 +518,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.8, z: 0}
---- !u!114 &6339911370917047308
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4056235330778247124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 1ff0878ffb38d4398b11cd5956cf5b5e, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5319810342483795085}
-        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: d6552740-77af-4df7-8311-8221291db1a4
-    m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5319810342483795085}
-        m_TargetAssemblyTypeName: InputHandler, Assembly-CSharp
-        m_MethodName: OnLightAttack
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 16aa5bd1-4f1c-495b-85a3-025ee0d296dd
-    m_ActionName: Player/LightAttack
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
---- !u!114 &5319810342483795085
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4056235330778247124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0daf2d973df184ee9922317a33c712b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InputHandler
-  controller: {fileID: 3216293692674935773}
 --- !u!54 &2332714855715764166
 Rigidbody:
   m_ObjectHideFlags: 0
