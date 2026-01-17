@@ -167,14 +167,14 @@ MonoBehaviour:
     hitAngle: -90
     hitPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
   - damage: 20
-    hitForce: 50
+    hitForce: 1
     stunTime: 1
-    hitAngle: -90
+    hitAngle: 90
     hitPrefab: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7, type: 3}
   - damage: 30
-    hitForce: 100
+    hitForce: 2
     stunTime: 2
-    hitAngle: -90
+    hitAngle: 90
     hitPrefab: {fileID: 7226583673155636401, guid: a2ab56839e1c9504ea9d141e95d0b16b, type: 3}
   comboIndex: -1
 --- !u!1 &3291922173813665190

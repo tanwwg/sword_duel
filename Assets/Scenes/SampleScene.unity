@@ -390,7 +390,6 @@ MonoBehaviour:
   weightMultiplier: 1
   lastWeight: 0
   moveInput: {x: 0, y: 0}
-  target: {fileID: 667355096}
 --- !u!1 &329482633
 GameObject:
   m_ObjectHideFlags: 0
@@ -734,7 +733,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5a8b604796841c0a4e08c692b723c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAi
-  evalEvery: 1
+  evalEvery: 100
   lastEval: 0
   states:
   - {fileID: 411084741}
@@ -834,7 +833,6 @@ MonoBehaviour:
   weightMultiplier: 1
   lastWeight: 0
   moveInput: {x: 1, y: 0}
-  target: {fileID: 667355096}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,7 +1033,6 @@ MonoBehaviour:
   weightMultiplier: 1
   lastWeight: 0
   moveInput: {x: -1, y: 0}
-  target: {fileID: 667355096}
 --- !u!1 &571941994
 GameObject:
   m_ObjectHideFlags: 0
@@ -2879,7 +2876,6 @@ MonoBehaviour:
   weightMultiplier: 3
   lastWeight: 0
   moveInput: {x: 0, y: -0.5}
-  target: {fileID: 667355096}
 --- !u!1 &1841436139
 GameObject:
   m_ObjectHideFlags: 0
@@ -2953,7 +2949,6 @@ MonoBehaviour:
   weightMultiplier: 12
   lastWeight: 0
   moveInput: {x: 0, y: 1}
-  target: {fileID: 667355096}
 --- !u!4 &1875679143 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 988437405413340983, guid: c54de3b92314c4351aee0b92493fa860, type: 3}

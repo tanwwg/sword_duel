@@ -22,8 +22,9 @@ public class ComboSystem : MonoBehaviour
         weapon.weaponData = comboData[idx];
     }
 
-    private void StopCombo()
+    public void StopCombo()
     {
+        weapon.gameObject.SetActive(false);
         comboIndex = -1;
     }
     
@@ -43,10 +44,6 @@ public class ComboSystem : MonoBehaviour
             if (animState.canCombo && isClick && comboIndex < comboData.Length - 1)
             {
                 StartCombo(comboIndex + 1);
-            }
-            if (animState.isExitAttack)
-            {
-                StopCombo();
             }
         }
     }
