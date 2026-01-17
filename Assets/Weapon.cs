@@ -13,35 +13,60 @@ public class WeaponData
     public GameObject hitPrefab;
 }
 
+[System.Serializable]
+public class WeaponHitInfo
+{
+    public bool isHit = false;
+    public bool isProcessed = false;
+    
+    public Hittable hittable;
+    public Collider hitCollider;
+    public WeaponData weapon;
+    public Vector3 hitPoint;
+}
+
 public class Weapon : MonoBehaviour
 {
-    private List<StunHandler> hitCache = new();
-
     public WeaponData weaponData;
-    
+
+    public WeaponHitInfo hitInfo = null;
+
+    private void OnEnable()
+    {
+        ResetHit();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        var hittable = other.gameObject.GetComponent<StunHandler>();
-        if (hittable && !hitCache.Contains(hittable))
-        {
-            Debug.Log("HIT! " + other.gameObject.name);
-            hitCache.Add(hittable);
-            
-            var hitPoint = other.ClosestPoint(this.transform.position);
+        Debug.Log("OnTriggerEnter");
+        if (hitInfo.isHit) return; // just track the first hit
+        
+        var hittable = other.gameObject.GetComponent<Hittable>();
+        if (!hittable) return;
 
-            var forceDir = other.transform.position - hitPoint;
-            forceDir.y = 0;
-            forceDir = Quaternion.AngleAxis(weaponData.hitAngle, Vector3.up) * forceDir;
-            
-            Instantiate(weaponData.hitPrefab, hitPoint, Quaternion.Euler(forceDir));
-            
-            hittable.HitStun(forceDir.normalized * weaponData.hitForce, weaponData);
-        }
+        this.hitInfo = new WeaponHitInfo()
+        {
+            isHit = true,
+            hittable = hittable,
+            hitCollider = other,
+            weapon = this.weaponData,
+            hitPoint = other.ClosestPoint(this.transform.position)
+        };
     }
 
     public void ResetHit()
     {
-        hitCache.Clear();
+        this.hitInfo = new WeaponHitInfo();
+    }
+
+    public WeaponHitInfo GetHitInfo()
+    {
+        if (this.hitInfo.isHit && !this.hitInfo.isProcessed)
+        {
+            this.hitInfo.isProcessed = true;
+            return this.hitInfo;
+        }
+        return null;
     }
 
     private void OnTriggerExit(Collider other)

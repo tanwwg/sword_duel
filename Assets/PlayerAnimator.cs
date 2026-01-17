@@ -1,10 +1,12 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public struct PlayerAnimState
 {
     public bool isExitAttack;
     public bool canCombo;
+    public bool isAttacking;
 }
 
 public class PlayerAnimator: MonoBehaviour
@@ -23,6 +25,9 @@ public class PlayerAnimator: MonoBehaviour
     
     public Animator animator;
     public PlayerAnimationEvents playerEvents;
+
+    public UnityEvent onSlash2;
+    public UnityEvent onExitAttack;
 
     private PlayerState lastPlayerState;
     private Vector3 lastPosition;
@@ -49,8 +54,10 @@ public class PlayerAnimator: MonoBehaviour
         if (currentAnim.IsName("Movement") && isLastAttack)
         {
             state.isExitAttack = true;
+            onExitAttack.Invoke();
         }
 
+        state.isAttacking = playerEvents.isAttacking;
         state.canCombo = playerEvents.canCombo;
 
         return state;
@@ -66,15 +73,9 @@ public class PlayerAnimator: MonoBehaviour
         
         float forwardSpeed = localDelta.z / dt;
         float rightSpeed   = localDelta.x / dt;
-
-        // Normalize to -1..1 (percent of max speed)
-        var maxSpeed = playerController.moveSpeed;
-        float forward01 = Mathf.Clamp(forwardSpeed / maxSpeed, -1f, 1f);
-        float right01   = Mathf.Clamp(rightSpeed   / maxSpeed,  -1f, 1f);
         
-        // Feed animator (let Animator handle smoothing)
-        animator.SetFloat(forwardParam, forward01, dampTime, dt);
-        animator.SetFloat(rightParam,   right01,   dampTime, dt);
+        animator.SetFloat(forwardParam, forwardSpeed, dampTime, dt);
+        animator.SetFloat(rightParam,   rightSpeed,   dampTime, dt);
 
         var nowState = playerController.playerState;
         if (lastPlayerState != nowState)
@@ -88,10 +89,14 @@ public class PlayerAnimator: MonoBehaviour
             else if (nowState == PlayerState.Attack2)
             {
                 animator.SetBool("Slash2", true);
+                onSlash2.Invoke();
             }
             else if (nowState == PlayerState.Attack3)
             {
                 animator.SetBool("SpinAttack", true);
+            } else if (nowState == PlayerState.Stun)
+            {
+                animator.SetTrigger("OnHit");
             }
         }
         

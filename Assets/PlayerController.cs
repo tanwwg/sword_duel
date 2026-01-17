@@ -32,6 +32,8 @@ public static class PlayerStateExtensions
 
 public class PlayerController : MonoBehaviour
 {
+    public int maxHealth = 100;
+    
     [Header("Movement")]
     public float moveSpeed = 5f;
     public float rotationSpeed = 10f;
@@ -51,10 +53,17 @@ public class PlayerController : MonoBehaviour
 
     public Transform lockTarget;
 
-    [Header("Runtime vars")]
+    [Header("Runtime vars")] 
+    public int health;
+    public float stunTime;
     public Vector3 velocity = Vector3.zero;
     public PlayerState playerState = PlayerState.Move;
-    
+
+    private void Awake()
+    {
+        this.health = this.maxHealth;
+    }
+
     void HandleGravity()
     {
         if (!controller.isGrounded && controller.enabled)
@@ -65,11 +74,21 @@ public class PlayerController : MonoBehaviour
 
     PlayerState ComputePlayerState()
     {
+        if (stunTime > 0) return PlayerState.Stun;
+        
         if (comboSystem.comboIndex == 0) return PlayerState.Attack1;
         if (comboSystem.comboIndex == 1) return PlayerState.Attack2;
         if (comboSystem.comboIndex == 2) return PlayerState.Attack3;
         
         return PlayerState.Move;
+    }
+    
+    public void HitStun(Vector3 forceDir, WeaponData weapon)
+    {
+        stunTime += weapon.stunTime;
+        health = Math.Max(0, health - weapon.damage);
+
+        velocity = forceDir;
     }
 
     public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState)
@@ -77,6 +96,7 @@ public class PlayerController : MonoBehaviour
         this.playerState = ComputePlayerState();
         
         HandleMove(frameInput);
+        stunTime = Math.Max(0, stunTime - Time.deltaTime);
 
         if (playerState == PlayerState.Move || playerState.IsAttack())
         {

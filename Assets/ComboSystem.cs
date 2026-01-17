@@ -4,84 +4,22 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class AttackComboItem
-{
-    public string stateName;
-    public int stateHash;
-    
-    public AnimationClip clip;
-    
-    [Range(0f, 1f)]
-    public float startTime = 0;
-    
-    public float animFrames;
-    public string animSpeedParam;
-    
-    public CapsuleCollider hitCollider;
-
-    [Range(0f, 1f)]    
-    public float crossFadeTime;
-    
-    [Tooltip("Combo start %")]
-    [Range(0f, 1f)]
-    public float comboStart;
-    
-    [Tooltip("Combo end %")]
-    [Range(0f, 1f)]
-    public float comboEnd;
-
-    [Range(0f, 1f)]
-    public float attackStart;
-    
-    [Range(0f, 1f)]
-    public float attackEnd;
-    
-    public string animBool;
-    public string animTrigger;
-
-    public WeaponData weaponData;
-
-    public UnityEvent onComboStart;
-
-    public void StartAnimation(Animator animator)
-    {
-        if (!string.IsNullOrWhiteSpace(animBool))
-        {
-            animator.SetBool(this.animBool, true);
-        }
-
-        if (!string.IsNullOrWhiteSpace(animTrigger))
-        {
-            animator.SetTrigger(this.animTrigger);
-        }
-    }
-
-    public void Reset(Animator animator)
-    {
-        if (!string.IsNullOrWhiteSpace(animBool))
-        {
-            animator.SetBool(this.animBool, false);
-        }
-
-        if (!string.IsNullOrWhiteSpace(animTrigger))
-        {
-            animator.ResetTrigger(this.animTrigger);
-        }
-    }
-}
-
 public class ComboSystem : MonoBehaviour
 {
-    public int comboIndex = -1;
+    public Weapon weapon;  
+    
+    public WeaponData[] comboData;
+    
     
     [Header("Runtime Vars")] 
+    public int comboIndex = -1;
     
     public bool IsPlaying => comboIndex >= 0;
 
     private void StartCombo(int idx)
     {
         comboIndex = idx;
+        weapon.weaponData = comboData[idx];
     }
 
     private void StopCombo()
@@ -91,6 +29,8 @@ public class ComboSystem : MonoBehaviour
     
     public void Tick(bool isClick, PlayerAnimState animState)
     {
+        weapon.gameObject.SetActive(animState.isAttacking);
+        
         if (!IsPlaying)
         {
             if (isClick)
@@ -100,7 +40,7 @@ public class ComboSystem : MonoBehaviour
         }
         else
         {
-            if (animState.canCombo && isClick)
+            if (animState.canCombo && isClick && comboIndex < comboData.Length - 1)
             {
                 StartCombo(comboIndex + 1);
             }

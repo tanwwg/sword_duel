@@ -1,19 +1,53 @@
 using UnityEngine;
 
+[System.Serializable]
+public class KnightInfo
+{
+    public PlayerController controller;
+    public PlayerAnimator animator;
+    public Weapon weapon;
+}
+
 public class GameController : MonoBehaviour
 {
     public InputHandler inputHandler;
-    public PlayerController human;
-    public PlayerController enemy;
+    public KnightInfo human;
+    public KnightInfo enemy;
 
-    public PlayerAnimator humanAnimator;
+    private void HandleHits(KnightInfo pc)
+    {
+        var hitInfo = pc.weapon.GetHitInfo();
+        if (hitInfo != null)
+        {
+            Debug.Log("HIT " + hitInfo.hittable.playerController.name);
+            Instantiate(hitInfo.weapon.hitPrefab, hitInfo.hitPoint, Quaternion.identity);
+            
+            var forceDir = pc.controller.transform.forward;
+            forceDir.y = 0;
+            forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
+            
+            hitInfo.hittable.playerController.HitStun(forceDir, hitInfo.weapon);
+           
+        }
+    }
 
+    void Tick(KnightInfo pc, PlayerControllerInput inputs)
+    {
+        var animState = pc.animator.GetAnimState();
+        pc.controller.Tick(inputs, animState);
+        pc.animator.Tick();
+    }
+    
     // Update is called once per frame
     void Update()
     {
-        var animState = humanAnimator.GetAnimState();
-        var inputs = inputHandler.ReadInputs();
-        human.Tick(inputs, animState);
-        humanAnimator.Tick();
+        
+        HandleHits(human);
+        HandleHits(enemy);
+        
+        Tick(human, inputHandler.ReadInputs());
+        Tick(enemy, PlayerControllerInput.zero);
+
+        
     }
 }
