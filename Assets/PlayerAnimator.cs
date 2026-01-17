@@ -1,6 +1,12 @@
 using System;
 using UnityEngine;
 
+public struct PlayerAnimState
+{
+    public bool isExitAttack;
+    public bool canCombo;
+}
+
 public class PlayerAnimator: MonoBehaviour
 {
 
@@ -16,15 +22,41 @@ public class PlayerAnimator: MonoBehaviour
     
     
     public Animator animator;
-    
+    public PlayerAnimationEvents playerEvents;
+
+    private PlayerState lastPlayerState;
     private Vector3 lastPosition;
+    private AnimatorStateInfo lastAnim;
 
     private void Awake()
     {
-        lastPosition = targetTransform.position;
+        SaveStates();
     }
 
-    public void Update()
+    void SaveStates()
+    {
+        lastPosition = targetTransform.position;
+        lastPlayerState = playerController.playerState; 
+        lastAnim = animator.GetCurrentAnimatorStateInfo(0);
+    }
+
+    public PlayerAnimState GetAnimState()
+    {
+        var state = new PlayerAnimState();
+        
+        var currentAnim = animator.GetCurrentAnimatorStateInfo(0);
+        var isLastAttack = lastAnim.IsName("slash1") || lastAnim.IsName("slash2") || lastAnim.IsName("SpinAttack");
+        if (currentAnim.IsName("Movement") && isLastAttack)
+        {
+            state.isExitAttack = true;
+        }
+
+        state.canCombo = playerEvents.canCombo;
+
+        return state;
+    }
+
+    public void Tick()
     {
         var dt = Time.deltaTime;
         var worldDelta = targetTransform.position - lastPosition;
@@ -43,5 +75,28 @@ public class PlayerAnimator: MonoBehaviour
         // Feed animator (let Animator handle smoothing)
         animator.SetFloat(forwardParam, forward01, dampTime, dt);
         animator.SetFloat(rightParam,   right01,   dampTime, dt);
+
+        var nowState = playerController.playerState;
+        if (lastPlayerState != nowState)
+        {
+            if (nowState == PlayerState.Attack1)
+            {
+                animator.SetTrigger("Slash1");
+                animator.SetBool("Slash2", false);
+                animator.SetBool("SpinAttack", false);
+            }
+            else if (nowState == PlayerState.Attack2)
+            {
+                animator.SetBool("Slash2", true);
+            }
+            else if (nowState == PlayerState.Attack3)
+            {
+                animator.SetBool("SpinAttack", true);
+            }
+        }
+        
+        
+        
+        SaveStates();
     }
 }

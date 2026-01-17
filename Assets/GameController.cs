@@ -6,9 +6,14 @@ public class GameController : MonoBehaviour
     public PlayerController human;
     public PlayerController enemy;
 
+    public PlayerAnimator humanAnimator;
+
     // Update is called once per frame
     void Update()
     {
-        human.Tick(inputHandler.inputs);
+        var animState = humanAnimator.GetAnimState();
+        var inputs = inputHandler.ReadInputs();
+        human.Tick(inputs, animState);
+        humanAnimator.Tick();
     }
 }

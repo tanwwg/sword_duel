@@ -22,6 +22,14 @@ public enum PlayerState
     Move, Attack1, Attack2, Attack3, Stun, Death
 }
 
+public static class PlayerStateExtensions
+{
+    public static bool IsAttack(this PlayerState state)
+    {
+        return state is PlayerState.Attack1 or PlayerState.Attack2 or PlayerState.Attack3;
+    }
+}
+
 public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
@@ -57,27 +65,40 @@ public class PlayerController : MonoBehaviour
 
     PlayerState ComputePlayerState()
     {
+        if (comboSystem.comboIndex == 0) return PlayerState.Attack1;
+        if (comboSystem.comboIndex == 1) return PlayerState.Attack2;
+        if (comboSystem.comboIndex == 2) return PlayerState.Attack3;
+        
         return PlayerState.Move;
     }
 
-    public void Tick(PlayerControllerInput frameInput)
+    public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState)
     {
         this.playerState = ComputePlayerState();
+        
+        HandleMove(frameInput);
 
-        RotateToTarget();
+        if (playerState == PlayerState.Move || playerState.IsAttack())
+        {
+            comboSystem.Tick(frameInput.isAttack, animState);
+        }
+        
+        this.playerState = ComputePlayerState();
+    }
 
+    void HandleMove(PlayerControllerInput frameInput)
+    {
         Vector3 move = frameInput.moveInput.x * transform.right + frameInput.moveInput.y * transform.forward;
-
         if (playerState == PlayerState.Move)
         {
             velocity = move;
+            RotateToTarget();
         }
         else
         {
             // damp any residual velocity
             velocity = Vector3.MoveTowards(velocity, Vector3.zero, attackInteria * Time.deltaTime);
         }
-        
         controller.Move(move * (moveSpeed * Time.deltaTime));
     }
 

@@ -83,49 +83,30 @@ public class ComboSystem : MonoBehaviour
 
     public Weapon weapon;
     // public float comboFrame;
+    
+    [Header("Runtime Vars")] 
+    
+    public bool canCombo;
 
-    public UnityEvent onComboEnd;
-
-    [Header("Debug")]
-    public Image bar;
-
-    public TextMeshProUGUI debugText;
-
-    public GameObject showHitBox;
-
-    public Color barColor = Color.white;
-    public Color comboColor = Color.yellow;
-    public Color comboFailColor = Color.red;
-
-    private void Start()
-    {
-        foreach (var ci in comboItems)
-        {
-            ci.stateHash = Animator.StringToHash(ci.stateName);
-            animator.SetFloat(ci.animSpeedParam, ci.clip.length * (1.0f - ci.startTime) / (ci.animFrames / 60.0f));
-        }
-    }
-
-    public bool IsPlaying => comboIndex >= 0;
+    public bool isEndAttack = false;
 
     public bool isComboFailed = false;
 
+    public bool IsPlaying => comboIndex >= 0;
+
     private void StartCombo(int idx)
     {
-        // Debug.Log("Combo Start " + idx);
         comboIndex = idx;
-        lastComboTime = Time.time;
-        isComboFailed = false;
-        // comboItems[comboIndex].StartAnimation(animator);
-        var ci = comboItems[comboIndex];
-        //animator.Play(comboItems[comboIndex].stateHash, 0, ci.startTime);
-        animator.CrossFade(comboItems[comboIndex].stateHash, ci.crossFadeTime, 0, ci.startTime);
-        // animator.Update(0);
-        
-        ci.onComboStart.Invoke();
-        
-        weapon.ResetHit();
-        weapon.weaponData = ci.weaponData;
+    }
+
+    public void StartCanCombo()
+    {
+        canCombo = true;
+    }
+
+    public void StopCanCombo()
+    {
+        canCombo = false;
     }
     
     /// <summary>
@@ -136,76 +117,24 @@ public class ComboSystem : MonoBehaviour
         isComboClick = true;
     }
 
-    public void RunUpdate()
+    public void Tick(bool isClick, PlayerAnimState animState)
     {
-        var isClickThisFrame = isComboClick;
-        isComboClick = false;
-
-        
-        if (comboIndex < 0)
+        if (!IsPlaying)
         {
-            if (bar) bar.fillAmount = 0;
-
-            if (isClickThisFrame)
+            if (isClick)
             {
                 StartCombo(0);
             }
-            return;
         }
-        
-        var ci = comboItems[comboIndex];
-        var comboPct = Mathf.Min(1.0f, (Time.time - lastComboTime) * 60.0f / ci.animFrames);
-        var canCombo = comboIndex < comboItems.Length - 1 && comboPct >= ci.comboStart && comboPct <= ci.comboEnd;
-        var canHit = comboPct >= ci.attackStart && comboPct <= ci.attackEnd;
-        if (comboPct >= ci.crossFadeTime)
+        else
         {
-            animator.Play(ci.stateHash, 0, ci.startTime + Mathf.Lerp(0, 1.0f - ci.startTime, comboPct));
-            // animator.Update(0);
-        }
-        
-        showHitBox.SetActive(canHit);
-        
-        if (comboPct >= 1.0f)
-        {
-            comboIndex = -1;
-            lastComboTime = -1;
-            foreach (var c in comboItems)
-            {
-                c.Reset(animator);
-            }
-
-            if (bar) bar.fillAmount = 0;
-            onComboEnd.Invoke();
-            return;
-        }
-
-        if (isClickThisFrame && !isComboFailed)
-        {
-            // Debug.Log($"{ci.stateName} + comboClick {comboPct*100:F2}");
-            if (canCombo)
+            if (animState.canCombo && isClick)
             {
                 StartCombo(comboIndex + 1);
             }
-            else
+            if (animState.isExitAttack)
             {
-                isComboFailed = true;
-            }
-        }
-        
-        if (bar)
-        {
-            bar.fillAmount = comboPct;
-            debugText.text = (comboPct * 100.0f).ToString("F0");
-            if (isComboFailed)
-            {
-                bar.color = comboFailColor;
-            } else if (canCombo)
-            {
-                bar.color = comboColor;
-            }
-            else
-            {
-                bar.color = barColor;
+                comboIndex = -1;
             }
         }
     }
