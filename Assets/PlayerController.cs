@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour
     public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState)
     {
         if (animState.isExitAttack) comboSystem.StopCombo();
+        HandleGravity();
         
         this.playerState = ComputePlayerState();
         
