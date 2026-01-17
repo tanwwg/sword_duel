@@ -73,25 +73,10 @@ public class AttackComboItem
 
 public class ComboSystem : MonoBehaviour
 {
-    public Animator animator;
-    public AttackComboItem[] comboItems;
-
-    private bool isComboClick = false;
-
-    public float lastComboTime = -1;
     public int comboIndex = -1;
-
-    public Weapon weapon;
-    // public float comboFrame;
     
     [Header("Runtime Vars")] 
     
-    public bool canCombo;
-
-    public bool isEndAttack = false;
-
-    public bool isComboFailed = false;
-
     public bool IsPlaying => comboIndex >= 0;
 
     private void StartCombo(int idx)
@@ -99,24 +84,11 @@ public class ComboSystem : MonoBehaviour
         comboIndex = idx;
     }
 
-    public void StartCanCombo()
+    private void StopCombo()
     {
-        canCombo = true;
-    }
-
-    public void StopCanCombo()
-    {
-        canCombo = false;
+        comboIndex = -1;
     }
     
-    /// <summary>
-    /// Handle click
-    /// </summary>
-    public void ComboClick()
-    {
-        isComboClick = true;
-    }
-
     public void Tick(bool isClick, PlayerAnimState animState)
     {
         if (!IsPlaying)
@@ -134,7 +106,7 @@ public class ComboSystem : MonoBehaviour
             }
             if (animState.isExitAttack)
             {
-                comboIndex = -1;
+                StopCombo();
             }
         }
     }

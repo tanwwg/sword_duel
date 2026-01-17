@@ -88,10 +88,10 @@ public class PlayerController : MonoBehaviour
 
     void HandleMove(PlayerControllerInput frameInput)
     {
-        Vector3 move = frameInput.moveInput.x * transform.right + frameInput.moveInput.y * transform.forward;
         if (playerState == PlayerState.Move)
         {
-            velocity = move;
+            velocity = frameInput.moveInput.x * transform.right + frameInput.moveInput.y * transform.forward;
+            velocity *= moveSpeed;
             RotateToTarget();
         }
         else
@@ -99,7 +99,7 @@ public class PlayerController : MonoBehaviour
             // damp any residual velocity
             velocity = Vector3.MoveTowards(velocity, Vector3.zero, attackInteria * Time.deltaTime);
         }
-        controller.Move(move * (moveSpeed * Time.deltaTime));
+        controller.Move(velocity * Time.deltaTime);
     }
 
     void RotateToTarget()
