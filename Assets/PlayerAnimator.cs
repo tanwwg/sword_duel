@@ -48,13 +48,17 @@ public class PlayerAnimator: MonoBehaviour
         lastAnim = animator.GetCurrentAnimatorStateInfo(0);
     }
 
+    private bool IsAttack(AnimatorStateInfo stateInfo)
+    {
+        return stateInfo.IsName("slash1") || stateInfo.IsName("slash2") || stateInfo.IsName("SpinAttack");
+    }
+
     public PlayerAnimState GetAnimState()
     {
         var state = new PlayerAnimState();
         
         var currentAnim = animator.GetCurrentAnimatorStateInfo(0);
-        var isLastAttack = lastAnim.IsName("slash1") || lastAnim.IsName("slash2") || lastAnim.IsName("SpinAttack");
-        if (currentAnim.IsName("Movement") && isLastAttack)
+        if (!IsAttack(currentAnim) && IsAttack(lastAnim))
         {
             state.isExitAttack = true;
             onExitAttack.Invoke();
