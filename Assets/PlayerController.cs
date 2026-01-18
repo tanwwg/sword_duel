@@ -88,13 +88,13 @@ public class PlayerController : MonoBehaviour
     {
         stunTime += weapon.stunTime;
         health = Math.Max(0, health - weapon.damage);
+        comboSystem.StopCombo();
 
         velocity = forceDir;
     }
 
     public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState)
     {
-        if (animState.isExitAttack) comboSystem.StopCombo();
         HandleGravity();
         
         this.playerState = ComputePlayerState();
@@ -102,10 +102,8 @@ public class PlayerController : MonoBehaviour
         HandleMove(frameInput);
         stunTime = Math.Max(0, stunTime - Time.deltaTime);
 
-        if (playerState == PlayerState.Move || playerState.IsAttack())
-        {
-            comboSystem.Tick(frameInput.isAttack, animState);
-        }
+        var isAttack = frameInput.isAttack && playerState is PlayerState.Move or PlayerState.Attack1 or PlayerState.Attack2;
+        comboSystem.Tick(isAttack, animState);
         
         this.playerState = ComputePlayerState();
     }

@@ -1,5 +1,9 @@
+using UnityEngine;
+
 public class EnemyAiAttackState: EnemyAiState
 {
+    [Header("Movement")]
+    public Vector2 moveInput;
     public bool isTriggered;
 
     public override void StartState()
@@ -14,6 +18,7 @@ public class EnemyAiAttackState: EnemyAiState
             isTriggered = true;
             return new PlayerControllerInput()
             {
+                moveInput = this.moveInput,
                 isAttack = true
             };
         }

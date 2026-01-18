@@ -355,6 +355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
   forwardParam: Forward
   rightParam: Strafe
+  attackSpeed: 1
   dampTime: 0.1
   playerController: {fileID: 3216293692674935773}
   targetTransform: {fileID: 184689384444985432}
@@ -375,6 +376,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  onSlash3:
+    m_PersistentCalls:
+      m_Calls: []
   onExitAttack:
     m_PersistentCalls:
       m_Calls:
@@ -393,6 +397,7 @@ MonoBehaviour:
   onDie:
     m_PersistentCalls:
       m_Calls: []
+  onHitClip: {fileID: -203655887218126122, guid: 23e402701c7ca4989aec61414b18f047, type: 3}
 --- !u!114 &5076084064218591431
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,7 +30,13 @@ public class ComboSystem : MonoBehaviour
     
     public void Tick(bool isClick, PlayerAnimState animState)
     {
+        
         weapon.gameObject.SetActive(animState.isAttacking);
+        if (animState.isExitAttack)
+        {
+            StopCombo();
+            return;
+        }
         
         if (!IsPlaying)
         {

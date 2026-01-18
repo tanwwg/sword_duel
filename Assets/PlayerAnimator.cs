@@ -4,9 +4,14 @@ using UnityEngine.Events;
 
 public struct PlayerAnimState
 {
-    public bool isExitAttack;
     public bool canCombo;
+    
+    /// <summary>
+    /// Switch on weapon collider?
+    /// </summary>
     public bool isAttacking;
+    
+    public bool isExitAttack;
 }
 
 public class PlayerAnimator: MonoBehaviour
@@ -15,6 +20,9 @@ public class PlayerAnimator: MonoBehaviour
     [Header("Animator Params")]
     public string forwardParam = "Forward";
     public string rightParam   = "Strafe";
+
+    [Header("Animation Overrides")] 
+    public float attackSpeed = 1.0f;
 
     [Header("Smoothing")]
     public float dampTime = 0.1f;
@@ -36,8 +44,14 @@ public class PlayerAnimator: MonoBehaviour
     private Vector3 lastPosition;
     private AnimatorStateInfo lastAnim;
 
+    public AnimationClip onHitClip;
+
+    public bool isStartedAttacking;
+
     private void Awake()
     {
+        animator.SetFloat("Slash1Speed", attackSpeed);
+        animator.SetFloat("Slash2Speed", attackSpeed);        
         SaveStates();
     }
 
@@ -58,12 +72,24 @@ public class PlayerAnimator: MonoBehaviour
         var state = new PlayerAnimState();
         
         var currentAnim = animator.GetCurrentAnimatorStateInfo(0);
-        if (!IsAttack(currentAnim) && IsAttack(lastAnim))
+        if (!IsAttack(currentAnim))
         {
-            state.isExitAttack = true;
-            onExitAttack.Invoke();
-        }
+            playerEvents.isAttacking = false;
+            playerEvents.canCombo = false;
 
+            if (isStartedAttacking)
+            {
+                state.isExitAttack = true;
+                onExitAttack.Invoke();
+            }
+
+            isStartedAttacking = false;
+        }
+        else
+        {
+            isStartedAttacking = true;
+        }
+        
         state.isAttacking = playerEvents.isAttacking;
         state.canCombo = playerEvents.canCombo;
 
@@ -106,6 +132,7 @@ public class PlayerAnimator: MonoBehaviour
             else if (nowState == PlayerState.Stun)
             {
                 animator.SetTrigger("OnHit");
+                animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime);   
             } 
             else if (nowState == PlayerState.Death)
             {
