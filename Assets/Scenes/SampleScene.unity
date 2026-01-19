@@ -2168,11 +2168,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: onHit.m_PersistentCalls.m_Calls.Array.size
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
+      propertyPath: onHit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
+      propertyPath: onHit.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1386550023}
+    - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
+      propertyPath: onHit.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: onHit.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
+      propertyPath: onHit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayOneShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
+      propertyPath: onHit.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: UnityEngine.AudioSource, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
+      propertyPath: onHit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 8300000, guid: ce1b00c7e01c24224b93eb0d01918705, type: 3}
+    - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
+      propertyPath: onHit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.AudioClip, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6190896529527498446, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -2744,8 +2772,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1207743790}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.021302382, y: -0.067218125, z: -0.0014354807, w: 0.99750984}
-  m_LocalPosition: {x: 0.73, y: 1.19, z: -3.04}
+  m_LocalRotation: {x: -0.054827332, y: 0.11641277, z: 0.006436243, w: 0.9916656}
+  m_LocalPosition: {x: -0.73, y: 1.19, z: -3.04}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4702,10 +4730,6 @@ PrefabInstance:
       value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
-      propertyPath: onHit.m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6119334878774266025, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: onSlash3.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -4911,7 +4935,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8111960975918460478, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: comboData.Array.data[0].stunTime
-      value: 0.75
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8111960975918460478, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: comboData.Array.data[1].hitAngle
@@ -4923,7 +4947,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8111960975918460478, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: comboData.Array.data[1].stunTime
-      value: 0.75
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8111960975918460478, guid: c54de3b92314c4351aee0b92493fa860, type: 3}
       propertyPath: onComboEnd.m_PersistentCalls.m_Calls.Array.data[0].m_Target

@@ -14,6 +14,8 @@ public struct PlayerAnimState
     public bool isExitAttack;
 }
 
+
+
 public class PlayerAnimator: MonoBehaviour
 {
 
@@ -50,6 +52,7 @@ public class PlayerAnimator: MonoBehaviour
 
     public UnityEvent onStartAttack;
     public UnityEvent onHit;
+    public float onHitSpedMultiplier = 1.0f;
 
     private void Awake()
     {
@@ -106,7 +109,7 @@ public class PlayerAnimator: MonoBehaviour
         return state;
     }
 
-    public void Tick()
+    public void Tick(PlayerTickResult tickResult)
     {
         var dt = Time.deltaTime;
         var worldDelta = targetTransform.position - lastPosition;
@@ -119,6 +122,14 @@ public class PlayerAnimator: MonoBehaviour
         
         animator.SetFloat(forwardParam, forwardSpeed, dampTime, dt);
         animator.SetFloat(rightParam,   rightSpeed,   dampTime, dt);
+
+        if (tickResult.hitInfo != null)
+        {
+            Instantiate(tickResult.hitInfo.weapon.hitPrefab, tickResult.hitInfo.hitPoint, Quaternion.identity);
+            onHit.Invoke();
+            animator.SetTrigger("OnHit");
+            animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime * onHitSpedMultiplier);   
+        }
 
         var nowState = playerController.playerState;
         if (lastPlayerState != nowState)
@@ -139,12 +150,12 @@ public class PlayerAnimator: MonoBehaviour
                 animator.SetBool("SpinAttack", true);
                 onSlash3.Invoke();
             } 
-            else if (nowState == PlayerState.Stun)
-            {
-                onHit.Invoke();
-                animator.SetTrigger("OnHit");
-                animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime);   
-            } 
+            // else if (nowState == PlayerState.Stun)
+            // {
+            //     onHit.Invoke();
+            //     animator.SetTrigger("OnHit");
+            //     animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime);   
+            // } 
             else if (nowState == PlayerState.Death)
             {
                 onDie.Invoke();

@@ -11,6 +11,11 @@ public class KnightInfo
     public UnityEvent onHit;
 }
 
+public struct PlayerTickResult
+{
+    public WeaponHitInfo hitInfo;
+}
+
 public class GameController : MonoBehaviour
 {
     public InputHandler inputHandler;
@@ -21,24 +26,22 @@ public class GameController : MonoBehaviour
 
     public UnityEvent onPlayerDie;
 
-    private void HandleHits(KnightInfo pc, KnightInfo opp)
+    private WeaponHitInfo HandleHits(KnightInfo pc, KnightInfo opp)
     {
         var hitInfo = pc.weapon.GetHitInfo();
-        if (hitInfo != null)
-        {
-            Debug.Log("HIT " + hitInfo.hittable.playerController.name);
-            Instantiate(hitInfo.weapon.hitPrefab, hitInfo.hitPoint, Quaternion.identity);
+        if (hitInfo == null) return null;
+        
+        // Instantiate(hitInfo.weapon.hitPrefab, hitInfo.hitPoint, Quaternion.identity);
             
-            var forceDir = pc.controller.transform.forward;
-            forceDir.y = 0;
-            forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
+        var forceDir = pc.controller.transform.forward;
+        forceDir.y = 0;
+        forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
             
-            hitInfo.hittable.playerController.HitStun(forceDir, hitInfo.weapon);
-            opp.onHit.Invoke();
-        }
+        hitInfo.hittable.playerController.HitStun(forceDir, hitInfo.weapon);
+        return hitInfo;
     }
 
-    void Tick(KnightInfo pc, PlayerControllerInput inputs)
+    void Tick(KnightInfo pc, PlayerControllerInput inputs, PlayerTickResult result)
     {
         if (pc.controller.playerState == PlayerState.Death)
         {
@@ -49,17 +52,19 @@ public class GameController : MonoBehaviour
         
         var animState = pc.animator.GetAnimState();
         pc.controller.Tick(inputs, animState);
-        pc.animator.Tick();
+        pc.animator.Tick(result);
     }
     
     // Update is called once per frame
     void Update()
     {
+        var enemyResult = new PlayerTickResult();
+        var humanResult = new PlayerTickResult();
         
-        HandleHits(human, enemy);
-        HandleHits(enemy, human);
+        enemyResult.hitInfo = HandleHits(human, enemy);
+        humanResult.hitInfo = HandleHits(enemy, human);
         
-        Tick(human, inputHandler.ReadInputs());
-        Tick(enemy, enemyAi.Tick());
+        Tick(human, inputHandler.ReadInputs(), humanResult);
+        Tick(enemy, enemyAi.Tick(), enemyResult);
     }
 }
