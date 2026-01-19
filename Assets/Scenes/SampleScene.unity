@@ -310,6 +310,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2108746321}
     m_Modifications:
+    - target: {fileID: 1985967481394743389, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3263981953530383593, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -369,6 +373,22 @@ PrefabInstance:
     - target: {fileID: 3403706665868283640, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
       propertyPath: m_Name
       value: Tower A
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403706665868283640, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005981837099929165, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6908504759561770503, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978649501282209316, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2943,6 +2963,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2108746321}
     m_Modifications:
+    - target: {fileID: 1985967481394743389, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 3263981953530383593, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
       propertyPath: m_LocalScale.x
       value: 5
@@ -3002,6 +3026,22 @@ PrefabInstance:
     - target: {fileID: 3403706665868283640, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
       propertyPath: m_Name
       value: Tower A (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3403706665868283640, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6005981837099929165, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6908504759561770503, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7978649501282209316, guid: 0b0315988d4640f4f8028117c16b74e1, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3222,6 +3262,10 @@ PrefabInstance:
     - target: {fileID: 9084275281703877156, guid: 9ef95eb74fbef4145bc387e83b897495, type: 3}
       propertyPath: m_Name
       value: Tower B
+      objectReference: {fileID: 0}
+    - target: {fileID: 9084275281703877156, guid: 9ef95eb74fbef4145bc387e83b897495, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4298,7 +4342,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2108746321
 Transform:
