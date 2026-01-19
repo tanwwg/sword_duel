@@ -48,6 +48,9 @@ public class PlayerAnimator: MonoBehaviour
 
     public bool isStartedAttacking;
 
+    public UnityEvent onStartAttack;
+    public UnityEvent onHit;
+
     private void Awake()
     {
         animator.SetFloat("Slash1Speed", attackSpeed);
@@ -72,6 +75,12 @@ public class PlayerAnimator: MonoBehaviour
         var state = new PlayerAnimState();
         
         var currentAnim = animator.GetCurrentAnimatorStateInfo(0);
+
+        if (currentAnim.shortNameHash != lastAnim.shortNameHash && IsAttack(currentAnim))
+        {
+            onStartAttack.Invoke();
+        }
+        
         if (!IsAttack(currentAnim))
         {
             playerEvents.isAttacking = false;
@@ -87,6 +96,7 @@ public class PlayerAnimator: MonoBehaviour
         }
         else
         {
+            
             isStartedAttacking = true;
         }
         
@@ -131,6 +141,7 @@ public class PlayerAnimator: MonoBehaviour
             } 
             else if (nowState == PlayerState.Stun)
             {
+                onHit.Invoke();
                 animator.SetTrigger("OnHit");
                 animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime);   
             } 

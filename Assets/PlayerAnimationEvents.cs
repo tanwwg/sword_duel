@@ -1,9 +1,12 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerAnimationEvents : MonoBehaviour
 {
     public bool canCombo = false;
     public bool isAttacking = false;
+
+    public UnityEvent onPlaySwing;
     
     public void StartCanCombo(AnimationEvent evt)
     {
@@ -23,5 +26,10 @@ public class PlayerAnimationEvents : MonoBehaviour
     public void EndAttack(AnimationEvent evt)
     {
         isAttacking = false;
+    }
+
+    public void PlaySwing()
+    {
+        onPlaySwing.Invoke();
     }
 }

@@ -8,6 +8,7 @@ public class KnightInfo
     public PlayerAnimator animator;
     public Weapon weapon;
     public UnityEvent onDie;
+    public UnityEvent onHit;
 }
 
 public class GameController : MonoBehaviour
@@ -20,7 +21,7 @@ public class GameController : MonoBehaviour
 
     public UnityEvent onPlayerDie;
 
-    private void HandleHits(KnightInfo pc)
+    private void HandleHits(KnightInfo pc, KnightInfo opp)
     {
         var hitInfo = pc.weapon.GetHitInfo();
         if (hitInfo != null)
@@ -33,7 +34,7 @@ public class GameController : MonoBehaviour
             forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
             
             hitInfo.hittable.playerController.HitStun(forceDir, hitInfo.weapon);
-           
+            opp.onHit.Invoke();
         }
     }
 
@@ -55,8 +56,8 @@ public class GameController : MonoBehaviour
     void Update()
     {
         
-        HandleHits(human);
-        HandleHits(enemy);
+        HandleHits(human, enemy);
+        HandleHits(enemy, human);
         
         Tick(human, inputHandler.ReadInputs());
         Tick(enemy, enemyAi.Tick());
