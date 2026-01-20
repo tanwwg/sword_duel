@@ -4,6 +4,7 @@ using UnityEngine.Events;
 [System.Serializable]
 public class KnightInfo
 {
+    public BaseInputHandler inputHandler;
     public PlayerController controller;
     public PlayerAnimator animator;
     public Weapon weapon;
@@ -18,9 +19,6 @@ public struct PlayerTickResult
 
 public class GameController : MonoBehaviour
 {
-    public InputHandler inputHandler;
-    public EnemyAi enemyAi;
-    
     public KnightInfo human;
     public KnightInfo enemy;
 
@@ -41,7 +39,7 @@ public class GameController : MonoBehaviour
         return hitInfo;
     }
 
-    void Tick(KnightInfo pc, PlayerControllerInput inputs, PlayerTickResult result)
+    void Tick(KnightInfo pc, PlayerTickResult result)
     {
         if (pc.controller.playerState == PlayerState.Death)
         {
@@ -49,7 +47,8 @@ public class GameController : MonoBehaviour
             this.enabled = false;
             return;
         }
-        
+
+        var inputs = pc.inputHandler.ReadInputs();
         var animState = pc.animator.GetAnimState();
         pc.controller.Tick(inputs, animState);
         pc.animator.Tick(result);
@@ -64,7 +63,7 @@ public class GameController : MonoBehaviour
         enemyResult.hitInfo = HandleHits(human, enemy);
         humanResult.hitInfo = HandleHits(enemy, human);
         
-        Tick(human, inputHandler.ReadInputs(), humanResult);
-        Tick(enemy, enemyAi.Tick(), enemyResult);
+        Tick(human, humanResult);
+        Tick(enemy, enemyResult);
     }
 }

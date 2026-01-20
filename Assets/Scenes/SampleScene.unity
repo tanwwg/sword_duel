@@ -3754,9 +3754,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9bfbc151f8224ebb87c9a8e3aacca1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameController
-  inputHandler: {fileID: 329482635}
-  enemyAi: {fileID: 400414330}
   human:
+    inputHandler: {fileID: 329482635}
     controller: {fileID: 1970438638}
     animator: {fileID: 1970438640}
     weapon: {fileID: 1443223551}
@@ -3827,6 +3826,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   enemy:
+    inputHandler: {fileID: 400414330}
     controller: {fileID: 667355096}
     animator: {fileID: 1826876177}
     weapon: {fileID: 210862926}

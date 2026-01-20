@@ -6,7 +6,7 @@ public enum MoveEnum
     DoNothing, StrafeLeft, StrafeRight
 }
 
-public class EnemyAi : MonoBehaviour
+public class EnemyAi : BaseInputHandler
 {
     public float evalEvery = 1.0f;
     public float lastEval;
@@ -28,7 +28,7 @@ public class EnemyAi : MonoBehaviour
     }
     
     // Update is called once per frame
-    public PlayerControllerInput Tick()
+    public override PlayerControllerInput ReadInputs()
     {
         distance = Vector3.Distance(myTransform.position, playerTransform.position);
         
