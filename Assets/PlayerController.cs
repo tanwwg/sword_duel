@@ -84,6 +84,20 @@ public class PlayerController : MonoBehaviour
         return PlayerState.Move;
     }
     
+    public WeaponHitInfo HandleWeaponHit()
+    {
+        var hitInfo = comboSystem.weapon.GetHitInfo();
+        if (hitInfo == null) return null;
+        
+        var forceDir = controller.transform.forward;
+        forceDir.y = 0;
+        forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
+            
+        hitInfo.hittable.playerController.HitStun(forceDir, hitInfo.weapon);
+        return hitInfo;
+    }
+
+    
     public void HitStun(Vector3 forceDir, WeaponData weapon)
     {
         stunTime += weapon.stunTime;

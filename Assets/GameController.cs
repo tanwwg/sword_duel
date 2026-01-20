@@ -22,24 +22,7 @@ public class GameController : MonoBehaviour
     public KnightInfo human;
     public KnightInfo enemy;
 
-    public UnityEvent onPlayerDie;
-
-    private WeaponHitInfo HandleHits(KnightInfo pc, KnightInfo opp)
-    {
-        var hitInfo = pc.weapon.GetHitInfo();
-        if (hitInfo == null) return null;
-        
-        // Instantiate(hitInfo.weapon.hitPrefab, hitInfo.hitPoint, Quaternion.identity);
-            
-        var forceDir = pc.controller.transform.forward;
-        forceDir.y = 0;
-        forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
-            
-        hitInfo.hittable.playerController.HitStun(forceDir, hitInfo.weapon);
-        return hitInfo;
-    }
-
-    void Tick(KnightInfo pc, PlayerTickResult result)
+    void Tick(KnightInfo pc)
     {
         if (pc.controller.playerState == PlayerState.Death)
         {
@@ -51,7 +34,6 @@ public class GameController : MonoBehaviour
         var inputs = pc.inputHandler.ReadInputs();
         var animState = pc.animator.GetAnimState();
         pc.controller.Tick(inputs, animState);
-        pc.animator.Tick(result);
     }
     
     // Update is called once per frame
@@ -60,10 +42,13 @@ public class GameController : MonoBehaviour
         var enemyResult = new PlayerTickResult();
         var humanResult = new PlayerTickResult();
         
-        enemyResult.hitInfo = HandleHits(human, enemy);
-        humanResult.hitInfo = HandleHits(enemy, human);
+        enemyResult.hitInfo = human.controller.HandleWeaponHit();
+        humanResult.hitInfo = enemy.controller.HandleWeaponHit();
         
-        Tick(human, humanResult);
-        Tick(enemy, enemyResult);
+        Tick(human);
+        Tick(enemy);
+        
+        human.animator.Tick(humanResult);
+        enemy.animator.Tick(enemyResult);        
     }
 }
