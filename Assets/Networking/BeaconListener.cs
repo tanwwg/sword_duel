@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using Newtonsoft.Json;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -12,7 +13,6 @@ using UnityEngine;
 public class BeaconListener : MonoBehaviour
 {
     public int discoveryPort = 47777;
-    public string gameId = "MyGame-v1";
     public float serverTimeout = 4.0f;
 
     UdpClient _udp;
@@ -29,10 +29,18 @@ public class BeaconListener : MonoBehaviour
     public Transform listParent;
     public NetworkListRow rowPrefab;
 
+    private SynchronizationContext unityContext;
+
+    private void Awake()
+    {
+        unityContext = SynchronizationContext.Current;
+    }
+
     void Start()
     {
         _udp = new UdpClient(discoveryPort);
         _udp.EnableBroadcast = true;
+        Debug.Log("Udp Client started");
         _udp.BeginReceive(OnRecv, null);
     }
 
@@ -40,46 +48,55 @@ public class BeaconListener : MonoBehaviour
 
     void RebuildList()
     {
-        for (int i = listParent.childCount - 1; i >= 0; i--)
+        for (var i = listParent.childCount - 1; i >= 0; i--)
         {
             Destroy(listParent.GetChild(i).gameObject);
         }
 
         foreach (var server in _servers)
         {
-            var row = Instantiate(rowPrefab);
+            var row = Instantiate(rowPrefab, listParent);
             row.label.text = server.name;
             row.button.onClick.AddListener(() =>
             {
                 ConnectTo(server);
             });
         }
-        
     }
 
-    void OnRecv(IAsyncResult ar)
+    void OnRecvMainThread(string data, string ip)
     {
-        IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
-        byte[] data = _udp.EndReceive(ar, ref ep);
-        _udp.BeginReceive(OnRecv, null);
-
-        var s = Encoding.UTF8.GetString(data);
+        Debug.Log("RecvMainThread: " + data);        
         try
         {
-            var packet = JsonConvert.DeserializeObject<HostBeaconPacket>(s);
-            _servers.Add(new FoundServer
+            var packet = JsonConvert.DeserializeObject<HostBeaconPacket>(data);
+            if (!_servers.Any(s => s.port == packet.gamePort && s.ip == ip))
             {
-                ip = ep.Address.ToString(),
-                port = packet.gamePort,
-                name = packet.device,
-                lastSeen = Time.time
-            });
+                _servers.Add(new FoundServer
+                {
+                    ip = ip,
+                    port = packet.gamePort,
+                    name = packet.device,
+                    lastSeen = Time.time
+                });
+            }
+            RebuildList();
         }
         catch (Exception e)
         {
             Debug.LogWarning(e);
         }
+    }
 
+    void OnRecv(IAsyncResult ar)
+    {
+        Debug.Log("Recv");
+        IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
+        byte[] data = _udp.EndReceive(ar, ref ep);
+        _udp.BeginReceive(OnRecv, null);
+
+        var s = Encoding.UTF8.GetString(data);
+        unityContext.Post(_ => OnRecvMainThread(s, ep.Address.ToString()), null);
     }
 
     public void ConnectTo(FoundServer server)
@@ -100,6 +117,6 @@ public class BeaconListener : MonoBehaviour
         if (dead.Count <= 0) return;
         
         foreach (var d in dead) _servers.Remove(d);
-        
+        RebuildList();
     }
 }
