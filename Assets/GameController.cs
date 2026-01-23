@@ -51,9 +51,11 @@ public class GameController : MonoBehaviour
         for (var i = 0; i < knights.Length; i++)
         {
             Debug.Log($"Respawning {i} {knights[i].gameObject.name} at {spawnPoints[i].position}");
+            knights[i].controller.controller.enabled = false;
             knights[i].transform.position = spawnPoints[i].position;
             knights[i].transform.rotation = spawnPoints[i].rotation;
             knights[i].controller.Respawn();
+            knights[i].controller.controller.enabled = true;
             knights[i].OnRespawn?.Invoke();
         }
 
