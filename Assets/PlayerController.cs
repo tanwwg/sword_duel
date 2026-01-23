@@ -1,4 +1,5 @@
 using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -49,20 +50,23 @@ public class PlayerController : MonoBehaviour
     public CharacterController controller;
 
     public ComboSystem comboSystem;
+    
+    public Transform lookTarget;
 
-    public Rigidbody rb;
+    [Header("Runtime vars")]
+    
+    public PlayerController lockTarget;
 
-    public Transform lockTarget;
-
-    [Header("Runtime vars")] 
-    public int health;
+    // public int health;
     public float stunTime;
     public Vector3 velocity = Vector3.zero;
     public PlayerState playerState = PlayerState.Move;
+    
+    public NetworkVariable<int> health;
 
     private void Awake()
     {
-        this.health = this.maxHealth;
+        this.health.Value = this.maxHealth;
     }
 
     void HandleGravity()
@@ -75,7 +79,7 @@ public class PlayerController : MonoBehaviour
 
     PlayerState ComputePlayerState()
     {
-        if (health <= 0) return PlayerState.Death;
+        if (health.Value <= 0) return PlayerState.Death;
         if (stunTime > 0) return PlayerState.Stun;
         
         if (comboSystem.comboIndex == 0) return PlayerState.Attack1;
@@ -102,14 +106,16 @@ public class PlayerController : MonoBehaviour
     public void HitStun(Vector3 forceDir, WeaponData weapon)
     {
         stunTime += weapon.stunTime;
-        health = Math.Max(0, health - weapon.damage);
+        health.Value = Math.Max(0, health.Value - weapon.damage);
         comboSystem.StopCombo();
 
         velocity = forceDir;
     }
 
-    public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState)
+    public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState, PlayerController opp)
     {
+        if (opp) this.lockTarget = opp;
+        
         HandleGravity();
         
         this.playerState = ComputePlayerState();
@@ -143,7 +149,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!lockTarget) return;
 
-        Vector3 dir = lockTarget.position - transform.position;
+        Vector3 dir = lockTarget.transform.position - transform.position;
         dir.y = 0;
         transform.rotation = Quaternion.Slerp(
             transform.rotation,

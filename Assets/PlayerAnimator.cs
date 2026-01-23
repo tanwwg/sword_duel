@@ -1,4 +1,5 @@
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -53,6 +54,8 @@ public class PlayerAnimator: MonoBehaviour
     public UnityEvent onStartAttack;
     public UnityEvent onHit;
     public float onHitSpedMultiplier = 1.0f;
+
+    public CinemachineCamera[] cameras;
 
     private void Awake()
     {
@@ -109,10 +112,21 @@ public class PlayerAnimator: MonoBehaviour
         return state;
     }
 
+    void SetupCams()
+    {
+        if (!playerController.lockTarget) return;
+        foreach (var cam in cameras)
+        {
+            cam.LookAt = playerController.lockTarget.lookTarget;
+        }
+    }
+
     public void Tick(PlayerTickResult tickResult)
     {
         var dt = Time.deltaTime;
         var worldDelta = targetTransform.position - lastPosition;
+
+        SetupCams();
         
         // Convert to local space (right / forward)
         var localDelta = transform.InverseTransformDirection(worldDelta);

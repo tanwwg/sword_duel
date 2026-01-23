@@ -29,6 +29,8 @@ public class Weapon : MonoBehaviour
 {
     public WeaponData weaponData;
 
+    public Hittable ignore;
+
     public WeaponHitInfo hitInfo = null;
 
     private void OnEnable()
@@ -43,6 +45,8 @@ public class Weapon : MonoBehaviour
         
         var hittable = other.gameObject.GetComponent<Hittable>();
         if (!hittable) return;
+        
+        if (hittable == ignore) return;
 
         Debug.Log("MARK HIT " + other.gameObject.name);
         this.hitInfo = new WeaponHitInfo()

@@ -289,6 +289,7 @@ MonoBehaviour:
     stunTime: 5
     hitAngle: 0
     hitPrefab: {fileID: 0}
+  ignore: {fileID: 0}
   hitInfo:
     isHit: 0
     isProcessed: 0
@@ -722,12 +723,13 @@ MonoBehaviour:
   stunHandler: {fileID: 0}
   controller: {fileID: 5907212887303509055}
   comboSystem: {fileID: 5160314152760336542}
-  rb: {fileID: 0}
+  lookTarget: {fileID: 7762639198175753888}
   lockTarget: {fileID: 0}
-  health: 0
   stunTime: 0
   velocity: {x: 0, y: 0, z: 0}
   playerState: 0
+  health:
+    m_InternalValue: 0
 --- !u!143 &5907212887303509055
 CharacterController:
   m_ObjectHideFlags: 0
@@ -879,6 +881,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   onHitSpedMultiplier: 1
+  cameras:
+  - {fileID: 7302669072293320359}
 --- !u!114 &1337454087738592579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2438,6 +2442,11 @@ CharacterJoint:
 --- !u!95 &7725592126317215321 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 007af4d2f5f334221b0426c0964e8260, type: 3}
+  m_PrefabInstance: {fileID: 4205311685959975880}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7762639198175753888 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: 007af4d2f5f334221b0426c0964e8260, type: 3}
   m_PrefabInstance: {fileID: 4205311685959975880}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8031750414674081603 stripped

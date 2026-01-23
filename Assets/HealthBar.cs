@@ -9,6 +9,6 @@ public class HealthBar : MonoBehaviour
 
     private void Update()
     {
-        bar.fillAmount = (float)playerController.health / playerController.maxHealth;
+        bar.fillAmount = (float)playerController.health.Value / playerController.maxHealth;
     }
 }

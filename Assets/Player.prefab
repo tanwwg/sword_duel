@@ -355,6 +355,7 @@ MonoBehaviour:
     stunTime: 5
     hitAngle: 0
     hitPrefab: {fileID: 0}
+  ignore: {fileID: 5076084064218591431}
   hitInfo:
     isHit: 0
     isProcessed: 0
@@ -560,6 +561,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onHitSpedMultiplier: 1
 --- !u!114 &5076084064218591431
 MonoBehaviour:
   m_ObjectHideFlags: 0

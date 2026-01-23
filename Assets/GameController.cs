@@ -29,15 +29,19 @@ public class GameController : MonoBehaviour
         for (var i = 0; i < tickResults.Length; i++)
         {
             knights[i].transform.position = spawnPoints[i].position;
-            knights[i].transform.rotation = spawnPoints[i].rotation;            
+            knights[i].transform.rotation = spawnPoints[i].rotation;
+            
+            var netobj = knights[i].GetComponent<NetworkObject>();
+            var isOwner = netobj?.IsOwner ?? false;
+            knights[i].gameObject.name = $"Knight {i} {(isOwner ? "owner" : "")}";
         }
     }
     
-    void Tick(KnightInfo pc)
+    void Tick(KnightInfo pc, KnightInfo opp)
     {
         var inputs = pc.inputHandler.ReadInputs();
         var animState = pc.animator.GetAnimState();
-        pc.controller.Tick(inputs, animState);
+        pc.controller.Tick(inputs, animState, opp?.controller);
     }
     
     // Update is called once per frame
@@ -45,28 +49,24 @@ public class GameController : MonoBehaviour
     { 
         for(var i = 0; i < tickResults.Length; i++) tickResults[i] = new PlayerTickResult();
         
-        if (knights.Length >= 2)
+        if (knights.Length == 2)
         {
-            
+            tickResults[0].hitInfo = knights[1].controller.HandleWeaponHit();
+            tickResults[1].hitInfo = knights[0].controller.HandleWeaponHit();
+            Tick(knights[0], knights[1]);
+            Tick(knights[1], knights[0]);            
+        }
+        else
+        {
+            foreach (var knight in knights)
+            {
+                Tick(knight, null);
+            }
         }
 
-        foreach (var knight in knights)
-        {
-            Tick(knight);
-        }
         for(var i = 0; i < tickResults.Length; i++)
         {
             knights[i].animator.Tick(tickResults[i]);
         }
-        
-        
-        // enemyResult.hitInfo = human.controller.HandleWeaponHit();
-        // humanResult.hitInfo = enemy.controller.HandleWeaponHit();
-        //
-        // Tick(human);
-        // Tick(enemy);
-        //
-        // human.animator.Tick(humanResult);
-        // enemy.animator.Tick(enemyResult);        
     }
 }
