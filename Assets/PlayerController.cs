@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[Serializable]
 public struct PlayerControllerInput
 {
     public Vector2 moveInput;

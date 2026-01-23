@@ -1,7 +1,6 @@
 using UnityEngine;
 
-public abstract class BaseInputHandler: MonoBehaviour
+public interface BaseInputHandler
 {
-    public abstract PlayerControllerInput ReadInputs();
-
+    public PlayerControllerInput ReadInputs();
 }

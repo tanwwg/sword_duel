@@ -18,11 +18,17 @@ public class NetworkController : MonoBehaviour
     {
         var nm =  NetworkManager.Singleton;
         Debug.Log($"Client connected to server clientId={clientId} localId={nm.LocalClientId}");
-        // if (nm.IsServer)
-        // {
-        //     gameController.RebuildPlayerList();
-        // }
+        
         TryStartNetworkGame();
+    }
+
+    public void OnPlayerSpawned(NetworkPlayer player)
+    {
+        var nm =  NetworkManager.Singleton;
+        if (nm.IsServer)
+        {
+            gameController.RebuildPlayerList();
+        }
     }
 
     void TryStartNetworkGame()

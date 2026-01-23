@@ -22,15 +22,7 @@ public class NetworkPlayer : NetworkBehaviour
             onOwner.Invoke();
         }
         
-        if (IsServer)
-        {
-            FindFirstObjectByType<GameController>().RebuildPlayerList();
-        }
-        else
-        {
-            
-        }
-        
+        FindFirstObjectByType<NetworkController>().OnPlayerSpawned(this);
     }
 
 }

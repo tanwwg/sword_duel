@@ -13,6 +13,8 @@ public class GameController : MonoBehaviour
 {
     public KnightInfo[] knights;
     public PlayerTickResult[] tickResults;
+    
+    public Transform[] spawnPoints;
 
     private void Start()
     {
@@ -23,6 +25,12 @@ public class GameController : MonoBehaviour
     {
         knights = FindObjectsByType<KnightInfo>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
         tickResults = new PlayerTickResult[knights.Length];
+
+        for (var i = 0; i < tickResults.Length; i++)
+        {
+            knights[i].transform.position = spawnPoints[i].position;
+            knights[i].transform.rotation = spawnPoints[i].rotation;            
+        }
     }
     
     void Tick(KnightInfo pc)

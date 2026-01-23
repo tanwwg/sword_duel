@@ -107,6 +107,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf2d973df184ee9922317a33c712b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputHandler
+--- !u!1 &191716397330430753
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7868100299031571153}
+  - component: {fileID: 1929727624566032019}
+  m_Layer: 0
+  m_Name: RemotePlayerInputHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7868100299031571153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191716397330430753}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7948970439343784592}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1929727624566032019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 191716397330430753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073492cc23594188ba39fe9272c14a71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RemoteInputHandler
+  ShowTopMostFoldoutHeaderGroup: 1
+  inputs:
+    moveInput: {x: 0, y: 0}
+    isAttack: 0
+    isBlock: 0
 --- !u!1 &2109450148119809533
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,6 +698,7 @@ Transform:
   - {fileID: 578937286028660983}
   - {fileID: 5320211570984984006}
   - {fileID: 6895217975088544918}
+  - {fileID: 7868100299031571153}
   - {fileID: 1355012018303157537}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -925,7 +975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 401696147e794467b3d1b7db10d13ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnightInfo
-  inputHandler: {fileID: 3712116343544293225}
+  inputHandlerBehaviour: {fileID: 1929727624566032019}
   controller: {fileID: 6242142333279941805}
   animator: {fileID: 808418621119454471}
 --- !u!114 &-718312353446667968
@@ -962,9 +1012,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 8916971765358808855}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   knightInfo: {fileID: 0}
-  remoteInput: {fileID: 0}
-  localInput: {fileID: 0}
 --- !u!1 &7969844809546552719
 GameObject:
   m_ObjectHideFlags: 0
@@ -1121,15 +1181,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6895217975088544918}
-  - component: {fileID: 5089548264791819290}
-  - component: {fileID: 3712116343544293225}
+  - component: {fileID: 2084543391410276567}
   m_Layer: 0
   m_Name: RemotePlayerInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6895217975088544918
 Transform:
   m_ObjectHideFlags: 0
@@ -1138,14 +1197,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8916971765358808855}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.08082, y: -0.00107, z: 3.93142}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7948970439343784592}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5089548264791819290
+--- !u!114 &2084543391410276567
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1156,7 +1215,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
   m_Actions: {fileID: -944628639613478452, guid: 1ff0878ffb38d4398b11cd5956cf5b5e, type: 3}
   m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
@@ -1172,7 +1231,7 @@ MonoBehaviour:
   m_ActionEvents:
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3712116343544293225}
+      - m_Target: {fileID: 1929727624566032019}
         m_TargetAssemblyTypeName: RemoteInputHandler, Assembly-CSharp
         m_MethodName: OnMove
         m_Mode: 0
@@ -1188,7 +1247,7 @@ MonoBehaviour:
     m_ActionName: 'Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]'
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3712116343544293225}
+      - m_Target: {fileID: 1929727624566032019}
         m_TargetAssemblyTypeName: RemoteInputHandler, Assembly-CSharp
         m_MethodName: OnLightAttack
         m_Mode: 0
@@ -1201,24 +1260,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: 16aa5bd1-4f1c-495b-85a3-025ee0d296dd
-    m_ActionName: Player/LightAttack
+    m_ActionName: 'Player/LightAttack[/Mouse/leftButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &3712116343544293225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8916971765358808855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 073492cc23594188ba39fe9272c14a71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RemoteInputHandler
 --- !u!1001 &4205311685959975880
 PrefabInstance:
   m_ObjectHideFlags: 0
