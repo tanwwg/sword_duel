@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class KnightInfo: MonoBehaviour
 {
@@ -8,5 +10,7 @@ public class KnightInfo: MonoBehaviour
     public PlayerController controller;
     public PlayerAnimator animator;
     // public UnityEvent onDie;
-        
+
+    public Action OnRespawn;
+
 }

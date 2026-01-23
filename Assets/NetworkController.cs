@@ -1,5 +1,6 @@
 using System;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 public class NetworkController : NetworkBehaviour
@@ -28,10 +29,16 @@ public class NetworkController : NetworkBehaviour
         var nm =  NetworkManager.Singleton;
 
         gameController.RebuildPlayerList();
+        foreach (var k in gameController.knights)
+        {
+            k.OnRespawn = () =>
+            {
+                k.GetComponent<NetworkTransform>().Teleport(k.transform.position, k.transform.rotation, k.transform.localScale);
+            };
+        }
         
         if (nm.IsServer)
         {
-            player.Respawn();
             gameController.Respawn();
         }
     }

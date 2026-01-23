@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -17,6 +18,11 @@ public class GameController : MonoBehaviour
     public PlayerTickResult[] tickResults;
     
     public Transform[] spawnPoints;
+    
+    public float respawnWaitTime = 3;
+    
+    public float respawnTime = -1;
+
 
     private void Start()
     {
@@ -42,12 +48,16 @@ public class GameController : MonoBehaviour
 
     public void Respawn()
     {
-        for (var i = 0; i < tickResults.Length; i++)
+        for (var i = 0; i < knights.Length; i++)
         {
+            Debug.Log($"Respawning {i} {knights[i].gameObject.name} at {spawnPoints[i].position}");
             knights[i].transform.position = spawnPoints[i].position;
             knights[i].transform.rotation = spawnPoints[i].rotation;
             knights[i].controller.Respawn();
+            knights[i].OnRespawn?.Invoke();
         }
+
+        this.respawnTime = -1;
     }
     
     void Tick(KnightInfo pc, KnightInfo opp)
@@ -57,7 +67,6 @@ public class GameController : MonoBehaviour
         pc.controller.Tick(inputs, animState, opp?.controller);
     }
 
-    public float respawnTime = -1;
 
     void CheckDeath()
     {
@@ -67,7 +76,7 @@ public class GameController : MonoBehaviour
         {
             if (knight.controller.playerState.Value == PlayerState.Death)
             {
-                respawnTime = Time.time + 3.0f;
+                respawnTime = Time.time + respawnWaitTime;
                 break;
             }
         }
