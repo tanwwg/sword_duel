@@ -4,6 +4,7 @@ using Unity.Netcode;
 using Unity.Netcode.Components;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public struct PlayerTickResult
 {
@@ -15,26 +16,19 @@ public struct PlayerTickResult
 public class GameController : MonoBehaviour
 {
     public KnightInfo[] knights;
-    public PlayerTickResult[] tickResults;
+    public PlayerTickResult[] tickResults = Array.Empty<PlayerTickResult>();
     
     public Transform[] spawnPoints;
-    
+
     public float respawnWaitTime = 3;
     
     public float respawnTime = -1;
-
-
-    private void Start()
-    {
-        RebuildPlayerList();
-    }
-
+    
     public void RebuildPlayerList()
     {
         knights = FindObjectsByType<KnightInfo>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-        tickResults = new PlayerTickResult[knights.Length];
 
-        for (var i = 0; i < tickResults.Length; i++)
+        for (var i = 0; i < knights.Length; i++)
         {
             knights[i].gameObject.name = $"Knight {i}";
         }
@@ -97,6 +91,10 @@ public class GameController : MonoBehaviour
     
     public void Tick()
     {
+        if (tickResults == null ||  tickResults.Length != knights.Length)
+        {
+            tickResults = new PlayerTickResult[knights.Length];
+        }
         for(var i = 0; i < tickResults.Length; i++) tickResults[i] = new PlayerTickResult();
         
         CheckRespawn();
@@ -129,5 +127,11 @@ public class GameController : MonoBehaviour
         {
             knights[i].animator.Tick(PlayerTickResult.Empty);
         }
+    }
+
+    public void LoadSinglePlayer()
+    {
+        Destroy(NetworkManager.Singleton.gameObject);
+        SceneManager.LoadScene("SampleScene");
     }
 }

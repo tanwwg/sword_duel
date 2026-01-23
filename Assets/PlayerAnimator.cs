@@ -58,8 +58,10 @@ public class PlayerAnimator: MonoBehaviour
     public CinemachineCamera[] cameras;
 
     public RagdollSystem ragdoll;
+    
+ 
 
-    private void Awake()
+    private void OnEnable()
     {
         animator.SetFloat("Slash1Speed", attackSpeed);
         animator.SetFloat("Slash2Speed", attackSpeed);        
@@ -172,12 +174,6 @@ public class PlayerAnimator: MonoBehaviour
                 animator.SetBool("SpinAttack", true);
                 onSlash3.Invoke();
             } 
-            // else if (nowState == PlayerState.Stun)
-            // {
-            //     onHit.Invoke();
-            //     animator.SetTrigger("OnHit");
-            //     animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime);   
-            // } 
             else if (nowState == PlayerState.Death)
             {
                 ragdoll.StartRagdoll();
