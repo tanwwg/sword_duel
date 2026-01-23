@@ -66,11 +66,17 @@ public class BeaconListener : MonoBehaviour
 
     void OnRecvMainThread(string data, string ip)
     {
-        Debug.Log("RecvMainThread: " + data);        
+        // Debug.Log("RecvMainThread: " + data);        
         try
         {
             var packet = JsonConvert.DeserializeObject<HostBeaconPacket>(data);
-            if (!_servers.Any(s => s.port == packet.gamePort && s.ip == ip))
+            var serv = _servers.FirstOrDefault(s => 
+                s.port == packet.gamePort && s.ip == ip && s.name == packet.device);
+            if (serv != null)
+            {
+                serv.lastSeen = Time.time;
+            }
+            else
             {
                 _servers.Add(new FoundServer
                 {
@@ -80,6 +86,7 @@ public class BeaconListener : MonoBehaviour
                     lastSeen = Time.time
                 });
             }
+            
             RebuildList();
         }
         catch (Exception e)
@@ -90,7 +97,7 @@ public class BeaconListener : MonoBehaviour
 
     void OnRecv(IAsyncResult ar)
     {
-        Debug.Log("Recv");
+        // Debug.Log("Recv");
         IPEndPoint ep = new IPEndPoint(IPAddress.Any, 0);
         byte[] data = _udp.EndReceive(ar, ref ep);
         _udp.BeginReceive(OnRecv, null);

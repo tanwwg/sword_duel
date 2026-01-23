@@ -1,16 +1,8 @@
+using System;
+using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
-
-[System.Serializable]
-public class KnightInfo
-{
-    public BaseInputHandler inputHandler;
-    public PlayerController controller;
-    public PlayerAnimator animator;
-    public Weapon weapon;
-    public UnityEvent onDie;
-    public UnityEvent onHit;
-}
 
 public struct PlayerTickResult
 {
@@ -19,18 +11,22 @@ public struct PlayerTickResult
 
 public class GameController : MonoBehaviour
 {
-    public KnightInfo human;
-    public KnightInfo enemy;
+    public KnightInfo[] knights;
+    public PlayerTickResult[] tickResults;
 
+    private void Start()
+    {
+        RebuildPlayerList();
+    }
+
+    public void RebuildPlayerList()
+    {
+        knights = FindObjectsByType<KnightInfo>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        tickResults = new PlayerTickResult[knights.Length];
+    }
+    
     void Tick(KnightInfo pc)
     {
-        if (pc.controller.playerState == PlayerState.Death)
-        {
-            pc.onDie.Invoke();
-            this.enabled = false;
-            return;
-        }
-
         var inputs = pc.inputHandler.ReadInputs();
         var animState = pc.animator.GetAnimState();
         pc.controller.Tick(inputs, animState);
@@ -38,17 +34,31 @@ public class GameController : MonoBehaviour
     
     // Update is called once per frame
     void Update()
-    {
-        var enemyResult = new PlayerTickResult();
-        var humanResult = new PlayerTickResult();
+    { 
+        for(var i = 0; i < tickResults.Length; i++) tickResults[i] = new PlayerTickResult();
         
-        enemyResult.hitInfo = human.controller.HandleWeaponHit();
-        humanResult.hitInfo = enemy.controller.HandleWeaponHit();
+        if (knights.Length >= 2)
+        {
+            
+        }
+
+        foreach (var knight in knights)
+        {
+            Tick(knight);
+        }
+        for(var i = 0; i < tickResults.Length; i++)
+        {
+            knights[i].animator.Tick(tickResults[i]);
+        }
         
-        Tick(human);
-        Tick(enemy);
         
-        human.animator.Tick(humanResult);
-        enemy.animator.Tick(enemyResult);        
+        // enemyResult.hitInfo = human.controller.HandleWeaponHit();
+        // humanResult.hitInfo = enemy.controller.HandleWeaponHit();
+        //
+        // Tick(human);
+        // Tick(enemy);
+        //
+        // human.animator.Tick(humanResult);
+        // enemy.animator.Tick(enemyResult);        
     }
 }
