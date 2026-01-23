@@ -58,7 +58,9 @@ public class PlayerController : NetworkBehaviour
     // public int health;
     public float stunTime;
     public Vector3 velocity = Vector3.zero;
-    public PlayerState playerState = PlayerState.Move;
+
+    public NetworkVariable<PlayerState> playerState;
+    // public PlayerState playerState = PlayerState.Move;
     
     public NetworkVariable<int> health = new NetworkVariable<int>(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
@@ -73,6 +75,7 @@ public class PlayerController : NetworkBehaviour
     public void Respawn()
     {
         this.health.Value = this.maxHealth;
+        this.playerState.Value = PlayerState.Move;
     }
 
     void HandleGravity()
@@ -122,23 +125,23 @@ public class PlayerController : NetworkBehaviour
     {
         HandleGravity();
         
-        this.playerState = ComputePlayerState();
-        if (this.playerState == PlayerState.Death) return;
+        this.playerState.Value = ComputePlayerState();
+        if (this.playerState.Value == PlayerState.Death) return;
      
         if (opp) this.lockTarget = opp;
 
         HandleMove(frameInput);
         stunTime = Math.Max(0, stunTime - Time.deltaTime);
 
-        var isAttack = frameInput.isAttack && playerState is PlayerState.Move or PlayerState.Attack1 or PlayerState.Attack2;
+        var isAttack = frameInput.isAttack && playerState.Value is PlayerState.Move or PlayerState.Attack1 or PlayerState.Attack2;
         comboSystem.Tick(isAttack, animState);
         
-        this.playerState = ComputePlayerState();
+        this.playerState.Value = ComputePlayerState();
     }
 
     void HandleMove(PlayerControllerInput frameInput)
     {
-        if (playerState == PlayerState.Move)
+        if (playerState.Value == PlayerState.Move)
         {
             velocity = frameInput.moveInput.x * transform.right + frameInput.moveInput.y * transform.forward;
             velocity *= moveSpeed;

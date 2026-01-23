@@ -423,7 +423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 1472963309109075925}
   comboData:
-  - damage: 15
+  - damage: 115
     hitForce: 2
     stunTime: 1
     hitAngle: -90
@@ -1058,7 +1058,8 @@ MonoBehaviour:
   lockTarget: {fileID: 0}
   stunTime: 0
   velocity: {x: 0, y: 0, z: 0}
-  playerState: 0
+  playerState:
+    m_InternalValue: 0
   health:
     m_InternalValue: 0
 --- !u!143 &5907212887303509055
@@ -1193,18 +1194,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1368167222581709689}
-        m_TargetAssemblyTypeName: RagdollSystem, Assembly-CSharp
-        m_MethodName: StartRagdoll
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   onHitClip: {fileID: -203655887218126122, guid: 23e402701c7ca4989aec61414b18f047, type: 3}
   isStartedAttacking: 0
   onStartAttack:
@@ -1228,6 +1217,7 @@ MonoBehaviour:
   onHitSpedMultiplier: 1
   cameras:
   - {fileID: 7302669072293320359}
+  ragdoll: {fileID: 1368167222581709689}
 --- !u!114 &1337454087738592579
 MonoBehaviour:
   m_ObjectHideFlags: 0

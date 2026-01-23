@@ -2,7 +2,7 @@ using System;
 using Unity.Netcode;
 using UnityEngine;
 
-public class NetworkController : MonoBehaviour
+public class NetworkController : NetworkBehaviour
 {
     public GameController gameController;
     public GameObject networkSetupCanvas;
@@ -27,10 +27,12 @@ public class NetworkController : MonoBehaviour
     {
         var nm =  NetworkManager.Singleton;
 
+        gameController.RebuildPlayerList();
+        
         if (nm.IsServer)
         {
             player.Respawn();
-            gameController.RebuildPlayerList();
+            gameController.Respawn();
         }
     }
 
@@ -41,11 +43,8 @@ public class NetworkController : MonoBehaviour
         networkSetupCanvas.SetActive(false);
     }
 
-    public void Update()
+    private void PropagateHit()
     {
-        if (!NetworkManager.Singleton.IsServer) return;
-        
-        gameController.Tick();
         for (var i = 0; i < gameController.tickResults.Length; i++)
         {
             var hit = gameController.tickResults[i].hitInfo;
@@ -55,5 +54,19 @@ public class NetworkController : MonoBehaviour
             var np = gameController.knights[i].GetComponent<NetworkPlayer>();
             np.SpawnHitClientRpc(hit.hitPoint);
         }
+    }
+
+    public void Update()
+    {
+        if (NetworkManager.Singleton.IsServer)
+        {
+            gameController.Tick();
+            PropagateHit();
+        }
+        else
+        {
+            gameController.ClientTick();
+        }
+        
     }
 }

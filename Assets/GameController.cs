@@ -7,6 +7,8 @@ using UnityEngine.Events;
 public struct PlayerTickResult
 {
     public WeaponHitInfo hitInfo;
+    
+    public static PlayerTickResult Empty =  new PlayerTickResult();
 }
 
 public class GameController : MonoBehaviour
@@ -28,12 +30,23 @@ public class GameController : MonoBehaviour
 
         for (var i = 0; i < tickResults.Length; i++)
         {
+            knights[i].gameObject.name = $"Knight {i}";
+        }
+
+        if (knights.Length == 2)
+        {
+            knights[0].controller.lockTarget = knights[1].controller;
+            knights[1].controller.lockTarget = knights[0].controller;            
+        }
+    }
+
+    public void Respawn()
+    {
+        for (var i = 0; i < tickResults.Length; i++)
+        {
             knights[i].transform.position = spawnPoints[i].position;
             knights[i].transform.rotation = spawnPoints[i].rotation;
-            
-            var netobj = knights[i].GetComponent<NetworkObject>();
-            var isOwner = netobj?.IsOwner ?? false;
-            knights[i].gameObject.name = $"Knight {i} {(isOwner ? "owner" : "")}";
+            knights[i].controller.Respawn();
         }
     }
     
@@ -43,10 +56,40 @@ public class GameController : MonoBehaviour
         var animState = pc.animator.GetAnimState();
         pc.controller.Tick(inputs, animState, opp?.controller);
     }
+
+    public float respawnTime = -1;
+
+    void CheckDeath()
+    {
+        if (respawnTime > 0) return;
+        
+        foreach (var knight in knights)
+        {
+            if (knight.controller.playerState.Value == PlayerState.Death)
+            {
+                respawnTime = Time.time + 3.0f;
+                break;
+            }
+        }
+    }
+    
+    void CheckRespawn()
+    {
+        if (respawnTime >= 0)
+        {
+            if (Time.time > respawnTime)
+            {
+                this.Respawn();
+            }
+        }
+    }
     
     public void Tick()
-    { 
+    {
         for(var i = 0; i < tickResults.Length; i++) tickResults[i] = new PlayerTickResult();
+        
+        CheckRespawn();
+        CheckDeath();
         
         if (knights.Length == 2)
         {
@@ -66,6 +109,14 @@ public class GameController : MonoBehaviour
         for(var i = 0; i < tickResults.Length; i++)
         {
             knights[i].animator.Tick(tickResults[i]);
+        }
+    }
+
+    public void ClientTick()
+    {
+        for(var i = 0; i < tickResults.Length; i++)
+        {
+            knights[i].animator.Tick(PlayerTickResult.Empty);
         }
     }
 }

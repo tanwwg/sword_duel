@@ -57,6 +57,8 @@ public class PlayerAnimator: MonoBehaviour
 
     public CinemachineCamera[] cameras;
 
+    public RagdollSystem ragdoll;
+
     private void Awake()
     {
         animator.SetFloat("Slash1Speed", attackSpeed);
@@ -67,7 +69,7 @@ public class PlayerAnimator: MonoBehaviour
     void SaveStates()
     {
         lastPosition = targetTransform.position;
-        lastPlayerState = playerController.playerState; 
+        lastPlayerState = playerController.playerState.Value; 
         lastAnim = animator.GetCurrentAnimatorStateInfo(0);
     }
 
@@ -145,9 +147,15 @@ public class PlayerAnimator: MonoBehaviour
             animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime * onHitSpedMultiplier);   
         }
 
-        var nowState = playerController.playerState;
+        var nowState = playerController.playerState.Value;
         if (lastPlayerState != nowState)
         {
+            if (lastPlayerState == PlayerState.Death)
+            {
+                Debug.Log("Resetting the ragdoll!");
+                ragdoll.ResetRagdoll();
+            }
+            
             if (nowState == PlayerState.Attack1)
             {
                 animator.SetTrigger("Slash1");
@@ -172,6 +180,7 @@ public class PlayerAnimator: MonoBehaviour
             // } 
             else if (nowState == PlayerState.Death)
             {
+                ragdoll.StartRagdoll();
                 onDie.Invoke();
             }
         }
