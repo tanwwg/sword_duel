@@ -4,13 +4,11 @@ using UnityEngine.Events;
 
 public class NetworkPlayer : NetworkBehaviour
 {
-    public UnityEvent onServer;
-    public UnityEvent onClient;    
     public UnityEvent onOwner;
+
+    public GameObject hitPrefab;
     
-    public KnightInfo knightInfo;
-    public BaseInputHandler remoteInput;
-    public BaseInputHandler localInput;
+    public PlayerController controller;
     
     public override void OnNetworkSpawn()
     {
@@ -23,6 +21,19 @@ public class NetworkPlayer : NetworkBehaviour
         }
         
         FindFirstObjectByType<NetworkController>().OnPlayerSpawned(this);
+    }
+
+    public void Respawn()
+    {
+        this.controller.Respawn();
+    }
+
+    [ClientRpc]
+    public void SpawnHitClientRpc(Vector3 pos)
+    {
+        if (IsServer && IsHost) return;  // don't play hit prefab if on server
+        
+        Instantiate(hitPrefab, pos, Quaternion.identity);
     }
 
 }

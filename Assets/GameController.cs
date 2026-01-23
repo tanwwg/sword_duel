@@ -44,8 +44,7 @@ public class GameController : MonoBehaviour
         pc.controller.Tick(inputs, animState, opp?.controller);
     }
     
-    // Update is called once per frame
-    void Update()
+    public void Tick()
     { 
         for(var i = 0; i < tickResults.Length; i++) tickResults[i] = new PlayerTickResult();
         

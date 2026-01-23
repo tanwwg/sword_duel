@@ -32,7 +32,7 @@ public static class PlayerStateExtensions
     }
 }
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     public int maxHealth = 100;
     
@@ -45,8 +45,6 @@ public class PlayerController : MonoBehaviour
     public float attackInteria = 1.0f;
     
     [Header("References")]
-    public StunHandler stunHandler;
-
     public CharacterController controller;
 
     public ComboSystem comboSystem;
@@ -62,9 +60,17 @@ public class PlayerController : MonoBehaviour
     public Vector3 velocity = Vector3.zero;
     public PlayerState playerState = PlayerState.Move;
     
-    public NetworkVariable<int> health;
+    public NetworkVariable<int> health = new NetworkVariable<int>(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
     private void Awake()
+    {
+        this.health.OnValueChanged += (value, newValue) =>
+        {
+            Debug.Log($"Health OnValueChanged: {value} -> {newValue}");
+        };
+    }
+
+    public void Respawn()
     {
         this.health.Value = this.maxHealth;
     }

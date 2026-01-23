@@ -1,3 +1,4 @@
+using System;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -25,8 +26,10 @@ public class NetworkController : MonoBehaviour
     public void OnPlayerSpawned(NetworkPlayer player)
     {
         var nm =  NetworkManager.Singleton;
+
         if (nm.IsServer)
         {
+            player.Respawn();
             gameController.RebuildPlayerList();
         }
     }
@@ -37,6 +40,20 @@ public class NetworkController : MonoBehaviour
         Debug.Log("Starting network game");
         networkSetupCanvas.SetActive(false);
     }
-    
-    
+
+    public void Update()
+    {
+        if (!NetworkManager.Singleton.IsServer) return;
+        
+        gameController.Tick();
+        for (var i = 0; i < gameController.tickResults.Length; i++)
+        {
+            var hit = gameController.tickResults[i].hitInfo;
+            
+            if (!(hit?.isHit ?? false)) continue;
+            
+            var np = gameController.knights[i].GetComponent<NetworkPlayer>();
+            np.SpawnHitClientRpc(hit.hitPoint);
+        }
+    }
 }
