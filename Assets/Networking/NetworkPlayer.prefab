@@ -423,7 +423,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapon: {fileID: 1472963309109075925}
   comboData:
-  - damage: 115
+  - damage: 15
     hitForce: 2
     stunTime: 1
     hitAngle: -90
