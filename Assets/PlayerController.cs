@@ -120,12 +120,13 @@ public class PlayerController : NetworkBehaviour
 
     public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState, PlayerController opp)
     {
-        if (opp) this.lockTarget = opp;
-        
         HandleGravity();
         
         this.playerState = ComputePlayerState();
-        
+        if (this.playerState == PlayerState.Death) return;
+     
+        if (opp) this.lockTarget = opp;
+
         HandleMove(frameInput);
         stunTime = Math.Max(0, stunTime - Time.deltaTime);
 

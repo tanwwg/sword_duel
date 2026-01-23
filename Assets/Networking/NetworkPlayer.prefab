@@ -1099,6 +1099,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ragdollRoot: {fileID: 8180418202162070711}
+  animator: {fileID: 7725592126317215321}
+  characterController: {fileID: 5907212887303509055}
 --- !u!114 &808418621119454471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1186,6 +1188,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 8300000, guid: ce1b00c7e01c24224b93eb0d01918705, type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1368167222581709689}
+        m_TargetAssemblyTypeName: RagdollSystem, Assembly-CSharp
+        m_MethodName: StartRagdoll
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

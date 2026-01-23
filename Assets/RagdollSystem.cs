@@ -3,6 +3,16 @@ using UnityEngine;
 public class RagdollSystem : MonoBehaviour
 {
     public Transform ragdollRoot;
+
+    /// <summary>
+    /// animator needs to be disabled
+    /// </summary>
+    public Animator animator;
+    
+    /// <summary>
+    /// disable existing character controller
+    /// </summary>
+    public CharacterController characterController;
     
     public void Start()
     {
@@ -12,6 +22,8 @@ public class RagdollSystem : MonoBehaviour
     public void StartRagdoll()
     {
         SetRagdoll(ragdollRoot, true);
+        if (animator) animator.enabled = false;
+        if (characterController) characterController.enabled = false;
     }
 
     private void SetRagdoll(Transform t, bool isEnabled)
