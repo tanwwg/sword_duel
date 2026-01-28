@@ -2,7 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RemoteInputHandler: NetworkBehaviour, BaseInputHandler
+public class RemoteInputHandler: BaseInputHandler
 {
     public PlayerControllerInput inputs = PlayerControllerInput.zero;
     
@@ -31,7 +31,7 @@ public class RemoteInputHandler: NetworkBehaviour, BaseInputHandler
         inputs.isAttack = true;
     }
 
-    public PlayerControllerInput ReadInputs()
+    public override PlayerControllerInput ReadInputs()
     {
         var ret = inputs;
         inputs.isAttack = false;

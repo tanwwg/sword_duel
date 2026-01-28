@@ -1,6 +1,7 @@
+using Unity.Netcode;
 using UnityEngine;
 
-public interface BaseInputHandler
+public abstract class BaseInputHandler: NetworkBehaviour
 {
-    public PlayerControllerInput ReadInputs();
+    public abstract PlayerControllerInput ReadInputs();
 }

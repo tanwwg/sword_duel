@@ -4,8 +4,8 @@ using UnityEngine.Events;
 
 public class KnightInfo: MonoBehaviour
 {
-    public MonoBehaviour inputHandlerBehaviour;
-    public BaseInputHandler inputHandler => (BaseInputHandler)inputHandlerBehaviour;
+    public BaseInputHandler inputHandlerBehaviour;
+    public BaseInputHandler inputHandler => inputHandlerBehaviour;
     
     public PlayerController controller;
     public PlayerAnimator animator;

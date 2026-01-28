@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputHandler : MonoBehaviour, BaseInputHandler
+public class InputHandler : BaseInputHandler
 {
     private PlayerControllerInput inputs = PlayerControllerInput.zero;
     
@@ -15,7 +15,7 @@ public class InputHandler : MonoBehaviour, BaseInputHandler
         inputs.isAttack = context.ReadValueAsButton();
     }
 
-    public PlayerControllerInput ReadInputs()
+    public override PlayerControllerInput ReadInputs()
     {
         var ret = inputs;
         inputs.isAttack = false;
