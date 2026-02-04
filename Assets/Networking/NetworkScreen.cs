@@ -186,7 +186,6 @@ public class NetworkScreen : MonoBehaviour
         var utp = nm.GetComponent<UnityTransport>();
 
         utp.ConnectionData.Address = ipField.text;
-        utp.ConnectionData.Port = utp.ConnectionData.Port;
 
         nm.StartClient();  
     }

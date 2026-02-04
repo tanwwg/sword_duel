@@ -27,16 +27,19 @@ public class GameController : MonoBehaviour
     public void RebuildPlayerList()
     {
         knights = FindObjectsByType<KnightInfo>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+        Debug.Log("RebuildPlayers " + knights.Length);
 
         for (var i = 0; i < knights.Length; i++)
         {
             knights[i].gameObject.name = $"Knight {i}";
+            knights[i].controller.Respawn();
         }
 
         if (knights.Length == 2)
         {
-            knights[0].controller.lockTarget = knights[1].controller;
-            knights[1].controller.lockTarget = knights[0].controller;            
+            knights[0].SetEnemy(knights[1]);
+            knights[1].SetEnemy(knights[0]);            
+            Respawn();
         }
     }
 
@@ -50,7 +53,6 @@ public class GameController : MonoBehaviour
             knights[i].transform.rotation = spawnPoints[i].rotation;
             knights[i].controller.Respawn();
             knights[i].controller.controller.enabled = true;
-            knights[i].OnRespawn?.Invoke();
         }
 
         this.respawnTime = -1;
@@ -129,9 +131,4 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void LoadSinglePlayer()
-    {
-        Destroy(NetworkManager.Singleton.gameObject);
-        SceneManager.LoadScene("SampleScene");
-    }
 }

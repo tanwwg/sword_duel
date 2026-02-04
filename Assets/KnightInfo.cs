@@ -4,13 +4,22 @@ using UnityEngine.Events;
 
 public class KnightInfo: MonoBehaviour
 {
-    public BaseInputHandler inputHandlerBehaviour;
-    public BaseInputHandler inputHandler => inputHandlerBehaviour;
+    public BaseInputHandler inputHandler;
     
     public PlayerController controller;
     public PlayerAnimator animator;
-    // public UnityEvent onDie;
 
-    public Action OnRespawn;
+    public EnemyAi aiHandler;
 
+    public void SetEnemy(KnightInfo enemy)
+    {
+        aiHandler.playerTransform =  enemy.controller.transform;
+        controller.lockTarget = enemy.controller;
+    }
+
+    public void SetupAi()
+    {
+        inputHandler = aiHandler;
+        aiHandler.gameObject.SetActive(true);
+    }
 }

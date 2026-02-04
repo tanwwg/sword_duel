@@ -811,6 +811,7 @@ GameObject:
   m_Component:
   - component: {fileID: 400414329}
   - component: {fileID: 400414330}
+  - component: {fileID: 400414331}
   m_Layer: 0
   m_Name: EnemyAI
   m_TagString: Untagged
@@ -851,6 +852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f5a8b604796841c0a4e08c692b723c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAi
+  ShowTopMostFoldoutHeaderGroup: 1
   evalEvery: 0.5
   lastEval: 0
   states:
@@ -864,6 +866,31 @@ MonoBehaviour:
   myTransform: {fileID: 667355097}
   playerTransform: {fileID: 1970438631}
   distance: 0
+--- !u!114 &400414331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400414328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 3694750145
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 0
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!1 &402788955
 GameObject:
   m_ObjectHideFlags: 0
@@ -2339,6 +2366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0daf2d973df184ee9922317a33c712b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputHandler
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!1001 &660992060
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -38,6 +38,8 @@ public class PlayerController : NetworkBehaviour
     
     [Header("Movement")]
     public float moveSpeed = 5f;
+
+    public float backSpeed = 2.5f;
     public float rotationSpeed = 10f;
     public float gravity = -9.81f;
     
@@ -143,7 +145,9 @@ public class PlayerController : NetworkBehaviour
     {
         if (playerState.Value == PlayerState.Move)
         {
-            velocity = frameInput.moveInput.x * transform.right + frameInput.moveInput.y * transform.forward;
+            float dy = frameInput.moveInput.y;
+            float speed = dy > 0 ? moveSpeed : backSpeed;
+            velocity = frameInput.moveInput.x * transform.right + dy * speed * transform.forward;
             velocity *= moveSpeed;
             RotateToTarget();
         }

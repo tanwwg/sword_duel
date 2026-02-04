@@ -6,49 +6,7 @@ using UnityEngine;
 public class NetworkController : NetworkBehaviour
 {
     public GameController gameController;
-    public GameObject networkSetupCanvas;
-
-    private void Start()
-    {
-        var nm =  NetworkManager.Singleton;
-        nm.OnClientConnectedCallback += OnClientConnectedToServer;
-        
-        networkSetupCanvas.SetActive(true);
-    }
-
-    void OnClientConnectedToServer(ulong clientId)
-    {
-        var nm =  NetworkManager.Singleton;
-        Debug.Log($"Client connected to server clientId={clientId} localId={nm.LocalClientId}");
-        
-        TryStartNetworkGame();
-    }
-
-    public void OnPlayerSpawned(NetworkPlayer player)
-    {
-        var nm =  NetworkManager.Singleton;
-
-        gameController.RebuildPlayerList();
-        foreach (var k in gameController.knights)
-        {
-            k.OnRespawn = () =>
-            {
-                k.GetComponent<NetworkTransform>().Teleport(k.transform.position, k.transform.rotation, k.transform.localScale);
-            };
-        }
-        
-        if (nm.IsServer)
-        {
-            gameController.Respawn();
-        }
-    }
-
-    void TryStartNetworkGame()
-    {
-        if (NetworkManager.Singleton.ConnectedClients.Count < 2) return;
-        Debug.Log("Starting network game");
-        networkSetupCanvas.SetActive(false);
-    }
+    public NetworkPlayer playerFab;
 
     private void PropagateHit()
     {
@@ -61,6 +19,17 @@ public class NetworkController : NetworkBehaviour
             var np = gameController.knights[i].GetComponent<NetworkPlayer>();
             np.SpawnHitClientRpc(hit.hitPoint);
         }
+    }
+
+
+    public void StartAIGame()
+    {
+        NetworkManager.Singleton.StartServer();
+        var ai = Instantiate(playerFab);
+        ai.IsAi = true;
+        ai.GetComponent<NetworkObject>().Spawn();
+        var player = Instantiate(playerFab);
+        player.GetComponent<NetworkObject>().Spawn();
     }
 
     public void Update()

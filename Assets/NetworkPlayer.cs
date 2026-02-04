@@ -1,6 +1,7 @@
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class NetworkPlayer : NetworkBehaviour
 {
@@ -9,6 +10,13 @@ public class NetworkPlayer : NetworkBehaviour
     public GameObject hitPrefab;
     
     public PlayerController controller;
+
+    public KnightInfo knightInfo;
+    public PlayerInput localInput;
+    public RemoteInputHandler remoteInput;
+
+    [Header("Runtime Var")]
+    public bool IsAi;
     
     public override void OnNetworkSpawn()
     {
@@ -18,9 +26,23 @@ public class NetworkPlayer : NetworkBehaviour
         if (IsOwner)
         {
             onOwner.Invoke();
+            if (IsAi)
+            {
+                knightInfo.SetupAi();
+            }
+            else
+            {
+                localInput.gameObject.SetActive(true);
+            }
+            knightInfo.inputHandler = remoteInput;
+        } 
+        else if (IsServer)
+        {
+            knightInfo.inputHandler = remoteInput;
         }
         
-        FindFirstObjectByType<NetworkController>().OnPlayerSpawned(this);
+        var gc = FindFirstObjectByType<GameController>();
+        if (gc) gc.RebuildPlayerList();
     }
 
     public void Respawn()

@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class InputHandler : BaseInputHandler
 {
-    private PlayerControllerInput inputs = PlayerControllerInput.zero;
+    public PlayerControllerInput inputs = PlayerControllerInput.zero;
     
     public void OnMove(InputAction.CallbackContext context)
     {
