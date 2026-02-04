@@ -58,10 +58,17 @@ public class PlayerController : NetworkBehaviour
     public PlayerController lockTarget;
 
     // public int health;
-    public float stunTime;
     public Vector3 velocity = Vector3.zero;
 
     public NetworkVariable<PlayerState> playerState;
+    public NetworkVariable<float> stunTimeNetwork;
+
+    public float stunTime
+    {
+        get => stunTimeNetwork.Value;
+        private set => stunTimeNetwork.Value = value;
+    }
+
     // public PlayerState playerState = PlayerState.Move;
     
     public NetworkVariable<int> health = new NetworkVariable<int>(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
