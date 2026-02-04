@@ -66,14 +66,6 @@ public class PlayerController : NetworkBehaviour
     
     public NetworkVariable<int> health = new NetworkVariable<int>(100, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
-    private void Awake()
-    {
-        this.health.OnValueChanged += (value, newValue) =>
-        {
-            Debug.Log($"Health OnValueChanged: {value} -> {newValue}");
-        };
-    }
-
     public void Respawn()
     {
         this.health.Value = this.maxHealth;

@@ -24,12 +24,17 @@ public class NetworkController : NetworkBehaviour
 
     public void StartAIGame()
     {
-        NetworkManager.Singleton.StartServer();
-        var ai = Instantiate(playerFab);
-        ai.IsAi = true;
-        ai.GetComponent<NetworkObject>().Spawn();
-        var player = Instantiate(playerFab);
-        player.GetComponent<NetworkObject>().Spawn();
+        NetworkManager.Singleton.OnServerStarted += () => 
+        {
+            var ai = Instantiate(NetworkManager.Singleton.NetworkConfig.PlayerPrefab);
+            var np = ai.GetComponent<NetworkPlayer>();
+            np.IsAi = true;
+            ai.GetComponent<NetworkObject>().Spawn();
+        };
+        NetworkManager.Singleton.StartHost();
+        // ai.GetComponent<NetworkObject>().Spawn();
+        // var player = Instantiate(playerFab);
+        // player.GetComponent<NetworkObject>().Spawn();
     }
 
     public void Update()

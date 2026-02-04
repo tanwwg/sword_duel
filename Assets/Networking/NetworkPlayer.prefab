@@ -1236,7 +1236,6 @@ Transform:
   m_Children:
   - {fileID: 1708662308984273127}
   - {fileID: 4456027950685152291}
-  - {fileID: 6387609387452334705}
   - {fileID: 1279054559689869979}
   - {fileID: 4077817494845223284}
   - {fileID: 578937286028660983}
@@ -1529,6 +1528,8 @@ MonoBehaviour:
   controller: {fileID: 6242142333279941805}
   animator: {fileID: 808418621119454471}
   aiHandler: {fileID: 6635186198554436338}
+  cams:
+  - {fileID: 7302669072293320359}
 --- !u!114 &-718312353446667968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1574,6 +1575,7 @@ MonoBehaviour:
   knightInfo: {fileID: 2060782591434658434}
   localInput: {fileID: 2084543391410276567}
   remoteInput: {fileID: 1035707378815833125}
+  IsAi: 0
 --- !u!1 &6780496686310299645
 GameObject:
   m_ObjectHideFlags: 0
@@ -1959,37 +1961,6 @@ MonoBehaviour:
   myTransform: {fileID: 7948970439343784592}
   playerTransform: {fileID: 0}
   distance: 0
---- !u!1 &7969844809546552719
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6387609387452334705}
-  m_Layer: 0
-  m_Name: PlayerLookAt
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6387609387452334705
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7969844809546552719}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.48, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7948970439343784592}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8466558216073724835
 GameObject:
   m_ObjectHideFlags: 0

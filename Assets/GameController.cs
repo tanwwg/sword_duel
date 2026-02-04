@@ -60,6 +60,7 @@ public class GameController : MonoBehaviour
     
     void Tick(KnightInfo pc, KnightInfo opp)
     {
+        // Debug.Log("GC.ReadInputs " + pc.inputHandler.name);
         var inputs = pc.inputHandler.ReadInputs();
         var animState = pc.animator.GetAnimState();
         pc.controller.Tick(inputs, animState, opp?.controller);

@@ -25,16 +25,16 @@ public class NetworkPlayer : NetworkBehaviour
         
         if (IsOwner)
         {
-            onOwner.Invoke();
             if (IsAi)
             {
                 knightInfo.SetupAi();
             }
             else
             {
+                onOwner.Invoke();
                 localInput.gameObject.SetActive(true);
+                knightInfo.inputHandler = remoteInput;
             }
-            knightInfo.inputHandler = remoteInput;
         } 
         else if (IsServer)
         {
