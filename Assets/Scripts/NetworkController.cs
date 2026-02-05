@@ -37,17 +37,5 @@ public class NetworkController : NetworkBehaviour
         // player.GetComponent<NetworkObject>().Spawn();
     }
 
-    public void Update()
-    {
-        if (NetworkManager.Singleton.IsServer)
-        {
-            gameController.Tick();
-            PropagateHit();
-        }
-        else
-        {
-            gameController.ClientTick();
-        }
-        
-    }
+    
 }

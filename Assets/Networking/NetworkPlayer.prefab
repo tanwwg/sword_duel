@@ -1291,9 +1291,10 @@ MonoBehaviour:
   comboSystem: {fileID: 5160314152760336542}
   lookTarget: {fileID: 7762639198175753888}
   lockTarget: {fileID: 0}
-  stunTime: 0
   velocity: {x: 0, y: 0, z: 0}
   playerState:
+    m_InternalValue: 0
+  stunTimeNetwork:
     m_InternalValue: 0
   health:
     m_InternalValue: 0
@@ -1528,6 +1529,7 @@ MonoBehaviour:
   controller: {fileID: 6242142333279941805}
   animator: {fileID: 808418621119454471}
   aiHandler: {fileID: 6635186198554436338}
+  headTransform: {fileID: 7762639198175753888}
   cams:
   - {fileID: 7302669072293320359}
 --- !u!114 &-718312353446667968

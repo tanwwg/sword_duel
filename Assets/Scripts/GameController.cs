@@ -23,23 +23,36 @@ public class GameController : MonoBehaviour
     public float respawnWaitTime = 3;
     
     public float respawnTime = -1;
+
+    public UnityEvent onStartGame;
     
     public void RebuildPlayerList()
     {
         knights = FindObjectsByType<KnightInfo>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
         Debug.Log("RebuildPlayers " + knights.Length);
+        
+        var nm = NetworkManager.Singleton;
+        Debug.Log($"IsServer: {nm.IsServer} IsHost: {nm.IsHost} IsClient: {nm.IsClient}");
 
         for (var i = 0; i < knights.Length; i++)
         {
             knights[i].gameObject.name = $"Knight {i}";
-            knights[i].controller.Respawn();
+            if (nm.IsServer)
+            {
+                Debug.Log("RebuildPlayers " + knights[i].gameObject.name);
+                knights[i].controller.Respawn();
+            }
         }
 
         if (knights.Length == 2)
         {
             knights[0].SetEnemy(knights[1]);
-            knights[1].SetEnemy(knights[0]);            
-            Respawn();
+            knights[1].SetEnemy(knights[0]);
+            onStartGame.Invoke();
+            if (nm.IsServer)
+            {
+                Respawn();
+            }
         }
     }
 
@@ -75,6 +88,7 @@ public class GameController : MonoBehaviour
         {
             if (knight.controller.playerState.Value == PlayerState.Death)
             {
+                Debug.Log(knight.gameObject.name + " has died");
                 respawnTime = Time.time + respawnWaitTime;
                 break;
             }
@@ -130,6 +144,20 @@ public class GameController : MonoBehaviour
         {
             knights[i].animator.Tick(PlayerTickResult.Empty);
         }
+    }
+    
+    public void Update()
+    {
+        var nm = NetworkManager.Singleton;
+        if (nm.IsServer)
+        {
+            this.Tick();
+        }
+        else
+        {
+            this.ClientTick();
+        }
+        
     }
 
 }

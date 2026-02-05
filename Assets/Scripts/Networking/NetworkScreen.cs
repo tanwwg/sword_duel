@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
+using Unity.Networking.Transport.Relay;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Lobbies;
@@ -32,6 +34,7 @@ public class NetworkScreen : MonoBehaviour
 
     void SetStatus(string s)
     {
+        Debug.Log(s);
         statusText.text = s;
     }
 
@@ -45,6 +48,8 @@ public class NetworkScreen : MonoBehaviour
     {
         try
         {
+            SetupNetworkLogging();
+
             SetStatus("Init UGS");
             await UnityServices.InitializeAsync();
 
@@ -60,27 +65,53 @@ public class NetworkScreen : MonoBehaviour
             HandleException(ex);
         }
     }
-    
+
+    private static void SetupNetworkLogging()
+    {
+        var nm = NetworkManager.Singleton;
+        nm.NetworkConfig.EnableNetworkLogs = true;
+        nm.OnClientConnectedCallback += clientId =>
+        {
+            Debug.Log($"Client connected: {clientId}");
+        };
+
+        nm.OnClientDisconnectCallback += clientId =>
+        {
+            Debug.LogError($"Client disconnected: {clientId}");
+        };
+
+        nm.OnTransportFailure += () =>
+        {
+            Debug.LogError("Transport failure (Relay / UTP failed)");
+        };
+    }
+
     public async void StartHost()
     {
         try
         {
-            SetStatus("Creating relay...");
-            var alloc = await RelayService.Instance.CreateAllocationAsync(2);
+            SetStatus("Fetching regions...");
+            var regions = await RelayService.Instance.ListRegionsAsync();
+            var region = regions.First(rr => rr.Id == "asia-southeast1");
+            
+            SetStatus("Creating relay for asia-southeast1...");
+            var alloc = await RelayService.Instance.CreateAllocationAsync(2, region.Id);
+            
             SetStatus("Getting relay join code...");
             var joinCode = await RelayService.Instance.GetJoinCodeAsync(alloc.AllocationId);
 
             var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
             transport.SetRelayServerData(alloc.ToRelayServerData(RelayProtocol.WSS));
             transport.UseWebSockets = true;
-            NetworkManager.Singleton.StartHost();
+            var connect = NetworkManager.Singleton.StartHost();
+            if (!connect) throw new Exception("Failed to start host");
 
             CreateLobbyOptions options = new CreateLobbyOptions
             {
                 IsPrivate = false,
                 Data = new()
                 {
-                    { "relay", new DataObject(DataObject.VisibilityOptions.Member, joinCode) }
+                    { "relay", new DataObject(DataObject.VisibilityOptions.Public, joinCode) }
                 }
             };
             SetStatus("Creating lobby...");
@@ -164,13 +195,15 @@ public class NetworkScreen : MonoBehaviour
         {
             SetStatus("Joining lobby...");
             var join = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id);
-            var relayCode = join.Data["relay"].Value;
+            var fresh = await LobbyService.Instance.GetLobbyAsync(lobby.Id);
+            var relayCode = fresh.Data["relay"].Value;
             SetStatus("Getting relay join code...");
             var alloc = await RelayService.Instance.JoinAllocationAsync(relayCode);
             var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
             transport.SetRelayServerData(alloc.ToRelayServerData(RelayProtocol.WSS));
             transport.UseWebSockets = true;
-            NetworkManager.Singleton.StartClient();
+            var connect = NetworkManager.Singleton.StartClient();
+            if (!connect) throw new Exception("StartClient() failed");
             SetStatus("Starting client...");
         }
         catch (Exception ex)

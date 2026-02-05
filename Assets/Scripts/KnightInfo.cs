@@ -12,13 +12,15 @@ public class KnightInfo: MonoBehaviour
 
     public EnemyAi aiHandler;
 
+    // for setting cams
+    public Transform headTransform;
     public CinemachineCamera[] cams;
 
     public void SetEnemy(KnightInfo enemy)
     {
         aiHandler.playerTransform =  enemy.controller.transform;
         controller.lockTarget = enemy.controller;
-        foreach(var c in cams) c.LookAt = enemy.controller.transform;
+        foreach(var c in cams) c.LookAt = enemy.headTransform;
     }
 
     public void SetupAi()
