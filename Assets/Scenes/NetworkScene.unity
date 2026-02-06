@@ -804,6 +804,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HitAnimator
   ShowTopMostFoldoutHeaderGroup: 1
   hitPrefab: {fileID: 7008003062948869718, guid: aefa31fae7a8e4e4d9c4de234df34c73, type: 3}
+  blockPrefab: {fileID: 7008003062948869718, guid: f3aba5e4c9c1f4b95a393d4fe5a7958f, type: 3}
 --- !u!114 &537990936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,6 +819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HitController
   ShowTopMostFoldoutHeaderGroup: 1
   hitAnimator: {fileID: 537990935}
+  blockStun: 0.05
 --- !u!1 &571941994
 GameObject:
   m_ObjectHideFlags: 0

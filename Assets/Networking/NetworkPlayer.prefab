@@ -302,19 +302,8 @@ MonoBehaviour:
     stunTime: 5
     hitAngle: 0
     hitPrefab: {fileID: 0}
-  ignore: {fileID: 0}
-  hitInfo:
-    isHit: 0
-    isProcessed: 0
-    hittable: {fileID: 0}
-    hitCollider: {fileID: 0}
-    weapon:
-      damage: 0
-      hitForce: 100
-      stunTime: 5
-      hitAngle: -45
-      hitPrefab: {fileID: 0}
-    hitPoint: {x: 0, y: 0, z: 0}
+  ignore: {fileID: 1337454087738592579}
+  isProcessed: 0
 --- !u!1 &2339969729738823610
 GameObject:
   m_ObjectHideFlags: 0
@@ -987,6 +976,52 @@ MonoBehaviour:
   weightMultiplier: 1
   lastWeight: 0
   moveInput: {x: 0, y: 0}
+--- !u!1 &5449564911562892328
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7968339549528330637}
+  - component: {fileID: 4043427201912307715}
+  m_Layer: 9
+  m_Name: BlockSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7968339549528330637
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5449564911562892328}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7948970439343784592}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4043427201912307715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5449564911562892328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0347c8b1a0b74068aba141029518ede8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BlockSystem
+  canBlockTime: 0.3
+  isBlockSystemActive: 0
 --- !u!1 &5923575094857239742
 GameObject:
   m_ObjectHideFlags: 0
@@ -1237,6 +1272,7 @@ Transform:
   - {fileID: 1708662308984273127}
   - {fileID: 4456027950685152291}
   - {fileID: 1279054559689869979}
+  - {fileID: 7968339549528330637}
   - {fileID: 4077817494845223284}
   - {fileID: 578937286028660983}
   - {fileID: 1355012018303157537}
@@ -1289,7 +1325,7 @@ MonoBehaviour:
   attackInteria: 1.5
   controller: {fileID: 5907212887303509055}
   comboSystem: {fileID: 5160314152760336542}
-  lookTarget: {fileID: 7762639198175753888}
+  blockSystem: {fileID: 4043427201912307715}
   lockTarget: {fileID: 0}
   velocity: {x: 0, y: 0, z: 0}
   playerState:
@@ -2298,6 +2334,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 16aa5bd1-4f1c-495b-85a3-025ee0d296dd
     m_ActionName: 'Player/LightAttack[/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8920992056007668569}
+        m_TargetAssemblyTypeName: RpcInputs, Assembly-CSharp
+        m_MethodName: OnBlock
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2093c23c-74a6-4210-bc27-a034fa5657a8
+    m_ActionName: 'Player/Block[/Mouse/rightButton]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -3064,6 +3116,10 @@ MonoBehaviour:
       NameHash: 1689966395
       Synchronize: 1
       ParameterType: 1
+    - name: IsBlock
+      NameHash: 1169284992
+      Synchronize: 1
+      ParameterType: 4
   AnimatorParametersExpanded: 0
 --- !u!1 &4054197104043147662 stripped
 GameObject:

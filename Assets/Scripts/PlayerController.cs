@@ -21,7 +21,7 @@ public struct PlayerControllerInput
 
 public enum PlayerState
 {
-    Move, Attack1, Attack2, Attack3, Stun, Death
+    Move, Attack1, Attack2, Attack3, Stun, Death, Block
 }
 
 public static class PlayerStateExtensions
@@ -50,9 +50,8 @@ public class PlayerController : NetworkBehaviour
     public CharacterController controller;
 
     public ComboSystem comboSystem;
+    public BlockSystem blockSystem;
     
-    public Transform lookTarget;
-
     [Header("Runtime vars")]
     
     public PlayerController lockTarget;
@@ -93,6 +92,8 @@ public class PlayerController : NetworkBehaviour
     {
         if (health.Value <= 0) return PlayerState.Death;
         if (stunTime > 0) return PlayerState.Stun;
+
+        if (blockSystem.isBlockSystemActive) return PlayerState.Block;
         
         if (comboSystem.comboIndex == 0) return PlayerState.Attack1;
         if (comboSystem.comboIndex == 1) return PlayerState.Attack2;
@@ -101,10 +102,10 @@ public class PlayerController : NetworkBehaviour
         return PlayerState.Move;
     }
     
-    public void HitStun(Vector3 forceDir, WeaponData weaponData)
+    public void HitStun(Vector3 forceDir, int damage, float stun)
     {
-        stunTime += weaponData.stunTime;
-        health.Value = Math.Max(0, health.Value - weaponData.damage);
+        stunTime += stun;
+        health.Value = Math.Max(0, health.Value - damage);
         comboSystem.StopCombo();
 
         velocity = forceDir;
@@ -119,9 +120,27 @@ public class PlayerController : NetworkBehaviour
      
         HandleMove(frameInput);
         stunTime = Math.Max(0, stunTime - Time.deltaTime);
-
-        var isAttack = frameInput.isAttack && playerState.Value is PlayerState.Move or PlayerState.Attack1 or PlayerState.Attack2;
-        comboSystem.Tick(isAttack, animState);
+        
+        // we can only block or attack, not both
+        if (blockSystem.isBlockSystemActive)
+        {
+            if (!frameInput.isBlock)
+            {
+                blockSystem.StopBlock();
+            }
+        }
+        else
+        {
+            if (frameInput.isBlock) 
+            {
+                blockSystem.StartBlock();
+            }
+            else
+            {
+                var isAttack = frameInput.isAttack && playerState.Value is PlayerState.Move or PlayerState.Attack1 or PlayerState.Attack2;
+                comboSystem.Tick(isAttack, animState);
+            }
+        }
         
         this.playerState.Value = ComputePlayerState();
     }
@@ -134,12 +153,16 @@ public class PlayerController : NetworkBehaviour
             float speed = dy > 0 ? moveSpeed : backSpeed;
             velocity = frameInput.moveInput.x * transform.right + dy * speed * transform.forward;
             velocity *= moveSpeed;
-            RotateToTarget();
         }
         else
         {
             // damp any residual velocity
             velocity = Vector3.MoveTowards(velocity, Vector3.zero, attackInteria * Time.deltaTime);
+        }
+
+        if (playerState.Value == PlayerState.Block || playerState.Value == PlayerState.Move)
+        {
+            RotateToTarget();
         }
         controller.Move(velocity * Time.deltaTime);
     }

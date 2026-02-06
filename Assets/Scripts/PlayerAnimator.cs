@@ -142,8 +142,16 @@ public class PlayerAnimator: MonoBehaviour
 
         if (playerController.stunTime > lastStun)
         {
-            animator.SetTrigger("OnHit");
-            animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime * onHitSpedMultiplier);
+            if (playerController.stunTime > 0.1f)
+            {
+                animator.SetTrigger("OnHit");
+                animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime * onHitSpedMultiplier);
+            }
+            else
+            {
+                animator.SetTrigger("OnSmallHit");
+            }
+            
         }
 
         var nowState = playerController.playerState.Value;
@@ -153,6 +161,10 @@ public class PlayerAnimator: MonoBehaviour
             {
                 Debug.Log("Resetting the ragdoll!");
                 ragdoll.ResetRagdoll();
+            } else if (lastPlayerState == PlayerState.Block)
+            {
+                animator.SetBool("IsBlock", false);
+                animator.SetLayerWeight(1, 0f);
             }
 
             if (nowState == PlayerState.Attack1)
@@ -170,6 +182,15 @@ public class PlayerAnimator: MonoBehaviour
             {
                 animator.SetBool("SpinAttack", true);
                 onSlash3.Invoke();
+            }
+            else if (nowState == PlayerState.Block)
+            {
+                animator.SetBool("IsBlock", true);
+                animator.SetLayerWeight(1, 1f);
+            }
+            else if (nowState == PlayerState.Move)
+            {
+                animator.CrossFade("Movement", 0.1f);
             }
             else if (nowState == PlayerState.Death)
             {

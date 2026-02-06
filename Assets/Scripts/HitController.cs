@@ -9,6 +9,8 @@ public enum HitType
 public class HitController: NetworkBehaviour
 {
     public HitAnimator hitAnimator;
+
+    public float blockStun = 0.05f;
     
     /// <summary>
     /// Check if the weapon hit anyone
@@ -27,9 +29,20 @@ public class HitController: NetworkBehaviour
         var forceDir = player.transform.forward;
         forceDir.y = 0;
         forceDir = Quaternion.AngleAxis(hit.weapon.hitAngle, Vector3.up) * forceDir * hit.weapon.hitForce;
-            
-        hit.hittable.playerController.HitStun(forceDir, hit.weapon);
         
-        hitAnimator.ShowHitClientRpc(hit.hitType, hit.hitPoint);
+        var opp = hit.hittable.playerController;
+
+        if (opp.blockSystem.IsBlocking)
+        {
+            opp.HitStun(forceDir, 0, 0.0f);
+            player.HitStun(-player.transform.forward * hit.weapon.hitForce, 0, blockStun);
+            hitAnimator.ShowHitClientRpc(HitType.Block, hit.hitPoint);
+        }
+        else
+        {
+            opp.HitStun(forceDir, hit.weapon.damage, hit.weapon.stunTime);
+            hitAnimator.ShowHitClientRpc(hit.hitType, hit.hitPoint);
+        }
+        
     }
 }

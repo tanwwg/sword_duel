@@ -18,6 +18,11 @@ public class RpcInputs: NetworkBehaviour
             OnLightAttackServerRpc();
         }
     }
+    
+    public void OnBlock(InputAction.CallbackContext context)
+    {
+        OnBlockServerRpc(context.ReadValueAsButton());
+    }
 
     [ServerRpc(Delivery = RpcDelivery.Reliable)]
     private void OnMoveServerRpc(Vector2 input)
@@ -29,6 +34,12 @@ public class RpcInputs: NetworkBehaviour
     private void OnLightAttackServerRpc()
     {
         inputs.isAttack = true;
+    }
+
+    [ServerRpc(Delivery = RpcDelivery.Reliable)]
+    private void OnBlockServerRpc(bool isDown)
+    {
+        inputs.isBlock = isDown;
     }
 
     public PlayerControllerInput ReadInputs()
