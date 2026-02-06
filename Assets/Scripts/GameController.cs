@@ -6,17 +6,11 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-public struct PlayerTickResult
+public class GameController : NetworkBehaviour
 {
-    public WeaponHitInfo hitInfo;
+    public HitController hitController;
     
-    public static PlayerTickResult Empty =  new PlayerTickResult();
-}
-
-public class GameController : MonoBehaviour
-{
     public KnightInfo[] knights;
-    public PlayerTickResult[] tickResults = Array.Empty<PlayerTickResult>();
     
     public Transform[] spawnPoints;
 
@@ -25,6 +19,8 @@ public class GameController : MonoBehaviour
     public float respawnTime = -1;
 
     public UnityEvent onStartGame;
+
+    
     
     public void RebuildPlayerList()
     {
@@ -71,12 +67,11 @@ public class GameController : MonoBehaviour
         this.respawnTime = -1;
     }
     
-    void Tick(KnightInfo pc, KnightInfo opp)
+    void Tick(KnightInfo pc)
     {
-        // Debug.Log("GC.ReadInputs " + pc.inputHandler.name);
         var inputs = pc.inputHandler.ReadInputs();
         var animState = pc.animator.GetAnimState();
-        pc.controller.Tick(inputs, animState, opp?.controller);
+        pc.controller.Tick(inputs, animState);
     }
 
 
@@ -106,58 +101,39 @@ public class GameController : MonoBehaviour
         }
     }
     
-    public void Tick()
+    private void Tick()
     {
-        if (tickResults == null ||  tickResults.Length != knights.Length)
+        if (IsServer)
         {
-            tickResults = new PlayerTickResult[knights.Length];
+            CheckRespawn();
+            CheckDeath();
+            CheckHits();
+            ServerTick();
         }
-        for(var i = 0; i < tickResults.Length; i++) tickResults[i] = new PlayerTickResult();
-        
-        CheckRespawn();
-        CheckDeath();
-        
-        if (knights.Length == 2)
-        {
-            tickResults[0].hitInfo = knights[1].controller.HandleWeaponHit();
-            tickResults[1].hitInfo = knights[0].controller.HandleWeaponHit();
-            Tick(knights[0], knights[1]);
-            Tick(knights[1], knights[0]);            
-        }
-        else
-        {
-            foreach (var knight in knights)
-            {
-                Tick(knight, null);
-            }
-        }
+        ClientTick();
+    }
 
-        for(var i = 0; i < tickResults.Length; i++)
-        {
-            knights[i].animator.Tick(tickResults[i]);
-        }
+    private void CheckHits()
+    {
+        foreach (var knight in knights) hitController.HandleWeaponHit(knight.controller);        
+    }
+
+    private void ServerTick()
+    {
+        foreach (var knight in knights) Tick(knight);
     }
 
     public void ClientTick()
     {
-        for(var i = 0; i < tickResults.Length; i++)
+        foreach (var knight in knights)
         {
-            knights[i].animator.Tick(PlayerTickResult.Empty);
+            knight.animator.Tick();
         }
     }
     
     public void Update()
     {
-        var nm = NetworkManager.Singleton;
-        if (nm.IsServer)
-        {
-            this.Tick();
-        }
-        else
-        {
-            this.ClientTick();
-        }
-        
+        this.Tick();
     }
 
 }

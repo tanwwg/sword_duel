@@ -14,15 +14,12 @@ public class WeaponData
 }
 
 [System.Serializable]
-public class WeaponHitInfo
+public struct WeaponHitInfo
 {
-    public bool isHit = false;
-    public bool isProcessed = false;
-    
     public Hittable hittable;
-    public Collider hitCollider;
     public WeaponData weapon;
     public Vector3 hitPoint;
+    public HitType hitType;
 }
 
 public class Weapon : MonoBehaviour
@@ -31,7 +28,8 @@ public class Weapon : MonoBehaviour
 
     public Hittable ignore;
 
-    public WeaponHitInfo hitInfo = null;
+    public WeaponHitInfo? hitInfo = null;
+    public bool isProcessed;
 
     private void OnEnable()
     {
@@ -40,40 +38,31 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("OnTriggerEnter " + other.gameObject.name);
-        if (hitInfo.isHit) return; // just track the first hit
+        // Debug.Log("OnTriggerEnter " + other.gameObject.name);
+        if (hitInfo.HasValue) return; // just track the first hit
         
         var hittable = other.gameObject.GetComponent<Hittable>();
         if (!hittable) return;
         
         if (hittable == ignore) return;
 
-        Debug.Log("MARK HIT " + other.gameObject.name);
+        // Debug.Log("MARK HIT " + other.gameObject.name);
         this.hitInfo = new WeaponHitInfo()
         {
-            isHit = true,
             hittable = hittable,
-            hitCollider = other,
             weapon = this.weaponData,
             hitPoint = other.ClosestPoint(this.transform.position)
         };
     }
+    
+    public void MarkProcessed() => isProcessed = true;
 
     public void ResetHit()
     {
-        this.hitInfo = new WeaponHitInfo();
+        this.hitInfo = null;
+        isProcessed = false;
     }
-
-    public WeaponHitInfo GetHitInfo()
-    {
-        if (this.hitInfo.isHit && !this.hitInfo.isProcessed)
-        {
-            this.hitInfo.isProcessed = true;
-            return this.hitInfo;
-        }
-        return null;
-    }
-
+    
     private void OnTriggerExit(Collider other)
     {
 

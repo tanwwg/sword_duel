@@ -46,6 +46,7 @@ public class PlayerAnimator: MonoBehaviour
     private PlayerState lastPlayerState;
     private Vector3 lastPosition;
     private AnimatorStateInfo lastAnim;
+    private float lastStun;
 
     public AnimationClip onHitClip;
 
@@ -73,6 +74,7 @@ public class PlayerAnimator: MonoBehaviour
         lastPosition = targetTransform.position;
         lastPlayerState = playerController.playerState.Value; 
         lastAnim = animator.GetCurrentAnimatorStateInfo(0);
+        lastStun = playerController.stunTime;
     }
 
     private bool IsAttack(AnimatorStateInfo stateInfo)
@@ -116,37 +118,32 @@ public class PlayerAnimator: MonoBehaviour
         return state;
     }
 
-    void SetupCams()
-    {
-        if (!playerController.lockTarget) return;
-        foreach (var cam in cameras)
-        {
-            cam.LookAt = playerController.lockTarget.lookTarget;
-        }
-    }
-
-    public void Tick(PlayerTickResult tickResult)
+    public void Tick()
     {
         var dt = Time.deltaTime;
         var worldDelta = targetTransform.position - lastPosition;
 
-        SetupCams();
-        
         // Convert to local space (right / forward)
         var localDelta = transform.InverseTransformDirection(worldDelta);
-        
-        float forwardSpeed = localDelta.z / dt;
-        float rightSpeed   = localDelta.x / dt;
-        
-        animator.SetFloat(forwardParam, forwardSpeed, dampTime, dt);
-        animator.SetFloat(rightParam,   rightSpeed,   dampTime, dt);
 
-        if (tickResult.hitInfo != null)
+        float forwardSpeed = localDelta.z / dt;
+        float rightSpeed = localDelta.x / dt;
+
+        animator.SetFloat(forwardParam, forwardSpeed, dampTime, dt);
+        animator.SetFloat(rightParam, rightSpeed, dampTime, dt);
+
+        // if (tickResult.hitInfo != null)
+        // {
+        //     Instantiate(tickResult.hitInfo.weapon.hitPrefab, tickResult.hitInfo.hitPoint, Quaternion.identity);
+        //     onHit.Invoke();
+        //     animator.SetTrigger("OnHit");
+        //     animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime * onHitSpedMultiplier);
+        // }
+
+        if (playerController.stunTime > lastStun)
         {
-            Instantiate(tickResult.hitInfo.weapon.hitPrefab, tickResult.hitInfo.hitPoint, Quaternion.identity);
-            onHit.Invoke();
             animator.SetTrigger("OnHit");
-            animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime * onHitSpedMultiplier);   
+            animator.SetFloat("OnHitSpeed", onHitClip.length / playerController.stunTime * onHitSpedMultiplier);
         }
 
         var nowState = playerController.playerState.Value;
@@ -157,7 +154,7 @@ public class PlayerAnimator: MonoBehaviour
                 Debug.Log("Resetting the ragdoll!");
                 ragdoll.ResetRagdoll();
             }
-            
+
             if (nowState == PlayerState.Attack1)
             {
                 animator.SetTrigger("Slash1");
@@ -173,16 +170,16 @@ public class PlayerAnimator: MonoBehaviour
             {
                 animator.SetBool("SpinAttack", true);
                 onSlash3.Invoke();
-            } 
+            }
             else if (nowState == PlayerState.Death)
             {
                 ragdoll.StartRagdoll();
                 onDie.Invoke();
             }
         }
-        
-        
-        
+
+
+
         SaveStates();
     }
 }

@@ -63,6 +63,8 @@ public class PlayerController : NetworkBehaviour
     public NetworkVariable<PlayerState> playerState;
     public NetworkVariable<float> stunTimeNetwork;
 
+    public Weapon weapon => comboSystem.weapon;
+
     public float stunTime
     {
         get => stunTimeNetwork.Value;
@@ -99,38 +101,22 @@ public class PlayerController : NetworkBehaviour
         return PlayerState.Move;
     }
     
-    public WeaponHitInfo HandleWeaponHit()
+    public void HitStun(Vector3 forceDir, WeaponData weaponData)
     {
-        var hitInfo = comboSystem.weapon.GetHitInfo();
-        if (hitInfo == null) return null;
-        
-        var forceDir = controller.transform.forward;
-        forceDir.y = 0;
-        forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
-            
-        hitInfo.hittable.playerController.HitStun(forceDir, hitInfo.weapon);
-        return hitInfo;
-    }
-
-    
-    public void HitStun(Vector3 forceDir, WeaponData weapon)
-    {
-        stunTime += weapon.stunTime;
-        health.Value = Math.Max(0, health.Value - weapon.damage);
+        stunTime += weaponData.stunTime;
+        health.Value = Math.Max(0, health.Value - weaponData.damage);
         comboSystem.StopCombo();
 
         velocity = forceDir;
     }
 
-    public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState, PlayerController opp)
+    public void Tick(PlayerControllerInput frameInput, PlayerAnimState animState)
     {
         HandleGravity();
         
         this.playerState.Value = ComputePlayerState();
         if (this.playerState.Value == PlayerState.Death) return;
      
-        if (opp) this.lockTarget = opp;
-
         HandleMove(frameInput);
         stunTime = Math.Max(0, stunTime - Time.deltaTime);
 
