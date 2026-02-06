@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum HitType
 {
-    Hit, Block
+    Hit, Block, Parry
 }
 
 public class HitController: NetworkBehaviour
@@ -11,6 +11,7 @@ public class HitController: NetworkBehaviour
     public HitAnimator hitAnimator;
 
     public float blockStun = 0.05f;
+    public float parryStun = 0.5f;    
     
     /// <summary>
     /// Check if the weapon hit anyone
@@ -32,8 +33,12 @@ public class HitController: NetworkBehaviour
         
         var opp = hit.hittable.playerController;
 
-        if (opp.blockSystem.IsBlocking)
+        if (opp.blockSystem.IsParry)
         {
+            // opp.HitStun(forceDir, 0, 0.0f);
+            player.HitStun(-player.transform.forward * hit.weapon.hitForce, 0, parryStun);
+            hitAnimator.ShowHitClientRpc(HitType.Parry, hit.hitPoint);
+        } else if (opp.blockSystem.IsBlocking) {
             opp.HitStun(forceDir, 0, 0.0f);
             player.HitStun(-player.transform.forward * hit.weapon.hitForce, 0, blockStun);
             hitAnimator.ShowHitClientRpc(HitType.Block, hit.hitPoint);

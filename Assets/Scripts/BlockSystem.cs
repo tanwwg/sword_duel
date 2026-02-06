@@ -19,7 +19,8 @@ public class BlockSystem: MonoBehaviour
     {
         isBlockSystemActive = false;
     }
-    
+
+    public bool IsParry => isBlockSystemActive && !IsBlocking;
     public bool IsBlocking => isBlockSystemActive && Time.time - _startBlockTime > canBlockTime;
 
 }
