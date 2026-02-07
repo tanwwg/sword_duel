@@ -119,21 +119,15 @@ public class PlayerController : NetworkBehaviour
                 blockSystem.StopBlock();
             }
         }
-        else
+        else if (frameInput.isBlock && playerState.Value == PlayerState.Move) 
         {
-            if (frameInput.isBlock) 
-            {
-                blockSystem.StartBlock();
-            }
-            else
-            {
-                // var isAttack = frameInput.isAttack && playerState.Value is PlayerState.Move or PlayerState.Attack1 or PlayerState.Attack2;
-                if (playerState.Value == PlayerState.Move || playerState.Value == PlayerState.Attack)
-                {
-                    comboSystem.Tick(frameInput.isAttack, animState);
-                }
-            }
+            blockSystem.StartBlock();
         }
+        else if (playerState.Value == PlayerState.Move || playerState.Value == PlayerState.Attack)
+        {
+            comboSystem.Tick(frameInput.isAttack, animState);
+        }
+       
         
         this.playerState.Value = ComputePlayerState();
     }

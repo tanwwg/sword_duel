@@ -21,6 +21,8 @@ public struct WeaponHitInfo
     public WeaponData weapon;
     public Vector3 hitPoint;
     public HitType hitType;
+
+    public static WeaponHitInfo NoHit = new WeaponHitInfo();
 }
 
 public class Weapon : MonoBehaviour
@@ -29,7 +31,7 @@ public class Weapon : MonoBehaviour
 
     public Hittable ignore;
 
-    public WeaponHitInfo? hitInfo = null;
+    public WeaponHitInfo hitInfo = WeaponHitInfo.NoHit;
     public bool isProcessed;
 
     private void OnEnable()
@@ -40,7 +42,7 @@ public class Weapon : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Debug.Log("OnTriggerEnter " + other.gameObject.name);
-        if (hitInfo.HasValue) return; // just track the first hit
+        if (hitInfo.hittable) return; // just track the first hit
         
         var hittable = other.gameObject.GetComponent<Hittable>();
         if (!hittable) return;
@@ -60,7 +62,7 @@ public class Weapon : MonoBehaviour
 
     public void ResetHit()
     {
-        this.hitInfo = null;
+        this.hitInfo = WeaponHitInfo.NoHit;
         isProcessed = false;
     }
     

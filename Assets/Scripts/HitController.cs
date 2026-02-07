@@ -20,33 +20,31 @@ public class HitController: NetworkBehaviour
     public void HandleWeaponHit(PlayerController player)
     {
         var hitInfo = player.weapon.hitInfo;
-        if (hitInfo == null) return;
+        if (!hitInfo.hittable) return;
         if (player.weapon.isProcessed) return;
 
-        var hit = hitInfo.Value;
-        
         player.weapon.MarkProcessed();
         
         var forceDir = player.transform.forward;
         forceDir.y = 0;
-        forceDir = Quaternion.AngleAxis(hit.weapon.hitAngle, Vector3.up) * forceDir * hit.weapon.hitForce;
+        forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
         
-        var opp = hit.hittable.playerController;
+        var opp = hitInfo.hittable.playerController;
 
         if (opp.blockSystem.IsParry)
         {
             // opp.HitStun(forceDir, 0, 0.0f);
-            player.HitStun(-player.transform.forward * hit.weapon.hitForce, 0, parryStun);
-            hitAnimator.ShowHitClientRpc(HitType.Parry, hit.hitPoint);
-        } else if (opp.blockSystem.IsBlocking && !hit.weapon.isHeavy) {
+            player.HitStun(-player.transform.forward * hitInfo.weapon.hitForce, 0, parryStun);
+            hitAnimator.ShowHitClientRpc(HitType.Parry, hitInfo.hitPoint);
+        } else if (opp.blockSystem.IsBlocking && !hitInfo.weapon.isHeavy) {
             opp.HitStun(forceDir, 0, 0.0f);
-            player.HitStun(-player.transform.forward * hit.weapon.hitForce, 0, blockStun);
-            hitAnimator.ShowHitClientRpc(HitType.Block, hit.hitPoint);
+            player.HitStun(-player.transform.forward * hitInfo.weapon.hitForce, 0, blockStun);
+            hitAnimator.ShowHitClientRpc(HitType.Block, hitInfo.hitPoint);
         }
         else
         {
-            opp.HitStun(forceDir, hit.weapon.damage, hit.weapon.stunTime);
-            hitAnimator.ShowHitClientRpc(hit.hitType, hit.hitPoint);
+            opp.HitStun(forceDir, hitInfo.weapon.damage, hitInfo.weapon.stunTime);
+            hitAnimator.ShowHitClientRpc(hitInfo.hitType, hitInfo.hitPoint);
         }
         
     }
