@@ -38,7 +38,7 @@ public class HitController: NetworkBehaviour
             // opp.HitStun(forceDir, 0, 0.0f);
             player.HitStun(-player.transform.forward * hit.weapon.hitForce, 0, parryStun);
             hitAnimator.ShowHitClientRpc(HitType.Parry, hit.hitPoint);
-        } else if (opp.blockSystem.IsBlocking) {
+        } else if (opp.blockSystem.IsBlocking && !hit.weapon.isHeavy) {
             opp.HitStun(forceDir, 0, 0.0f);
             player.HitStun(-player.transform.forward * hit.weapon.hitForce, 0, blockStun);
             hitAnimator.ShowHitClientRpc(HitType.Block, hit.hitPoint);

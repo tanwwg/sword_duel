@@ -12,6 +12,10 @@ public class ComboSystem : NetworkBehaviour
 
     public float heavyChargeTime = 0.5f;
 
+    public WeaponData light1;
+    public WeaponData light2;
+    public WeaponData heavy;    
+
     [Header("Runtime Vars")] 
     public NetworkVariable<AttackState> stateNV;
 
@@ -53,6 +57,7 @@ public class ComboSystem : NetworkBehaviour
                 else if (!isClick)
                 {
                     state = AttackState.Light1;
+                    weapon.weaponData = light1;                    
                 }
                 break;
             
@@ -60,12 +65,17 @@ public class ComboSystem : NetworkBehaviour
                 if (!isClick)
                 {
                     state = AttackState.Heavy;
+                    weapon.weaponData = heavy;
                 }
 
                 break;
             
             case AttackState.Light1:
-                if (animState.canCombo && isClick) state = AttackState.Light2;
+                if (animState.canCombo && isClick)
+                {
+                    state = AttackState.Light2;
+                    weapon.weaponData = light2;
+                }
                 break;
             
             case AttackState.Light2:

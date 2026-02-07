@@ -10,6 +10,8 @@ public class WeaponData
     public float hitForce = 100f;
     public float stunTime = 5f;
     public float hitAngle = -45f;
+
+    public bool isHeavy;
 }
 
 [System.Serializable]
