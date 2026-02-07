@@ -32,7 +32,8 @@ public class PlayerAnimator: MonoBehaviour
     
     public PlayerController playerController;
     public Transform targetTransform;
-    
+
+    public GameObject glintFab;
     
     public Animator animator;
     public PlayerAnimationEvents playerEvents;
@@ -44,19 +45,17 @@ public class PlayerAnimator: MonoBehaviour
     public UnityEvent onDie;
     
     public AnimationClip onHitClip;
-
-    public bool isStartedAttacking;
-
+    
     public UnityEvent onStartAttack;
-    public UnityEvent onHit;
     public float onHitSpedMultiplier = 1.0f;
-
-    public CinemachineCamera[] cameras;
 
     public RagdollSystem ragdoll;
     
 
     [Header("Last states")]
+    
+    public bool isStartedAttacking;
+
     private PlayerState lastPlayerState;
 
     private AttackState lastAttackState;
@@ -172,6 +171,11 @@ public class PlayerAnimator: MonoBehaviour
                 animator.SetLayerWeight(1, 0f);
             }
 
+            if (nowState != PlayerState.Attack)
+            {
+                glintFab.gameObject.SetActive(false);
+            }
+
             if (nowState == PlayerState.Attack)
             {
                 animator.SetBool("IsSlashCharge", true); 
@@ -204,6 +208,12 @@ public class PlayerAnimator: MonoBehaviour
                 {
                     animator.SetBool("IsSlashCharge", false); 
                     animator.SetBool("Slash1", true);
+                }
+                else if (attackNow == AttackState.HeavyCharged)
+                {
+                    glintFab.gameObject.SetActive(true);
+                    // var go = Instantiate(glintFab, glintFab.transform.position, Quaternion.identity);
+                    // go.gameObject.SetActive(true);
                 }
                 else if (attackNow == AttackState.Light2)
                 {

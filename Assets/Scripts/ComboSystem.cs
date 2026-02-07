@@ -2,12 +2,14 @@ using UnityEngine;
 
 public enum AttackState
 {
-    NotAttacking, Charge, Heavy, Light1, Light2
+    NotAttacking, Charge, HeavyCharged, Heavy, Light1, Light2
 }
 
 public class ComboSystem : MonoBehaviour
 {
     public Weapon weapon;
+
+    public float heavyChargeTime = 0.5f;
     
     [Header("Runtime Vars")] 
     public AttackState state;
@@ -36,7 +38,22 @@ public class ComboSystem : MonoBehaviour
             
             case AttackState.Charge:
                 chargeTime += Time.deltaTime;
-                if (!isClick) state = AttackState.Light1;
+                if (chargeTime >= heavyChargeTime)
+                {
+                    state = AttackState.HeavyCharged;
+                }
+                else if (!isClick)
+                {
+                    state = AttackState.Light1;
+                }
+                break;
+            
+            case AttackState.HeavyCharged:
+                if (!isClick)
+                {
+                    state = AttackState.Heavy;
+                }
+
                 break;
             
             case AttackState.Light1:
@@ -44,6 +61,9 @@ public class ComboSystem : MonoBehaviour
                 break;
             
             case AttackState.Light2:
+                break;
+            
+            case AttackState.Heavy:
                 break;
             
             default:
