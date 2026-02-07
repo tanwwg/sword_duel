@@ -301,6 +301,7 @@ MonoBehaviour:
     hitForce: 100
     stunTime: 5
     hitAngle: 0
+    isHeavy: 0
   ignore: {fileID: 1337454087738592579}
   isProcessed: 0
 --- !u!1 &2339969729738823610
@@ -423,7 +424,26 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   weapon: {fileID: 1472963309109075925}
   heavyChargeTime: 0.8
-  state: 0
+  light1:
+    damage: 15
+    hitForce: 2
+    stunTime: 1
+    hitAngle: -90
+    isHeavy: 0
+  light2:
+    damage: 20
+    hitForce: 3
+    stunTime: 1
+    hitAngle: 90
+    isHeavy: 0
+  heavy:
+    damage: 30
+    hitForce: 4
+    stunTime: 1
+    hitAngle: -90
+    isHeavy: 1
+  stateNV:
+    m_InternalValue: 0
   chargeTime: 0
 --- !u!1 &3503460028895388476
 GameObject:
@@ -1311,7 +1331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 3921399549
+  GlobalObjectIdHash: 3218955059
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
