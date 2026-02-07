@@ -1,3 +1,4 @@
+using Unity.Netcode;
 using UnityEngine;
 
 public enum AttackState
@@ -5,14 +6,21 @@ public enum AttackState
     NotAttacking, Charge, HeavyCharged, Heavy, Light1, Light2
 }
 
-public class ComboSystem : MonoBehaviour
+public class ComboSystem : NetworkBehaviour
 {
     public Weapon weapon;
 
     public float heavyChargeTime = 0.5f;
-    
+
     [Header("Runtime Vars")] 
-    public AttackState state;
+    public NetworkVariable<AttackState> stateNV;
+
+    public AttackState state
+    {
+        get => stateNV.Value;
+        private set => stateNV.Value = value;
+    }
+    
     public float chargeTime;
     
     public void StopAttack()
