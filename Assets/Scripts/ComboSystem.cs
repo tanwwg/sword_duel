@@ -1,56 +1,53 @@
-using TMPro;
-using Unity.Mathematics.Geometry;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.UI;
+
+public enum AttackState
+{
+    NotAttacking, Charge, Heavy, Light1, Light2
+}
 
 public class ComboSystem : MonoBehaviour
 {
-    public Weapon weapon;  
-    
-    public WeaponData[] comboData;
-    
+    public Weapon weapon;
     
     [Header("Runtime Vars")] 
-    public int comboIndex = -1;
+    public AttackState state;
+    public float chargeTime;
     
-    public bool IsPlaying => comboIndex >= 0;
-
-    private void StartCombo(int idx)
+    public void StopAttack()
     {
-        comboIndex = idx;
-        weapon.weaponData = comboData[idx];
+        state = AttackState.NotAttacking;
+        chargeTime = 0;
     }
 
-    public void StopCombo()
-    {
-        weapon.gameObject.SetActive(false);
-        comboIndex = -1;
-    }
-    
     public void Tick(bool isClick, PlayerAnimState animState)
     {
-        
         weapon.gameObject.SetActive(animState.isAttacking);
         if (animState.isExitAttack)
         {
-            StopCombo();
+            StopAttack();
             return;
         }
-        
-        if (!IsPlaying)
+
+        switch (state)
         {
-            if (isClick)
-            {
-                StartCombo(0);
-            }
-        }
-        else
-        {
-            if (animState.canCombo && isClick && comboIndex < comboData.Length - 1)
-            {
-                StartCombo(comboIndex + 1);
-            }
+            case AttackState.NotAttacking:
+                if (isClick) state = AttackState.Charge;
+                break;
+            
+            case AttackState.Charge:
+                chargeTime += Time.deltaTime;
+                if (!isClick) state = AttackState.Light1;
+                break;
+            
+            case AttackState.Light1:
+                if (animState.canCombo && isClick) state = AttackState.Light2;
+                break;
+            
+            case AttackState.Light2:
+                break;
+            
+            default:
+                throw new System.ArgumentOutOfRangeException();
         }
     }
 

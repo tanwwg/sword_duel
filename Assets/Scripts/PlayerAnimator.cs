@@ -42,12 +42,7 @@ public class PlayerAnimator: MonoBehaviour
     public UnityEvent onExitAttack;
 
     public UnityEvent onDie;
-
-    private PlayerState lastPlayerState;
-    private Vector3 lastPosition;
-    private AnimatorStateInfo lastAnim;
-    private float lastStun;
-
+    
     public AnimationClip onHitClip;
 
     public bool isStartedAttacking;
@@ -60,7 +55,15 @@ public class PlayerAnimator: MonoBehaviour
 
     public RagdollSystem ragdoll;
     
- 
+
+    [Header("Last states")]
+    private PlayerState lastPlayerState;
+
+    private AttackState lastAttackState;
+    private Vector3 lastPosition;
+    private AnimatorStateInfo lastAnim;
+    private float lastStun;
+
 
     private void OnEnable()
     {
@@ -72,6 +75,7 @@ public class PlayerAnimator: MonoBehaviour
     void SaveStates()
     {
         lastPosition = targetTransform.position;
+        lastAttackState = playerController.comboSystem.state;
         lastPlayerState = playerController.playerState.Value; 
         lastAnim = animator.GetCurrentAnimatorStateInfo(0);
         lastStun = playerController.stunTime;
@@ -161,28 +165,20 @@ public class PlayerAnimator: MonoBehaviour
             {
                 Debug.Log("Resetting the ragdoll!");
                 ragdoll.ResetRagdoll();
-            } else if (lastPlayerState == PlayerState.Block)
+            } 
+            else if (lastPlayerState == PlayerState.Block)
             {
                 animator.SetBool("IsBlock", false);
                 animator.SetLayerWeight(1, 0f);
             }
 
-            if (nowState == PlayerState.Attack1)
+            if (nowState == PlayerState.Attack)
             {
-                animator.SetTrigger("Slash1");
+                animator.SetBool("IsSlashCharge", true); 
+                animator.SetBool("Slash1", false);
                 animator.SetBool("Slash2", false);
-                animator.SetBool("SpinAttack", false);
-            }
-            else if (nowState == PlayerState.Attack2)
-            {
-                animator.SetBool("Slash2", true);
-                onSlash2.Invoke();
-            }
-            else if (nowState == PlayerState.Attack3)
-            {
-                animator.SetBool("SpinAttack", true);
-                onSlash3.Invoke();
-            }
+
+            }            
             else if (nowState == PlayerState.Block)
             {
                 animator.SetBool("IsBlock", true);
@@ -196,6 +192,29 @@ public class PlayerAnimator: MonoBehaviour
             {
                 ragdoll.StartRagdoll();
                 onDie.Invoke();
+            }
+        }
+
+        if (nowState == PlayerState.Attack)
+        {
+            var attackNow = playerController.comboSystem.state;
+            if (lastAttackState != attackNow)
+            {
+                if (attackNow == AttackState.Light1)
+                {
+                    animator.SetBool("IsSlashCharge", false); 
+                    animator.SetBool("Slash1", true);
+                }
+                else if (attackNow == AttackState.Light2)
+                {
+                    animator.SetBool("Slash2", true);
+                    onSlash2.Invoke();
+                }
+                else if (attackNow == AttackState.Heavy)
+                {
+                    animator.SetBool("IsSlashCharge", false);                     
+                    animator.SetBool("Slash1", true);
+                }
             }
         }
 

@@ -21,15 +21,7 @@ public struct PlayerControllerInput
 
 public enum PlayerState
 {
-    Move, Attack1, Attack2, Attack3, Stun, Death, Block
-}
-
-public static class PlayerStateExtensions
-{
-    public static bool IsAttack(this PlayerState state)
-    {
-        return state is PlayerState.Attack1 or PlayerState.Attack2 or PlayerState.Attack3;
-    }
+    Move, Attack, Stun, Death, Block
 }
 
 public class PlayerController : NetworkBehaviour
@@ -94,10 +86,8 @@ public class PlayerController : NetworkBehaviour
         if (stunTime > 0) return PlayerState.Stun;
 
         if (blockSystem.isBlockSystemActive) return PlayerState.Block;
-        
-        if (comboSystem.comboIndex == 0) return PlayerState.Attack1;
-        if (comboSystem.comboIndex == 1) return PlayerState.Attack2;
-        if (comboSystem.comboIndex == 2) return PlayerState.Attack3;
+
+        if (comboSystem.state != AttackState.NotAttacking) return PlayerState.Attack;
         
         return PlayerState.Move;
     }
@@ -106,7 +96,7 @@ public class PlayerController : NetworkBehaviour
     {
         stunTime += stun;
         health.Value = Math.Max(0, health.Value - damage);
-        comboSystem.StopCombo();
+        comboSystem.StopAttack();
 
         velocity = forceDir;
     }
@@ -137,8 +127,11 @@ public class PlayerController : NetworkBehaviour
             }
             else
             {
-                var isAttack = frameInput.isAttack && playerState.Value is PlayerState.Move or PlayerState.Attack1 or PlayerState.Attack2;
-                comboSystem.Tick(isAttack, animState);
+                // var isAttack = frameInput.isAttack && playerState.Value is PlayerState.Move or PlayerState.Attack1 or PlayerState.Attack2;
+                if (playerState.Value == PlayerState.Move || playerState.Value == PlayerState.Attack)
+                {
+                    comboSystem.Tick(frameInput.isAttack, animState);
+                }
             }
         }
         

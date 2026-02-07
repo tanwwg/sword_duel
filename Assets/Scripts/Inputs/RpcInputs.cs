@@ -13,10 +13,7 @@ public class RpcInputs: NetworkBehaviour
     
     public void OnLightAttack(InputAction.CallbackContext context)
     {
-        if (context.started)
-        {
-            OnLightAttackServerRpc();
-        }
+        OnLightAttackServerRpc(context.ReadValueAsButton());
     }
     
     public void OnBlock(InputAction.CallbackContext context)
@@ -31,9 +28,9 @@ public class RpcInputs: NetworkBehaviour
     }
 
     [ServerRpc(Delivery = RpcDelivery.Reliable)]
-    private void OnLightAttackServerRpc()
+    private void OnLightAttackServerRpc(bool isDown)
     {
-        inputs.isAttack = true;
+        inputs.isAttack = isDown;
     }
 
     [ServerRpc(Delivery = RpcDelivery.Reliable)]
@@ -45,7 +42,6 @@ public class RpcInputs: NetworkBehaviour
     public PlayerControllerInput ReadInputs()
     {
         var ret = inputs;
-        inputs.isAttack = false;
         return ret;
     }
 }
