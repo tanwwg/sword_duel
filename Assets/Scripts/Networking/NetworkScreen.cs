@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,6 +33,8 @@ public class NetworkScreen : MonoBehaviour
 
     public GameObject lobbiesPanel;
 
+    private Lobby _hostLoby;
+
     void SetStatus(string s)
     {
         Debug.Log(s);
@@ -64,6 +67,11 @@ public class NetworkScreen : MonoBehaviour
         {
             HandleException(ex);
         }
+    }
+
+    private void OnDisable()
+    {
+        if (_hostLoby != null) LobbyService.Instance.DeleteLobbyAsync(_hostLoby.Id);
     }
 
     private static void SetupNetworkLogging()
@@ -116,12 +124,23 @@ public class NetworkScreen : MonoBehaviour
             };
             SetStatus("Creating lobby...");
             var lobbyName = $"{playerName}'s Lobby";
-            Lobby lobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, 2, options);
+            _hostLoby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, 2, options);
             SetStatus($"{lobbyName} created");
+            StartCoroutine(HeartbeatHostLobby());
         }
         catch (Exception ex)
         {
             HandleException(ex);
+        }
+    }
+
+    private IEnumerator HeartbeatHostLobby()
+    {
+        var delay = new WaitForSecondsRealtime(5.0f);
+        while (_hostLoby != null)
+        {
+            LobbyService.Instance.SendHeartbeatPingAsync(_hostLoby.Id);
+            yield return delay;
         }
     }
 
