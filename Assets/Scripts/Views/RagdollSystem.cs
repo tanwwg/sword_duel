@@ -1,12 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-struct BonePose {
+[System.Serializable]
+public class RagdollPart
+{
+    public string name;
+    public Transform transform;
+    public Collider collider;
+    public Rigidbody rigidbody;
+
     public Vector3 localPos;
     public Quaternion localRot;
 }
-
-
 
 public class RagdollSystem : MonoBehaviour
 {
@@ -22,6 +27,32 @@ public class RagdollSystem : MonoBehaviour
     /// </summary>
     public CharacterController characterController;
     
+    public List<RagdollPart> parts;
+    
+    [ContextMenu("Rebuild Children List")]
+    private void RebuildChildrenList()
+    {
+        parts.Clear();
+        Rebuild(ragdollRoot);
+#if UNITY_EDITOR
+        UnityEditor.EditorUtility.SetDirty(this);
+#endif
+    }
+
+    private void Rebuild(Transform parent)
+    {
+        parts.Add(new RagdollPart()
+        {
+            name = parent.name,
+            transform = parent,
+            collider = parent.GetComponent<Collider>(),
+            rigidbody = parent.GetComponent<Rigidbody>(),
+            localPos = parent.localPosition,
+            localRot = parent.localRotation,
+        });
+        foreach (Transform c in parent) Rebuild(c);
+    }
+    
     public void Start()
     {
         SetRagdoll(ragdollRoot, false);
@@ -29,29 +60,18 @@ public class RagdollSystem : MonoBehaviour
 
     public void StartRagdoll()
     {
-        CachePose();
         SetRagdoll(ragdollRoot, true);
         if (animator) animator.enabled = false;
         if (characterController) characterController.enabled = false;
     }
 
-    private Dictionary<Transform, BonePose> _cachedPose = new();
-
-    void CachePose() {
-        _cachedPose = new();
-        foreach (var t in ragdollRoot.GetComponentsInChildren<Transform>()) {
-            _cachedPose[t] = new BonePose {
-                localPos = t.localPosition,
-                localRot = t.localRotation
-            };
-        }
-    }
-    
     public void ResetRagdoll() {
         SetRagdoll(ragdollRoot, false); // stop physics
-        foreach (var kv in _cachedPose) {
-            kv.Key.localPosition = kv.Value.localPos;
-            kv.Key.localRotation = kv.Value.localRot;
+
+        foreach (var p in parts)
+        {
+            p.transform.localPosition = p.localPos;
+            p.transform.localRotation = p.localRot;
         }
 
         if (animator)
@@ -67,14 +87,14 @@ public class RagdollSystem : MonoBehaviour
     
     private void SetRagdoll(Transform t, bool isEnabled)
     {
-        var rbarr = t.GetComponentsInChildren<Rigidbody>();
-        foreach (var rb in rbarr) rb.isKinematic = !isEnabled;
-        
-        var collarr = t.GetComponentsInChildren<Collider>();
-        foreach (var coll in collarr)
+        foreach (var p in parts)
         {
-            coll.isTrigger = !isEnabled;
-            coll.enabled = isEnabled;
+            if (p.rigidbody) p.rigidbody.isKinematic = !isEnabled;
+            if (p.collider)
+            {
+                p.collider.isTrigger = !isEnabled;
+                p.collider.enabled = isEnabled;
+            }
         }
     }
 }

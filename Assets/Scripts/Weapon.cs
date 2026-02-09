@@ -41,7 +41,7 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // Debug.Log("OnTriggerEnter " + other.gameObject.name);
+        Debug.Log("OnTriggerEnter " + other.gameObject.name);
         if (hitInfo.hittable) return; // just track the first hit
         
         var hittable = other.gameObject.GetComponent<Hittable>();
@@ -49,7 +49,7 @@ public class Weapon : MonoBehaviour
         
         if (hittable == ignore) return;
 
-        // Debug.Log("MARK HIT " + other.gameObject.name);
+        Debug.Log("MARK HIT " + other.gameObject.name);
         this.hitInfo = new WeaponHitInfo()
         {
             hittable = hittable,
