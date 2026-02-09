@@ -37,16 +37,9 @@ public class PlayerAnimator: MonoBehaviour
     
     public Animator animator;
     public PlayerAnimationEvents playerEvents;
-
-    public UnityEvent onSlash2;
-    public UnityEvent onSlash3;
-    public UnityEvent onExitAttack;
-
-    public UnityEvent onDie;
     
     public AnimationClip onHitClip;
     
-    public UnityEvent onStartAttack;
     public float onHitSpedMultiplier = 1.0f;
 
     public RagdollSystem ragdoll;
@@ -82,7 +75,7 @@ public class PlayerAnimator: MonoBehaviour
 
     private bool IsAttack(AnimatorStateInfo stateInfo)
     {
-        return stateInfo.IsName("slash1") || stateInfo.IsName("slash2") || stateInfo.IsName("SpinAttack");
+        return stateInfo.IsName("slash1") || stateInfo.IsName("slash2") || stateInfo.IsName("SpinAttack") || stateInfo.IsName("slash_charge") || stateInfo.IsName("slash_charge_idle");
     }
 
     public PlayerAnimState GetAnimState()
@@ -91,11 +84,6 @@ public class PlayerAnimator: MonoBehaviour
         
         var currentAnim = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (currentAnim.shortNameHash != lastAnim.shortNameHash && IsAttack(currentAnim))
-        {
-            onStartAttack.Invoke();
-        }
-        
         if (!IsAttack(currentAnim))
         {
             playerEvents.isAttacking = false;
@@ -104,14 +92,11 @@ public class PlayerAnimator: MonoBehaviour
             if (isStartedAttacking)
             {
                 state.isExitAttack = true;
-                onExitAttack.Invoke();
             }
-
             isStartedAttacking = false;
         }
         else
         {
-            
             isStartedAttacking = true;
         }
         
@@ -195,7 +180,6 @@ public class PlayerAnimator: MonoBehaviour
             else if (nowState == PlayerState.Death)
             {
                 ragdoll.StartRagdoll();
-                onDie.Invoke();
             }
         }
 
@@ -218,7 +202,6 @@ public class PlayerAnimator: MonoBehaviour
                 else if (attackNow == AttackState.Light2)
                 {
                     animator.SetBool("Slash2", true);
-                    onSlash2.Invoke();
                 }
                 else if (attackNow == AttackState.Heavy)
                 {

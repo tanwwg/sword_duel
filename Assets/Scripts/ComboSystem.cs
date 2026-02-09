@@ -35,7 +35,6 @@ public class ComboSystem : NetworkBehaviour
 
     public void Tick(bool isClick, PlayerAnimState animState)
     {
-        weapon.gameObject.SetActive(animState.isAttacking);
         if (animState.isExitAttack)
         {
             StopAttack();

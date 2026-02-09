@@ -71,6 +71,14 @@ public class GameController : NetworkBehaviour
     {
         var inputs = pc.inputHandler.ReadInputs();
         var animState = pc.animator.GetAnimState();
+        if (animState.isAttacking)
+        {
+            hitController.HandleWeaponHit(pc.controller);
+        }
+        else
+        {
+            pc.controller.comboSystem.weapon.ResetHit();
+        }
         pc.controller.Tick(inputs, animState);
     }
 
@@ -107,15 +115,9 @@ public class GameController : NetworkBehaviour
         {
             CheckRespawn();
             CheckDeath();
-            CheckHits();
             ServerTick();
         }
         ClientTick();
-    }
-
-    private void CheckHits()
-    {
-        foreach (var knight in knights) hitController.HandleWeaponHit(knight.controller);        
     }
 
     private void ServerTick()

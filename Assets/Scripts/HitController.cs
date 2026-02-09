@@ -19,32 +19,34 @@ public class HitController: NetworkBehaviour
     /// <returns></returns>
     public void HandleWeaponHit(PlayerController player)
     {
-        var hitInfo = player.weapon.hitInfo;
-        if (!hitInfo.hittable) return;
-        if (player.weapon.isProcessed) return;
+        var weapon = player.weapon;
+        var hit = weapon.CheckHit();
+        if (!hit || player.weapon.isProcessed) return;
 
         player.weapon.MarkProcessed();
+        var dmg = weapon.weaponData;
+        var hitPoint = hit.GetComponent<Collider>().ClosestPoint(weapon.transform.position);
         
         var forceDir = player.transform.forward;
         forceDir.y = 0;
-        forceDir = Quaternion.AngleAxis(hitInfo.weapon.hitAngle, Vector3.up) * forceDir * hitInfo.weapon.hitForce;
+        forceDir = Quaternion.AngleAxis(dmg.hitAngle, Vector3.up) * forceDir * dmg.hitForce;
         
-        var opp = hitInfo.hittable.playerController;
+        var opp = hit.playerController;
 
         if (opp.blockSystem.IsParry)
         {
             // opp.HitStun(forceDir, 0, 0.0f);
-            player.HitStun(-player.transform.forward * hitInfo.weapon.hitForce, 0, parryStun);
-            hitAnimator.ShowHitClientRpc(HitType.Parry, hitInfo.hitPoint);
-        } else if (opp.blockSystem.IsBlocking && !hitInfo.weapon.isHeavy) {
+            player.HitStun(-player.transform.forward * dmg.hitForce, 0, parryStun);
+            hitAnimator.ShowHitClientRpc(HitType.Parry, hitPoint);
+        } else if (opp.blockSystem.IsBlocking && !dmg.isHeavy) {
             opp.HitStun(forceDir, 0, 0.0f);
-            player.HitStun(-player.transform.forward * hitInfo.weapon.hitForce, 0, blockStun);
-            hitAnimator.ShowHitClientRpc(HitType.Block, hitInfo.hitPoint);
+            player.HitStun(-player.transform.forward * dmg.hitForce, 0, blockStun);
+            hitAnimator.ShowHitClientRpc(HitType.Block, hitPoint);
         }
         else
         {
-            opp.HitStun(forceDir, hitInfo.weapon.damage, hitInfo.weapon.stunTime);
-            hitAnimator.ShowHitClientRpc(hitInfo.hitType, hitInfo.hitPoint);
+            opp.HitStun(forceDir, dmg.damage, dmg.stunTime);
+            hitAnimator.ShowHitClientRpc(HitType.Hit, hitPoint);
         }
         
     }
