@@ -1651,79 +1651,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2108746321}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &872110393
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 872110395}
-  - component: {fileID: 872110396}
-  - component: {fileID: 872110394}
-  m_Layer: 0
-  m_Name: NetworkController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &872110394
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872110393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec0b3e5049874ed3810a2c7f49c4f44, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  ShowTopMostFoldoutHeaderGroup: 1
-  gameController: {fileID: 1672577196}
-  playerFab: {fileID: -718312353446667968, guid: e5f06137b2b6a4c3cba00126180c034c, type: 3}
---- !u!4 &872110395
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872110393}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &872110396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872110393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1309740059
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  DeferredDespawnTick: 0
-  Ownership: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 0
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
-  SyncOwnerTransformWhenParented: 1
-  AllowOwnerToParent: 0
 --- !u!1 &966729375
 GameObject:
   m_ObjectHideFlags: 0
@@ -3129,17 +3056,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1672577196 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8778281771402557073, guid: 375b8d75451614729b13fc72e4f41b22, type: 3}
-  m_PrefabInstance: {fileID: 6937893277467599241}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9bfbc151f8224ebb87c9a8e3aacca1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameController
 --- !u!1001 &1685476696
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3546,11 +3462,11 @@ PrefabInstance:
     - target: {fileID: 1131347790973423252, guid: ccf93d432ed67424cae3c763e443cbc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1666471122830580894}
+      objectReference: {fileID: 552703441239325170}
     - target: {fileID: 1131347790973423252, guid: ccf93d432ed67424cae3c763e443cbc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 872110394}
+      objectReference: {fileID: 2949036391716284701}
     - target: {fileID: 1131347790973423252, guid: ccf93d432ed67424cae3c763e443cbc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
@@ -3561,7 +3477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1131347790973423252, guid: ccf93d432ed67424cae3c763e443cbc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: StartAIGame
+      value: StartAI
       objectReference: {fileID: 0}
     - target: {fileID: 1131347790973423252, guid: ccf93d432ed67424cae3c763e443cbc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
@@ -3569,7 +3485,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1131347790973423252, guid: ccf93d432ed67424cae3c763e443cbc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: NetworkController, Assembly-CSharp
+      value: NetworkScreen, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1131347790973423252, guid: ccf93d432ed67424cae3c763e443cbc1, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
@@ -4912,7 +4828,6 @@ SceneRoots:
   - {fileID: 1209508850}
   - {fileID: 574908165}
   - {fileID: 6937893277467599241}
-  - {fileID: 872110395}
   - {fileID: 1419892430}
   - {fileID: 2108746321}
   - {fileID: 920097190808504317}

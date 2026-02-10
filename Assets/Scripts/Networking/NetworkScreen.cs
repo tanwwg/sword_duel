@@ -241,4 +241,40 @@ public class NetworkScreen : MonoBehaviour
 
         nm.StartClient();  
     }
+
+    public async void StartAI()
+    {
+        // need to start relay to enable single player hosting in WebGL
+        
+        try
+        {
+            NetworkManager.Singleton.OnServerStarted += () => 
+            {
+                var ai = Instantiate(NetworkManager.Singleton.NetworkConfig.PlayerPrefab);
+                var np = ai.GetComponent<NetworkPlayer>();
+                np.IsAi = true;
+                ai.GetComponent<NetworkObject>().Spawn();
+            };
+            
+            SetStatus("Fetching regions...");
+            var regions = await RelayService.Instance.ListRegionsAsync();
+            var region = regions.First(rr => rr.Id == "asia-southeast1");
+            
+            SetStatus("Creating relay for asia-southeast1...");
+            var alloc = await RelayService.Instance.CreateAllocationAsync(2, region.Id);
+            
+            SetStatus("Getting relay join code...");
+            var joinCode = await RelayService.Instance.GetJoinCodeAsync(alloc.AllocationId);
+
+            var transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
+            transport.SetRelayServerData(alloc.ToRelayServerData(RelayProtocol.WSS));
+            transport.UseWebSockets = true;
+            var connect = NetworkManager.Singleton.StartHost();
+            if (!connect) throw new Exception("Failed to start host");
+        }
+        catch (Exception ex)
+        {
+            HandleException(ex);
+        }
+    }
 }
