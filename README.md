@@ -2,6 +2,10 @@
 
 Unity sword-fighting prototype focused on two knights dueling with light/heavy attacks, blocking, parrying, stun, ragdoll death, AI opponents, and Netcode multiplayer.
 
+[![Sword Duel Link](https://play.unity.com/_next/image?url=https%3A%2F%2Fplay.unity.com%2Fapi%2Fv1%2Ffiles%2Ffile%2F8b4f17f1-3acb-4b13-91a1-7a8e542f7c9d%2Fcontent&w=1080&q=75)](https://play.unity.com/en/games/282b0170-3ffa-4272-8a31-b384f1d15c1a/sword-duel)
+
+[Try it out here](https://play.unity.com/en/games/282b0170-3ffa-4272-8a31-b384f1d15c1a/sword-duel)
+
 This README focuses on the custom scripts in `Assets/Scripts`.
 
 ## Project Version
